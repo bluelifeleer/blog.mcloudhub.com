@@ -16,7 +16,6 @@ const http = require('http');
 //引入http2模块
 const http2 = require('spdy');
 const fs = require('fs');
-const OAuthServer = require('express-oauth-server');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 // const RedisStore = require('connect-redis')(session);
@@ -33,12 +32,16 @@ const sillyDateTime = require('silly-datetime');
 const serveIndex = require('serve-index');
 const uuidv4 = require('uuid/v4');
 const expressRequestId = require('express-request-id')();
+const oauth2orize = require('oauth2orize');
 const expressCurl = require('express-curl');
 const md5 = require('md5');
 const colors = require('colors');
 const winston = require('winston');
 const expressWinston = require('express-winston');
 const flash = require('flash');
+const OAuthUser = require(path.join(__dirname,'/application/models/oauth_user_model'))
+const OauthClient = require(path.join(__dirname,'/application/models/oauth_client_model'))
+console.log(path.join(__dirname,'/application/models/oauth_user_model'))
 const app = express();
 //是否启动记录访问日志
 const start_log = true;
@@ -78,21 +81,6 @@ app.use(cookieParser('session_id', {
 	maxAge: 1800000,
 	secure: true
 }));
-
-// app.oauth = new OAuthServer({
-// 	model: require(__dirname + '/app/models/Oauth_model'), // See below for specification
-// 	grants: ['password', 'refresh_token'],
-// 	debug: true,
-// 	allowBearerTokensInQueryString: true,
-// 	accessTokenLifetime: 4 * 60 * 60
-// 	// accessTokenLifetime: Number,
-// 	// refreshTokenLifetime: Number,
-// 	// authCodeLifetime: Number,
-// 	// clientIdRegex: regexp,
-// 	// passthroughErrors: Boolean,
-// 	// continueAfterResponse: Boolean
-
-// });
 
 const store = new MongoDBStore({
 	uri: 'mongodb://localhost:27017',
@@ -165,6 +153,7 @@ app.use(function(req, res, next) {
 	next();
 });
 
+const oauthServer = oauth2orize.createServer();
 
 app.use(cors())
 app.use(csurf({
@@ -233,12 +222,30 @@ app.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
 // 定义路由www
 // app.use('/api', require(path.join(__dirname, '/app/routers/api')));
 app.use('/', require(path.join(__dirname, '/application/routers/index')));
+app.use('/oauth/code', (req, res, next) =>{
+    console.log(11111)
+    console.log(oauthServer.grant.code)
+    // oauthServer.grant(oauth2orize.grant.code((client, redirectURI, user, ares, done)=>{
+    //     console.log("code oauth2orize");
+    //     var code = uuidv4();
+    //     console.log(code)
+    //     // var ac = new AuthorizationCode(code, client.id, redirectURI, user.id, ares.scope);
+    //     // ac.save(function(err) {
+    //     //     if(err){
+    //     //         console.log(err)
+    //     //     }else{
+    //     //         console.log(code)
+    //     //     }
+    //     // //   if (err) { return done(err); }
+    //     // //   return done(null, code);
+    //     // });
+    // }))
+})
 // app.use('/article', require(path.join(__dirname, '/app/routers/article')));
 // app.use('/setting', require(path.join(__dirname, '/app/routers/setting')));
 // app.use('/photos', require(path.join(__dirname, '/app/routers/photos')));
 // app.use('/resume', require(path.join(__dirname, '/app/routers/resume')));
 // app.use('/oauth', require(path.join(__dirname, '/app/routers/oauth')));
-
 
 // 处理404请求
 
