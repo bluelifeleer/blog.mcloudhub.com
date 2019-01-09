@@ -32,16 +32,12 @@ const sillyDateTime = require('silly-datetime');
 const serveIndex = require('serve-index');
 const uuidv4 = require('uuid/v4');
 const expressRequestId = require('express-request-id')();
-const oauth2orize = require('oauth2orize');
 const expressCurl = require('express-curl');
 const md5 = require('md5');
 const colors = require('colors');
 const winston = require('winston');
 const expressWinston = require('express-winston');
 const flash = require('flash');
-const OAuthUser = require(path.join(__dirname,'/application/models/oauth_user_model'))
-const OauthClient = require(path.join(__dirname,'/application/models/oauth_client_model'))
-console.log(path.join(__dirname,'/application/models/oauth_user_model'))
 const app = express();
 //是否启动记录访问日志
 const start_log = true;
@@ -153,8 +149,6 @@ app.use(function(req, res, next) {
 	next();
 });
 
-const oauthServer = oauth2orize.createServer();
-
 app.use(cors())
 app.use(csurf({
 	cookie: true,
@@ -222,25 +216,7 @@ app.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
 // 定义路由www
 // app.use('/api', require(path.join(__dirname, '/app/routers/api')));
 app.use('/', require(path.join(__dirname, '/application/routers/index')));
-app.use('/oauth/code', (req, res, next) =>{
-    console.log(11111)
-    console.log(oauthServer.grant.code)
-    // oauthServer.grant(oauth2orize.grant.code((client, redirectURI, user, ares, done)=>{
-    //     console.log("code oauth2orize");
-    //     var code = uuidv4();
-    //     console.log(code)
-    //     // var ac = new AuthorizationCode(code, client.id, redirectURI, user.id, ares.scope);
-    //     // ac.save(function(err) {
-    //     //     if(err){
-    //     //         console.log(err)
-    //     //     }else{
-    //     //         console.log(code)
-    //     //     }
-    //     // //   if (err) { return done(err); }
-    //     // //   return done(null, code);
-    //     // });
-    // }))
-})
+app.use('/oauth', require(path.join(__dirname, 'application/routers/oauth')));
 // app.use('/article', require(path.join(__dirname, '/app/routers/article')));
 // app.use('/setting', require(path.join(__dirname, '/app/routers/setting')));
 // app.use('/photos', require(path.join(__dirname, '/app/routers/photos')));
@@ -254,6 +230,8 @@ app.get('*', (req, res) => {
 		title: 'No Found'
 	});
 });
+
+console.log(process.env)
 
 //连接数据库
 mongoose.connect('mongodb://localhost:27017/blog', {
