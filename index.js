@@ -19,8 +19,8 @@ const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 // const RedisStore = require('connect-redis')(session);
-const webSocket = require('ws');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const webSocket = require('ws');
 const cors = require('cors');
 const csurf = require('csurf');
 const swig = require('swig');
@@ -37,6 +37,8 @@ const md5 = require('md5');
 const colors = require('colors');
 const winston = require('winston');
 const expressWinston = require('express-winston');
+const errorhandler = require('errorhandler');
+const notifier = require('node-notifier');
 const flash = require('flash');
 const app = express();
 //是否启动记录访问日志
@@ -106,46 +108,56 @@ app.use(session({
 	rolling: true
 }));
 
-// const options = {
-//     "cookie" : {
-//         "maxAge" : 1800000
-//     },
-//     "sessionStore" : {
-//         // "host" : "127.0.0.1",
-//         "port" : "6379",
-//         // "pass" : "123456",
-//         "db" : 1,
-//         "ttl" : 1800,
-//         // "logErrors" : true
-//     }
+// const sessionOptions = {
+// 	"cookie": {
+// 		"maxAge": 1800000
+// 	},
+// 	"store": {
+// 		// "client": null, // 可以复用现有的redis客户端对象， 由 redis.createClient() 创建
+// 		"host": "127.0.0.1", // Redis服务器名
+// 		"port": "6379", // Redis服务器端口
+// 		// "url": "",	// redis服务url地址
+// 		// "pass" : "123456",	// Redis数据库的密码
+// 		"db": 0, // 使用第几个数据库
+// 		"ttl": 1800, // Redis session TTL 过期时间 （秒）
+// 		"logErrors": true,
+// 		// disableTTL: true, // 禁用设置的 TTL
+// 		// socket: null // Redis服务器的unix_socket
+// 		// prefix: 'sess:'     数据表前辍即schema, 默认为 "sess:"
+// 	}
 // };
 
 // app.use(session({
-//     genid: function(req) {
+// 	genid: function(req) {
 // 		return uuidv4() // use UUIDs for session IDs
 // 	},
-//     secret: 'session_id',
-//     rolling:true,
-//     resave: true,  // 重新登录就算有会话也强制保存
-//     saveUninitialized: false, // 是否保存未初始化的session
-//     cookie: options.cookie,
-//     store: new RedisStore(options.sessionStore)
+// 	secret: 'session_id',
+// 	rolling: true,
+// 	resave: true, // 重新登录就算有会话也强制保存
+// 	saveUninitialized: false, // 是否保存未初始化的session
+// 	cookie: sessionOptions.cookie,
+// 	store: new RedisStore(sessionOptions.store)
 // }));
 
 // 服务器启动时默认配置/动作
 app.use(function(req, res, next) {
-	// //将登录后的用户信息附加到request头信息中
-	if (req.cookies.uid && req.cookies.uid != '') {
-		try {
-			req.session.uid = req.cookies.uid;
-		} catch (e) {
-			console.log(e);
+	if (req.session) {
+		// //将登录后的用户信息附加到request头信息中
+		if (req.cookies.uid && req.cookies.uid != '') {
+			try {
+				req.session.uid = req.cookies.uid;
+			} catch (e) {
+				console.log(e);
+			}
 		}
+		// 将系统类型添加到cookies和请求头中;
+		// os.platform return now node runing systems : darwin=>MAC win32=>windows
+		res.cookie('platform', os.platform);
+		req.session.platform = os.platform;
+		req.platform = os.platform;
+	} else {
+		return next(new Error('oh no')) // handle error
 	}
-	// 将系统类型添加到cookies和请求头中;
-	// os.platform return now node runing systems : darwin=>MAC win32=>windows
-	res.cookie('platform', os.platform);
-	req.platform = os.platform;
 	next();
 });
 
@@ -231,7 +243,27 @@ app.get('*', (req, res) => {
 	});
 });
 
-console.log(process.env)
+// console.log(process.env.NODE_ENV)
+// 设置开发环境
+// 1：window
+// 		set NODE_ENV=development
+// 2：linux
+// 		export NODE_ENV=development
+
+if (process.env.NODE_ENV === 'development') {
+	// only use in development
+	app.use(errorhandler({
+		log: errorNotification
+	}));
+}
+
+function errorNotification(err, str, req) {
+	var title = 'Error in ' + req.method + ' ' + req.url
+	notifier.notify({
+		title: title,
+		message: str
+	});
+}
 
 //连接数据库
 mongoose.connect('mongodb://localhost:27017/blog', {
@@ -244,7 +276,10 @@ mongoose.connect('mongodb://localhost:27017/blog', {
 		app.listen(80);
 		const server = http2.createServer(ssloptions, app);
 		server.listen(443);
-
+		notifier.notify({
+			title: 'blog.mcloudhub.com',
+			message: 'the server started . http server listener port 80 https server listener port 443 .'
+		});
 	}
 });
 

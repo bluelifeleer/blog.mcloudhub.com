@@ -314,3 +314,59 @@ fs.writeFile(dirname + '/' + filename, dataBuffer, function(err) {
   }
 });
 ```
+
+#### 将session保存在Redis中
+
+##### 依赖模块
+
+* redis
+* connect-redis
+* express-session
+
+##### 安装
+
+```
+npm i redis connect-redis express-session
+```
+
+##### 使用
+
+```
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+
+const options = {
+  "cookie": {
+    "maxAge": 1800000
+  },
+  "sessionStore": {
+    // "client": null, // 可以复用现有的redis客户端对象， 由 redis.createClient() 创建
+    "host": "127.0.0.1", // Redis服务器名
+    "port": "6379", // Redis服务器端口
+    // "url": "", // redis服务url地址
+    // "pass" : "123456", // Redis数据库的密码
+    "db": 1, // 使用第几个数据库
+    "ttl": 1800, // Redis session TTL 过期时间 （秒）
+    "logErrors": true,
+    // disableTTL: true, // 禁用设置的 TTL
+    // socket: null // Redis服务器的unix_socket
+    // prefix: 'sess:'     数据表前辍即schema, 默认为 "sess:"
+  }
+};
+
+app.use(session({
+  genid: function(req) {
+    return uuidv4() // use UUIDs for session IDs
+  },
+  secret: 'session_id',
+  rolling: true,
+  resave: true, // 重新登录就算有会话也强制保存
+  saveUninitialized: false, // 是否保存未初始化的session
+  cookie: options.cookie,
+  store: new RedisStore(options.sessionStore)
+}));
+```
+
+###### 默认情况下，当连接丢失时，node_redis客户端将自动重新连接。但在此期间可能会收到请求。在express中，这种场景的一种处理方法是在设置会话之后包含一个“会话检查”(检查是否存在req.session)
+
+###### [文档：https://www.npmjs.com/package/connect-redis](https://www.npmjs.com/package/connect-redis 'https://www.npmjs.com/package/connect-redis')
