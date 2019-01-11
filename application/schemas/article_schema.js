@@ -40,6 +40,9 @@ module.exports = new mongoose.Schema({
         ref: 'User',
     }],
     KeyWords: Number,   // 文章字数
+    virtualLink: String,    // 文章虚拟连接
+    trueLink: String,       // 真实连接
+    qrcode: String,     // 文章唯一二维码
     deleted: Boolean,
     date: Date, // 文章创建时间
     updateTime: Date // 文章修改时间

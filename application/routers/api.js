@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const md5 = require('md5');
+const qrcode = require('qrcode')
 const utils = require('../utils');
 const User = require('../models/user_model');
 const App = require('../models/app_model');
@@ -25,7 +26,83 @@ router.use(function(req, res, next) {
 });
 
 router.post('/signin', (req, res, next) => {
+	let name = req.body.name;
+	let password = req.body.password;
+	let checked = req.body.checked && req.body.checked === 'true' ? true : false ;
+	
+	if(name == ''){
+		output = {
+			code: 0,
+			msg: '用户名不能为空',
+			ok: false,
+			data: null
+		};
+		return;
+	}
 
+	if(password == ''){
+		output = {
+			code: 0,
+			msg: '用户密码不能为空',
+			ok: false,
+			data: null
+		};
+		return;
+	}
+
+	User.findOne({ name: name }).then(user => {
+		if(user){
+			if(md5(password+user.sale === user.password)){
+				if(checked){
+					res.cookie('checked', checked, {
+						maxAge: 1800000 * 24 * 7
+					});
+					res.cookie('name', user.name, {
+						maxAge: 1800000 * 24 * 7
+					});
+					res.cookie('password', user.password, {
+						maxAge: 1800000 * 24 * 7
+					});
+				}
+				res.cookie('uid', user._id, {
+					maxAge: 1800000 * 24 * 7
+				});
+				req.session.uid = user._id;
+				output = {
+					code: 1,
+					msg: 'success',
+					ok: true,
+					data: null
+				};
+				return;
+			}else{
+				output = {
+					code: 0,
+					msg: '密码错误',
+					ok: false,
+					data: null
+				};
+				return;
+			}
+		}else{
+			output = {
+				code: 0,
+				msg: '无此用户',
+				ok: false,
+				data: null
+			};
+			return;
+		}
+	}).catch(err => {
+		console.log(err);
+		output = {
+			code: 0,
+			msg: '服务器出错',
+			ok: false,
+			data: null
+		};
+		return;
+	});
 });
 
 router.post('/signup', (req, res, next) => {
