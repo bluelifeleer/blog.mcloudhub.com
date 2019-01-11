@@ -1,7 +1,4 @@
 'use strict';
-
-console.log(this)
-
 /**
  * Return a unique identifier with the given `len`.
  *
@@ -161,4 +158,16 @@ module.exports.storageClear = function(){
   if('localStorage' in window){
     window.localStorage.clear();
   }
+}
+
+/**
+ * [formateDate description]
+ * @return {[type]}      [description]
+ * @Author: bluelife 
+ * @Date: 2019-01-12 02:57:01 
+ * @Desc:  
+ */
+module.exports.formateDate = function(date) {
+  let MyDate = new Date(date);
+  return MyDate.getFullYear() + '-' + ((MyDate.getMonth() + 1) <= 9 ? '0' + (MyDate.getMonth() + 1) : (MyDate.getMonth() + 1)) + '-' + (MyDate.getDate() <= 9 ? '0' + MyDate.getDate() : MyDate.getDate()) + ' ' + (MyDate.getHours() <= 9 ? '0' + MyDate.getHours() : MyDate.getHours()) + ':' + (MyDate.getMinutes() <= 9 ? '0' + MyDate.getMinutes() : MyDate.getMinutes()) + ':' + (MyDate.getSeconds() <= 9 ? '0' + MyDate.getSeconds() : MyDate.getSeconds());
 }

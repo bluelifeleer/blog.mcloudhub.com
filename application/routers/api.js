@@ -6,6 +6,7 @@ const express = require('express');
 const md5 = require('md5');
 const qrcode = require('qrcode')
 const utils = require('../utils');
+const WebSite = require('../models/website_model');
 const User = require('../models/user_model');
 const App = require('../models/app_model');
 const Label = require('../models/label_model');
@@ -110,7 +111,12 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.get('/user/get', (req, res, next) => {
-
+	res.json({
+		code: 0,
+		ok: true,
+		message: 'success',
+		data: null
+	})
 });
 
 router.post('/label/add', (req, res, next) => {

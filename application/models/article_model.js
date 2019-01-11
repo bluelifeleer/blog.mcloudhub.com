@@ -4,4 +4,4 @@
  */
 const mongoose = require('mongoose');
 const articleSchema = require('../schemas/article_schema');
-mondule.exports = mongoose.model('Article', articleSchema);
+module.exports = mongoose.model('Article', articleSchema);

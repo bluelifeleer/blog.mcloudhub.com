@@ -228,17 +228,11 @@ app.use('/download', express.static(path.join(__dirname, '/application/download'
 app.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
 
 // 定义路由www
-// app.use('/api', require(path.join(__dirname, '/app/routers/api')));
 app.use('/', require(path.join(__dirname, '/application/routers/index')));
 app.use('/oauth', require(path.join(__dirname, 'application/routers/oauth')));
-// app.use('/article', require(path.join(__dirname, '/app/routers/article')));
-// app.use('/setting', require(path.join(__dirname, '/app/routers/setting')));
-// app.use('/photos', require(path.join(__dirname, '/app/routers/photos')));
-// app.use('/resume', require(path.join(__dirname, '/app/routers/resume')));
-// app.use('/oauth', require(path.join(__dirname, '/app/routers/oauth')));
+app.use('/api', require(path.join(__dirname, '/application/routers/api')));
 
 // 处理404请求
-
 app.get('*', (req, res) => {
 	res.render(path.join(__dirname, '/application/views/404'), {
 		title: 'No Found'

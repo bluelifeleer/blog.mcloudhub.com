@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * 网站 schema
+ */
 const mongoose = require('mongoose');
 module.exports = new mongoose.Schema({
     uid: String,
@@ -13,7 +16,8 @@ module.exports = new mongoose.Schema({
             name: String,
             url: String,
             icon: String,
-            background: String
+            background: String,
+            target: String  // 连接打开方式，_blank,_parent,_self,_top, default: _self.
         }]
     }
 });
