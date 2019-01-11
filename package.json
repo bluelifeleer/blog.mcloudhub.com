@@ -27,6 +27,7 @@
     "express-ws": "^4.0.0",
     "flash": "^1.1.0",
     "gt3-sdk": "^2.0.0",
+    "helmet": "^3.15.0",
     "http-concat": "^0.1.1",
     "image-size": "^0.6.2",
     "markdown": "^0.5.0",

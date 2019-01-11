@@ -23,6 +23,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const webSocket = require('ws');
 const cors = require('cors');
 const csurf = require('csurf');
+const helmet = require('helmet')
 const swig = require('swig');
 const config = require('./application/config');
 const mongoose = require('mongoose');
@@ -161,7 +162,8 @@ app.use(function(req, res, next) {
 	next();
 });
 
-app.use(cors())
+app.use(helmet());
+app.use(cors());
 app.use(csurf({
 	cookie: true,
 	ignoreMethods: ['GET', 'POST']
