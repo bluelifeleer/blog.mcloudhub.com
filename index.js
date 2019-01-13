@@ -84,7 +84,8 @@ app.use(cookieParser('session_id', {
 const store = new MongoDBStore({
 	uri: 'mongodb://localhost:27017',
 	databaseName: 'store',
-	collection: 'sessions'
+	collection: 'sessions',
+	useNewUrlParser: true
 }, err => {
 	if (err) throw err;
 });
@@ -119,9 +120,12 @@ app.use(session({
 // 		"port": "6379", // Redis服务器端口
 // 		// "url": "",	// redis服务url地址
 // 		// "pass" : "123456",	// Redis数据库的密码
-// 		"db": 0, // 使用第几个数据库
+// 		// "db": 0, // 使用第几个数据库
 // 		"ttl": 1800, // Redis session TTL 过期时间 （秒）
-// 		"logErrors": true,
+// 		"logErrors": function(e){
+// 			console.log(e)
+// 		},
+// 		"no_ready_check": true 	// 禁止服务器就绪检查
 // 		// disableTTL: true, // 禁用设置的 TTL
 // 		// socket: null // Redis服务器的unix_socket
 // 		// prefix: 'sess:'     数据表前辍即schema, 默认为 "sess:"

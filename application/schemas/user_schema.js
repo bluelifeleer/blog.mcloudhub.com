@@ -7,7 +7,7 @@ module.exports = new mongoose.Schema({
     name: String,
     password: String,
     sale: String,
-    avarat: String,
+    avatar: String,
     email: String,
     phone: String,
     sex: Number,

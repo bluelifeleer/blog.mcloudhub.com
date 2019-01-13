@@ -34,13 +34,13 @@ a:link{
 
 @font-face {
     font-family: 'iconfont';  /* project id 558588 */
-    src: url('//at.alicdn.com/t/font_558588_0n1pjqwavn4g.eot');
-    src: url('//at.alicdn.com/t/font_558588_0n1pjqwavn4g.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_558588_0n1pjqwavn4g.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_558588_0n1pjqwavn4g.woff') format('woff'),
-    url('//at.alicdn.com/t/font_558588_0n1pjqwavn4g.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_558588_0n1pjqwavn4g.svg#iconfont') format('svg');
-}
+    src: url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.eot');
+    src: url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.woff') format('woff'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.svg#iconfont') format('svg');
+  }
 
 .iconfont {
     font-family: "iconfont" !important;
@@ -66,6 +66,9 @@ a:link{
     position:fixed;
     left:0;
     top:0;
+    z-index:999;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
 }
 
 .content-container{
@@ -102,8 +105,9 @@ a:link{
 .nav-items{
     display:block;
     float:left;
-    width:120px;
+    width:auto;
     height:60px;
+    padding:0 30px;
 }
 
 .nav-items a{
@@ -113,6 +117,43 @@ a:link{
     line-height: 60px;
     text-align:center;
     color:#606266;
+    font-size: 14px;
+}
+
+.search{
+    width:220px;
+    height:38px;
+    border:1px solid #eee;
+    background:#eee;
+    border-radius:25px;
+    margin:10px 0;
+    padding: 0 0 0 20px;
+}
+
+.search input{
+    display:block;
+    float:left;
+    width:180px;
+    height:38px;
+    line-height: 38px;
+    border:none;
+    background: none;
+    outline:none;
+    font-size: 13px;
+}
+
+.search a{
+    display:block;
+    float:left;
+    width:20px;
+    height:20px;
+    line-height: 20px;
+    text-align: center;
+    border:none;
+    background: none;
+    margin:10px 0;
+    border-radius:50%;
+    color:#969696;
 }
 
 .user-info-block{

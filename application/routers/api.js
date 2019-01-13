@@ -185,12 +185,21 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.get('/user/get', (req, res, next) => {
-	res.json({
-		code: 0,
-		ok: true,
-		msg: 'success',
-		data: null
-	})
+	let uid = req.query.uid || req.session.uid || req.cookie.uid;
+	User.findById(uid, {name: true, email: true, phone: true, avatar: true}).then(user=>{
+		if(user){
+			output = {
+				code: 1,
+				msg: 'success',
+				ok: true,
+				data: user
+			};
+			res.json(output);
+			return;
+		}
+	}).catch(err=>{
+		console.log(err);
+	});
 });
 
 router.post('/label/add', (req, res, next) => {
