@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get('/code', (req, res, next) => {
     // server.grant(oauth2orize.grant.code(function(client, redirectURI, user, ares, done) {
-    //     var code = utils.uid(16);
+    //     var code = utils.UUid(16);
        
     //     var ac = new AuthorizationCode(code, client.id, redirectURI, user.id, ares.scope);
     //     ac.save(function(err) {

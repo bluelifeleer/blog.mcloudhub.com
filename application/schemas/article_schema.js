@@ -39,6 +39,13 @@ module.exports = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
+    read: Number,   // 文章阅读
+    reads: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ],
     KeyWords: Number,   // 文章字数
     virtualLink: String,    // 文章虚拟连接
     trueLink: String,       // 真实连接
