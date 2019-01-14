@@ -3,6 +3,7 @@ const VUE = new Vue({
     el: '#app',
     data: {
         newLabelToggle: false,
+        showUserProfile: false,
         user: {
             name: '',
             phone: '',
@@ -16,6 +17,7 @@ const VUE = new Vue({
                 name: ''
             },
             article: {
+                id: '',
                 uid: '',
                 labelId: '5c3bef8f8aee742914b4a9b5',
                 title: '',
@@ -32,6 +34,8 @@ const VUE = new Vue({
             title: '',
             selected: true
         }],
+        labelIndex: 0,
+        articleIndex: 0,
         editor: null
     },
     created() {},
@@ -57,12 +61,15 @@ const VUE = new Vue({
                 console.log(err);
             });
         },
+        showUserProfileToggle: function(e){
+            this.showUserProfile = !this.showUserProfile;
+        },
         getLabels: function() {
+            let _this = this;
             this.$http.get('/api/label/lists?uid=' + this.user._id).then(res => {
-                console.log(res);
                 if (res.body.code && res.body.ok) {
                     let lists = res.body.data.list;
-                    let articles = lists[0].articles.length ? lists[0].articles[0] : [];
+                    let articles = lists[this.labelIndex].articles.length ? lists[this.labelIndex].articles : [];
                     lists.forEach((item, index) => {
                         item.selected = false;
                         if (index == 0) {
@@ -71,6 +78,19 @@ const VUE = new Vue({
                     })
                     this.labels = lists;
                     this.articles = articles;
+                    this.articles.forEach((article, index)=>{
+                        article.selected = false;
+                        if(index == 0){
+                            article.selected = true;
+                            this.form.article.id = article._id;
+                            this.form.article.uid = article.uid;
+                            this.form.article.labelId = article.labelId;
+                            this.form.article.title = article.title;
+                            this.form.article.content = article.content;
+                            this.form.article.markDown = article.markDown;
+                            this.form.article.html = article.html;
+                        }
+                    });
                 }
             }).catch(err => {
                 console.log(err);
@@ -98,19 +118,32 @@ const VUE = new Vue({
             this.$http.post('/api/article/add', {
                 uid: this.form.article.uid,
                 labelId: this.form.article.labelId,
-                title: this.form.article.title
+                title: this.form.article.title,
+                type: this.user.editor
             }).then(res => {
                 console.log(res);
+                this.getLabels();
             }).catch(err => {
                 console.log(err);
             })
         },
+        articleTitleInputInputListener: function(e){
+            this.articles[this.articleIndex].title = this.form.article.title;
+        },
+        articleTitleInputBlurListener: function(e){
+            this.$http.post('/api/article/modify', {id: this.form.article.id, title: this.form.article.title}).then(res=>{
+                console.log(res);
+            }).catch(err=>{
+                console.log(err);
+            });
+        },
         initEditor: function() {
+            let _this = this;
             if (this.user.editor) {
                 this.editor = editormd('editor-container', {
                     placeholder: '编写你的博客文章。。。。', //默认显示的文字，这里就不解释了
                     width: "100%",
-                    height: 780,
+                    height: 730,
                     syncScrolling: "single",
                     path: "/static/js/libs/editor.md-master/lib/", //你的path路径（原资源文件中lib包在我们项目中所放的位置）
                     theme: "default", //工具栏主题
@@ -124,19 +157,20 @@ const VUE = new Vue({
                     flowChart: true, // 开启流程图支持，默认关闭
                     sequenceDiagram: true, // 开启时序/序列图支持，默认关闭,
                     toolbarIcons: function() { //自定义工具栏，后面有详细介绍
-                        return editormd.toolbarModes['simple']; // full, simple, mini
+                        // return editormd.toolbarModes['full']; // full, simple, mini
                         // 自定义工具栏
-                        // return ["undo", "redo", "|", "bold", "hr", "|", "preview", "watch", "|", "fullscreen", "info", "testIcon", "testIcon2", "file", "faicon", "||", "watch", "fullscreen", "preview", "testIcon", "file"]
+                        // return ["undo", "redo", "|", "bold", "hr", "|", "preview", "watch", "|", "img", "fullscreen", "info", "testIcon", "testIcon2", "file", "faicon", "||", "watch", "fullscreen", "preview", "testIcon", "file"]
+                        return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|", "list-ul", "list-ol", "hr", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "link", "image", "code", "preformatted-text", "code-block", "emoji", "table", "html-entities", "||", "watch", "fullscreen", "preview", "clear", "help"]
                     },
                     imageUpload: true,
                     imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                    imageUploadURL: "./php/upload.php",
+                    imageUploadURL: "/api/file/uploader",
                     onload: function() {
-                        this.setMarkdown();
+                        this.setMarkdown(_this.form.article.markDown);
                     }
                 });
                 // this.editor.getMarkdown(); // 获取 Markdown 源码
-                // this.editor.setMarkdown(''); // 设置markDown
+                // this.editor.setMarkdown(this.form.article.markDown); // 设置markDown
                 // this.editor.setHTML(''); // 设置html
                 // this.editor.getHTML(); // 获取 Textarea 保存的 HTML 源码
                 // this.editor.getPreviewedHTML(); // 获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
@@ -175,16 +209,17 @@ const VUE = new Vue({
                     'redo' // 重复
                 ];
                 this.editor.create();
-                this.editor.txt.html('<p>用 JS 设置的内容</p>');
-                // 读取html内容
-                // this.editor.txt.html();
-                // 读取Text内容
+                // 读取/设置html内容
+                console.log(this.form.article['content'])
+                this.editor.txt.html('');
+                // 读取/设置Text内容
                 // this.editor.txt.text();
             }
         },
         labelItemSelector: function(e, index) {
             let labelItems = this.$refs.labelListItem.getElementsByClassName('label-list-items'),
-                i = 0;
+                i = 0,
+                _this = this;
             for (i; i < labelItems.length; i++) {
                 labelItems[i].className = 'label-list-items';
                 labelItems[i].setAttribute('data-selected', false);
@@ -193,17 +228,30 @@ const VUE = new Vue({
             labelItems[index].setAttribute('data-selected', true);
             this.form.article.labelId = this.labels[index]._id;
             this.articles = this.labels[index].articles ? this.labels[index].articles : [];
+            this.labelIndex = index;
             if (this.articles.length) {
                 this.articles.forEach((article, index) => {
                     article.selected = false;
                     if (index == 0) {
                         article.selected = true;
+                        _this.form.article.title = article.title;
                     }
                 });
+                this.form.article.id = this.articles[0]._id;
+                this.form.article.uid = this.articles[0].uid;
+                this.form.article.labelId = this.articles[0].labelId;
+                this.form.article.title = this.articles[0].title;
+                this.form.article.content = this.articles[0].content;
+                this.form.article.markDown = this.articles[0].markDown;
+                this.form.article.html = this.articles[0].html;
+                if(this.user.editor){
+                    this.editor.setMarkdown(this.form.article.markDown);
+                }else{
+                    this.editor.txt.html(this.form.article.html);
+                }
             }
-            console.log(this.articles)
         },
-        articleTitleItemSelect: function(e, index) {
+        articleTitleItemSelect: function(e, index, article) {
             let articleTitleItems = this.$refs.articleTitleItem.getElementsByClassName('article-title-items'),
                 i = 0;
             for (i; i < articleTitleItems.length; i++) {
@@ -212,9 +260,36 @@ const VUE = new Vue({
             }
             articleTitleItems[index].className = 'article-title-items article-title-items-selected';
             articleTitleItems[index].setAttribute('data-selected', true);
+            this.form.article.id = article._id;
+            this.form.article.uid = article.uid;
+            this.form.article.labelId = article.labelId;
+            this.form.article.title = article.title;
+            this.form.article.content = article.content;
+            this.form.article.markDown = article.markDown;
+            this.form.article.html = article.html;
+            if(this.user.editor){
+                this.editor.setMarkdown(this.form.article.markDown);
+            }else{
+                this.editor.txt.html(this.form.article.html);
+            }
+            this.articleIndex = index;
         },
         articleEditorSave: function() {
-            console.log(this.editor.getMarkdown());
+            if(this.user.editor){
+                this.form.article.content = this.editor.getHTML();
+                this.form.article.markDown = this.editor.getMarkdown();
+                this.form.article.html = this.editor.getHTML();
+            }else{
+                this.form.article.content = this.editor.txt.html();
+                this.form.article.markDown = '';
+                this.form.article.html = this.editor.txt.html();
+            }
+            console.log(this.form.article)
+            this.$http.post('/api/article/save', {id: this.form.article.id, content: this.form.article.content, html: this.form.article.html, markDown: this.form.article.markDown}).then(res=>{
+                console.log(res);
+            }).catch(err=>{
+                console.log(err);
+            })
         }
     },
     mounted() {

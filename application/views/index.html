@@ -10,74 +10,30 @@
 <div class="content-body">
 	<div class="page-layout-left">
 		<div class="slide-container"><img src="/static/images/slides_02.jpg" alt=""></div>
-		<div class="article-body-box">
-			<article class="article-list-items has-img">
-				<div class="article-list-item-layout-left">
-					<div class="article-title"><a href="/" class="article-title-link">步入30岁之前一定要看的书单大推荐！！！</a></div>
-					<div class="article-contents">关乎生活 《断舍离》 所谓断舍离，断=断绝不需要的东西 ，舍=舍弃多余的废物 ，离=脱离对物品的执着。通过学习和实践断舍离，就能让环境变得清爽，...</div>
-					<div class="article-meta">
-						<a class="author" href="javascript:void(0);"><i class="icon iconfont">&#xe623;</i>bluelife</a>
-						<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>2018-09-12 12:03:23</a>
-						<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>12</a>
-						<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>30</a>
+		<div class="article-body-box" v-if="articles.list.length">
+			<article class="article-list-items" v-for="(article, $index) in articles.list" :key="$index" :data-id="article._id" :class="{'has-img':article.hasImg}">
+				<div class="article-item-box" v-if="article.hasImg">
+					<div class="article-list-item-layout-left">
+						<div class="article-title"><a :href="article.href" class="article-title-link">${article.title}</a></div>
+						<div class="article-contents">${article.content}</div>
+						<div class="article-meta">
+							<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>
+							<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>${article.updateTime}</a>
+							<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>${article.heart}</a>
+							<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>${article.comment}</a>
+						</div>
 					</div>
+					<div class="article-list-item-layout-right" v-html="article.icon"></div>
 				</div>
-				<div class="article-list-item-layout-right"><img src="/static/images/13139534-25e51128e05adea3.jpeg" alt=""></div>
-			</article>
-			<article class="article-list-items">
-				<div class="article-title"><a href="/" class="article-title-link">步入30岁之前一定要看的书单大推荐！！！</a></div>
-				<div class="article-contents">关乎生活 《断舍离》 所谓断舍离，断=断绝不需要的东西 ，舍=舍弃多余的废物 ，离=脱离对物品的执着。通过学习和实践断舍离，就能让环境变得清爽，...</div>
-				<div class="article-meta">
-					<a class="author" href="javascript:void(0);"><i class="icon iconfont">&#xe623;</i>bluelife</a>
-					<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>2018-09-12 12:03:23</a>
-					<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>12</a>
-					<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>30</a>
-				</div>
-			</article>
-			<article class="article-list-items has-img">
-				<div class="article-list-item-layout-left">
-					<div class="article-title"><a href="/" class="article-title-link">步入30岁之前一定要看的书单大推荐！！！</a></div>
-					<div class="article-contents">关乎生活 《断舍离》 所谓断舍离，断=断绝不需要的东西 ，舍=舍弃多余的废物 ，离=脱离对物品的执着。通过学习和实践断舍离，就能让环境变得清爽，...</div>
+				<div class="article-item-box" v-else>
+					<div class="article-title"><a :href="article.href" class="article-title-link">${article.title}</a></div>
+					<div class="article-contents">${article.content}</div>
 					<div class="article-meta">
-						<a class="author" href="javascript:void(0);"><i class="icon iconfont">&#xe623;</i>bluelife</a>
-						<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>2018-09-12 12:03:23</a>
-						<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>12</a>
-						<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>30</a>
+						<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>
+						<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>${article.updateTime}</a>
+						<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>${article.heart}</a>
+						<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>${article.comment}</a>
 					</div>
-				</div>
-				<div class="article-list-item-layout-right"><img src="/static/images/13139534-25e51128e05adea3.jpeg" alt=""></div>
-			</article>
-			<article class="article-list-items">
-				<div class="article-title"><a href="/" class="article-title-link">步入30岁之前一定要看的书单大推荐！！！</a></div>
-				<div class="article-contents">关乎生活 《断舍离》 所谓断舍离，断=断绝不需要的东西 ，舍=舍弃多余的废物 ，离=脱离对物品的执着。通过学习和实践断舍离，就能让环境变得清爽，...</div>
-				<div class="article-meta">
-					<a class="author" href="javascript:void(0);"><i class="icon iconfont">&#xe623;</i>bluelife</a>
-					<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>2018-09-12 12:03:23</a>
-					<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>12</a>
-					<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>30</a>
-				</div>
-			</article>
-			<article class="article-list-items has-img">
-				<div class="article-list-item-layout-left">
-					<div class="article-title"><a href="/" class="article-title-link">步入30岁之前一定要看的书单大推荐！！！</a></div>
-					<div class="article-contents">关乎生活 《断舍离》 所谓断舍离，断=断绝不需要的东西 ，舍=舍弃多余的废物 ，离=脱离对物品的执着。通过学习和实践断舍离，就能让环境变得清爽，...</div>
-					<div class="article-meta">
-						<a class="author" href="javascript:void(0);"><i class="icon iconfont">&#xe623;</i>bluelife</a>
-						<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>2018-09-12 12:03:23</a>
-						<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>12</a>
-						<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>30</a>
-					</div>
-				</div>
-				<div class="article-list-item-layout-right"><img src="/static/images/13139534-25e51128e05adea3.jpeg" alt=""></div>
-			</article>
-			<article class="article-list-items">
-				<div class="article-title"><a href="/" class="article-title-link">步入30岁之前一定要看的书单大推荐！！！</a></div>
-				<div class="article-contents">关乎生活 《断舍离》 所谓断舍离，断=断绝不需要的东西 ，舍=舍弃多余的废物 ，离=脱离对物品的执着。通过学习和实践断舍离，就能让环境变得清爽，...</div>
-				<div class="article-meta">
-					<a class="author" href="javascript:void(0);"><i class="icon iconfont">&#xe623;</i>bluelife</a>
-					<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>2018-09-12 12:03:23</a>
-					<a class="heart" href="javascript:void(0);"><i class="icon iconfont">&#xe641;</i>12</a>
-					<a class="comment" href="javascript:void(0);"><i class="icon iconfont">&#xe684;</i>30</a>
 				</div>
 			</article>
 		</div>

@@ -86,8 +86,8 @@ a:link {
     left: 0;
     top: 0;
     z-index: 999;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
+    /* opacity: 0.9;
+    filter: alpha(opacity=90); */
 }
 
 .content-container {
@@ -192,6 +192,7 @@ a:link {
     float: right;
     width: auto;
     height: auto;
+    position: relative;
 }
 
 .user-info,
@@ -205,6 +206,59 @@ a:link {
 
 .user-info a {
     color: #606266;
+}
+
+.user-profile-toggle:hover{
+    cursor: pointer;
+}
+
+.user-profile-enter-active {
+    animation: user-profile-show .5s;
+}
+
+.user-profile-leave-active {
+    animation: user-profile-hidden .5s;
+}
+
+@keyframes user-profile-show {
+    from{
+        height:0;
+    }
+    to{
+        height: 240px;
+    }
+  }
+
+@keyframes user-profile-hidden {
+    from{
+        height:240px;
+    }
+    to{
+        height: 0;
+    }
+  }
+
+.user-profile{
+    width:180px;
+    background:#fff;
+    border-radius:0 0 4px 4px;
+    overflow: hidden;
+    position: absolute;
+    left:0;
+    top:60px;
+}
+
+.user-profile-items{
+    display:block;
+    width:80%;
+    height:40px;
+    line-height: 40px;
+    padding:0 10%;
+    color:#606266;
+}
+
+.user-profile-items:hover{
+    background:#eee;
 }
 
 .write-article-but a {

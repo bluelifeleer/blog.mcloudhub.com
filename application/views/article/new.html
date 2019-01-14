@@ -32,13 +32,13 @@
             <a href="javascript:void(0);" class="add-new-article-but" @click="addArticle($event)"><i class="icon iconfont">&#xe6e0;</i><span>新建文章</span></a>
         </div>
         <div class="article-title-data-list" ref="articleTitleItem" v-if="articles.length">
-            <div class="article-title-items" v-for="(article, $index) in articles" :key="$index" :data-id="article._id" :class="{'article-title-items-selected':article.selected}"><a href="javascript:void(0);" class="article-title-but" @click="articleTitleItemSelect($event, $index)" :data-id="article._id" :data-selected="article.selected"><i
+            <div class="article-title-items" v-for="(article, $index) in articles" :key="$index" :data-id="article._id" :class="{'article-title-items-selected':article.selected}"><a href="javascript:void(0);" class="article-title-but" @click="articleTitleItemSelect($event, $index, article)" :data-id="article._id" :data-selected="article.selected"><i
             class="icon iconfont">&#xe62e;</i><span>${article.title}</span></a></div>
         </div>
     </div>
     <div class="article-new-page-layout content-editor">
         <div class="article-title-editor-form-box">
-            <input type="text" name="article-title" placeholder="输入文章标题" v-model="form.article.title" />
+            <input type="text" name="article-title" placeholder="输入文章标题" v-model="form.article.title" @blur="articleTitleInputBlurListener($event)" @input="articleTitleInputInputListener($event)"/>
             <a href="javascript:void(0);" class="article-editor-form-submit" @click="articleEditorSave($event)"><i class="icon iconfont">&#xe662;</i></a>
             <span class="save-tip">已保存</span>
         </div>

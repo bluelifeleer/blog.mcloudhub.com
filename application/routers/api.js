@@ -4,7 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const md5 = require('md5');
-const qrcode = require('qrcode')
+const qrcode = require('qrcode');
+const sillyDateTime = require('silly-datetime');
+const multer = require('multer');
+const imageSize = require('image-size');
 const utils = require('../utils');
 const WebSite = require('../models/website_model');
 const User = require('../models/user_model');
@@ -12,6 +15,8 @@ const App = require('../models/app_model');
 const Label = require('../models/label_model');
 const Article = require('../models/article_model');
 const Comment = require('../models/comment_model');
+const Photo = require('../models/photo_model');
+const uoloader = multer(); //{dest: 'uploads/'}设置dest表示上传文件的目录，如果不设置上传的文件永远在内存之中不会保存到磁盘上。在此处为了在内存中取出文件并重命名所以不设置文件上传路径
 const router = express.Router();
 
 let output = {};
@@ -147,6 +152,7 @@ router.post('/signup', (req, res, next) => {
                 age: 0,
                 github: {},
                 type: 1, // 注册方式，1：用户名，2：手机号，3：邮箱，4：QQ，5：微信，6：github.
+                editor: 1,
                 link: '', // 用户个人连接
                 deleted: false,
                 date: new Date()
@@ -189,7 +195,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.get('/user/get', (req, res, next) => {
-    let uid = req.query.uid || req.session.uid || req.cookie.uid;
+    let uid = req.query.uid || req.session.uid || req.cookies.uid;
     User.findById(uid, {
         name: true,
         email: true,
@@ -213,7 +219,7 @@ router.get('/user/get', (req, res, next) => {
 });
 
 router.post('/label/add', (req, res, next) => {
-    let uid = req.body.uid || req.secure.uid || req.cookie.uid;
+    let uid = req.body.uid || req.secure.uid || req.cookies.uid;
     let name = req.body.name;
     User.findById(uid).then(user => {
         if (user) {
@@ -259,7 +265,7 @@ router.get('/label/get', (req, res, next) => {
 });
 
 router.get('/label/lists', (req, res, next) => {
-    let uid = req.query.uid || req.session.uid || req.cookie.uid;
+    let uid = req.query.uid || req.session.uid || req.cookies.uid;
     let count = 0;
     let num = 0;
     let size = 0;
@@ -272,8 +278,10 @@ router.get('/label/lists', (req, res, next) => {
     }, {
         path: 'articles',
         select: 'uid labelId title content markDown html'
+    }, {
+        path: 'label',
+        select: 'name'
     }]).then(labels => {
-        console.log(labels)
         if (labels) {
             output = {
                 code: 1,
@@ -296,9 +304,10 @@ router.get('/label/lists', (req, res, next) => {
 });
 
 router.post('/article/add', (req, res, next) => {
-    let uid = req.body.uid || req.secure.uid || req.cookie.uid;
+    let uid = req.body.uid || req.secure.uid || req.cookies.uid;
     let labelId = req.body.labelId;
     let title = req.body.title;
+    let type = req.body.type;
     User.findById(uid).then(user => {
         let label = Label.findById(labelId);
         return Promise.all([user, label]);
@@ -311,6 +320,7 @@ router.post('/article/add', (req, res, next) => {
             markDown: '',
             html: '',
             own: user,
+            label: label,
             heart: 0, // 喜欢
             hearts: [],
             follow: 0, // 转发
@@ -327,6 +337,7 @@ router.post('/article/add', (req, res, next) => {
             virtualLink: '', // 文章虚拟连接
             trueLink: '', // 真实连接
             qrcode: '', // 文章唯一二维码
+            type: type,
             deleted: false,
             date: new Date(), // 文章创建时间
             updateTime: new Date() // 文章修改时间
@@ -354,7 +365,31 @@ router.post('/article/delete', (req, res, next) => {
 });
 
 router.post('/article/modify', (req, res, next) => {
-
+    let id = req.body.id;
+    let title = req.body.title;
+    Article.findByIdAndUpdate(id, {title: title}, {new: true, runValidators: true}).then(status=>{
+        if(status){
+            output = {
+                code: 1,
+                msg: 'success',
+                ok: true,
+                data: null
+            };
+            res.json(output);
+            return;
+        }else{
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
+        }
+    }).catch(err=>{
+        console.log(err);
+    })
 });
 
 router.get('/article/get', (req, res, next) => {
@@ -362,7 +397,91 @@ router.get('/article/get', (req, res, next) => {
 });
 
 router.get('/article/lists', (req, res, next) => {
+    let count = parseInt(req.query.count) || 0;
+    let size = parseInt(req.query.size) || 1;
+    let num = parseInt(req.query.num) || 10;
+    Article.countDocuments({deleted: false}, (err, count) => {
+        if(err){
+            console.log(err)
+        }else{
+            Article.find({deleted: false}, {
+                title: true,
+                content: true,
+                uid: true,
+                labelId: true,
+                heart: true,
+                own: true,
+                follow: true,
+                collect: true,
+                share: true,
+                comment: true,
+                read: true,
+                updateTime: true
+            }).skip(num*(size-1)).limit(num).populate([
+                {
+                    path: 'own',
+                    select: 'name avatar'
+                }
+            ]).then(articles=>{
+                if(articles){
+                    output = {
+                        code: 1,
+                        msg: 'success',
+                        ok: true,
+                        data: {
+                            count: count,
+                            size: size,
+                            num: num,
+                            list: articles
+                        }
+                    };
+                    res.json(output);
+                    return;
+                }else{
+                    output = {
+                        code: 0,
+                        msg: 'error',
+                        ok: false,
+                        data: null
+                    };
+                    res.json(output);
+                    return;
+                }
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+    });
+});
 
+router.post('/article/save', (req, res, next) => {
+    let id = req.body.id;
+    let content = req.body.content;
+    let html = req.body.html;
+    let markDown = req.body.markDown;
+    Article.findByIdAndUpdate(id, {content: content, html: html, markDown: markDown, updateTime: new Date()}, {new: true, runValidators: true}).then(status=>{
+        if(status){
+            output = {
+                code: 1,
+                msg: 'success',
+                ok: true,
+                data: null
+            };
+            res.json(output);
+            return;
+        }else{
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
+        }
+    }).catch(err=>{
+        console.log(err);
+    })
 });
 
 router.post('/app/add', (req, res, next) => {
@@ -403,6 +522,51 @@ router.get('/comment/get', (req, res, next) => {
 
 router.get('/comment/lists', (req, res, next) => {
 
+});
+
+router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res, next) => {
+    let uid = req.session.uid && req.cookies.uid;
+    let ext = req.file.mimetype.split('/')[1];
+    let now = new Date();
+	let filename = sillyDateTime.format(now, 'YYYYMMMDDHHmmss') + '_' + md5(now.getTime().toString()) + '.' + ext;
+	let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
+	// let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/' + now_timer + '/';
+    // let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/'+ now_timer + '/';
+    let dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/'+ now_timer + '/';
+	fs.existsSync(dirname) || fs.mkdirSync(dirname); // 目录不存在创建目录
+	fs.writeFile(dirname + filename, req.file.buffer, err => {
+		if (!err) {
+			// util
+			// 计算上传的图片宽度和高度
+			let dimensions = imageSize(dirname + filename); // 使用绝对路径，也可以使用url，使用url要转换成buffer
+			let width = dimensions.width;
+			let height = dimensions.height;
+			User.findById(uid).then(user => {
+				new Photo({
+					user_id: user._id,
+					own: user,
+					originalname: req.file.originalname,
+					filename: filename,
+					path: dirname,
+					fullpath: dirname + filename,
+					encoding: req.file.encoding,
+					mimetype: req.file.mimetype,
+					size: req.file.size,
+					width: width,
+					height: height,
+					date: new Date(),
+					deleted: 0
+				}).save().then(insert => {
+					if (!insert) throw console.log(insert);
+					res.json({
+						message: '图片上传成功',
+						url: 'https://blog.mcloudhub.com/static/images/uploads/' + now_timer + '/' + filename+'?w='+width+'&h='+height,
+						success: 1
+					});
+				});
+			});
+		}
+	});
 });
 
 module.exports = router;

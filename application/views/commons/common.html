@@ -31,7 +31,7 @@
                     </div>
                     <div class="user-info-block">
                         <div class="user-info">
-                            <span v-if="user.name">${user.name}<i class="icon iconfont">&#xe68f;</i></span>
+                            <span v-if="user.name" @click="showUserProfileToggle($event)" class="user-profile-toggle">${user.name}<i class="icon iconfont">&#xe68f;</i></span>
                             <span v-else>
                                 <element><a href="/login" class="header-login-link">登录</a></element>
                                 <element>|</element>
@@ -39,8 +39,18 @@
                             </span>
                         </div>
                         <div class="write-article-but">
-                            <a href="/article/new" class="nav-item-a"><i class="icon iconfont">&#xe63e;</i>写文章</a>
+                            <a href="/article/new" class="nav-item-a"><i class="icon iconfont">&#xe63e;</i>&nbsp;&nbsp;<span>写文章</span></i></a>
                         </div>
+                        <transition name="user-profile">
+                            <div class="user-profile" v-show="showUserProfile">
+                                <a href="/" class="user-profile-items"><i class="icon iconfont">&#xe614;</i>&nbsp;&nbsp;<span>我的主页</span></a>
+                                <a href="/" class="user-profile-items"><i class="icon iconfont">&#xe6a8;</i>&nbsp;&nbsp;<span>我收藏的文章</span></a>
+                                <a href="/" class="user-profile-items"><i class="icon iconfont">&#xe641;</i>&nbsp;&nbsp;<span>我喜欢的文章</span></a>
+                                <a href="/" class="user-profile-items"><i class="icon iconfont">&#xe632;</i>&nbsp;&nbsp;<span>设置</span></a>
+                                <a href="/" class="user-profile-items"><i class="icon iconfont">&#xe60a;</i>&nbsp;&nbsp;<span>问题与反馈</span></a>
+                                <a href="/" class="user-profile-items"><i class="icon iconfont">&#xe633;</i>&nbsp;&nbsp;<span>退出</span></a>
+                            </div>
+                        </transition>
                     </div>
                 </div>
             </div>

@@ -32,7 +32,7 @@
 .add-label-form {
     width: 100%;
     height: auto;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 .new-label-but {
@@ -57,10 +57,12 @@
     height: 28px;
     line-height: 28px;
     border: 1px solid #333;
+    border-radius:4px;
     color: #ccc;
     background: #595959;
     font-size: 14px;
-    padding: 2%
+    padding: 2%;
+    outline: none;
 }
 
 .add-label-input-submit-box {
@@ -72,13 +74,18 @@
 .add-label-form-submit {
     display: block;
     float: left;
-    width: 60px;
+    width: 90px;
     height: 28px;
     line-height: 28px;
     text-align: center;
     border: 1px solid #42c02e;
     color: #42c02e;
     border-radius: 15px;
+}
+
+.add-label-form-submit:hover{
+    color:#fff;
+    background: #42c02e;
 }
 
 .add-label-form-reset {
@@ -90,6 +97,10 @@
     text-align: center;
     border: 1px solid #404040;
     color: #999;
+}
+
+.add-label-form-reset:hover{
+    color:#fff;
 }
 
 .new-label-enter-active {
@@ -120,7 +131,8 @@
 
 .label-data-list {
     width: 100%;
-    height: auto;
+    height: 640px;
+    overflow: auto;
 }
 
 .label-list-items {
@@ -152,7 +164,8 @@
 
 .article-title-data-list {
     width: 100%;
-    height: auto;
+    height: 730px;
+    overflow: auto;
 }
 
 .article-title-items {
@@ -236,6 +249,7 @@
     font-size: 18px;
     font-weight: 700;
     padding: 0 0 0 2%;
+    outline: none;
 }
 
 .article-title-editor-form-box a {
@@ -250,7 +264,7 @@
 }
 
 .save-tip {
-    display: block;
+    display: none;
     width: 10%;
     height: 20px;
     line-height: 20px;
