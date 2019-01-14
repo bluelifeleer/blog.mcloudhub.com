@@ -24,5 +24,9 @@ router.get('/register', (req, res, next) => {
 	});
 })
 
-
+router.get('/app', (req, res, next) => {
+	res.render('../views/app', {
+		title: '添加应用'
+	})
+})
 module.exports = router;

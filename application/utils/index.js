@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * Return a unique identifier with the given `len`.
  *
@@ -7,9 +6,9 @@
  * @return {String}
  * @api private
  */
-module.exports.getUid = function(length) {
+module.exports.UUid = function(length) {
   let uid = '';
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_+@!$&*#[]{}';
   const charsLength = chars.length;
 
   for (let i = 0; i < length; ++i) {

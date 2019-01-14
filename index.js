@@ -23,6 +23,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const webSocket = require('ws');
 const cors = require('cors');
 const csurf = require('csurf');
+const helmet = require('helmet')
 const swig = require('swig');
 const config = require('./application/config');
 const mongoose = require('mongoose');
@@ -83,7 +84,8 @@ app.use(cookieParser('session_id', {
 const store = new MongoDBStore({
 	uri: 'mongodb://localhost:27017',
 	databaseName: 'store',
-	collection: 'sessions'
+	collection: 'sessions',
+	useNewUrlParser: true
 }, err => {
 	if (err) throw err;
 });
@@ -118,9 +120,12 @@ app.use(session({
 // 		"port": "6379", // Redis服务器端口
 // 		// "url": "",	// redis服务url地址
 // 		// "pass" : "123456",	// Redis数据库的密码
-// 		"db": 0, // 使用第几个数据库
+// 		// "db": 0, // 使用第几个数据库
 // 		"ttl": 1800, // Redis session TTL 过期时间 （秒）
-// 		"logErrors": true,
+// 		"logErrors": function(e){
+// 			console.log(e)
+// 		},
+// 		"no_ready_check": true 	// 禁止服务器就绪检查
 // 		// disableTTL: true, // 禁用设置的 TTL
 // 		// socket: null // Redis服务器的unix_socket
 // 		// prefix: 'sess:'     数据表前辍即schema, 默认为 "sess:"
@@ -161,7 +166,8 @@ app.use(function(req, res, next) {
 	next();
 });
 
-app.use(cors())
+app.use(helmet());
+app.use(cors());
 app.use(csurf({
 	cookie: true,
 	ignoreMethods: ['GET', 'POST']
@@ -226,17 +232,11 @@ app.use('/download', express.static(path.join(__dirname, '/application/download'
 app.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
 
 // 定义路由www
-// app.use('/api', require(path.join(__dirname, '/app/routers/api')));
 app.use('/', require(path.join(__dirname, '/application/routers/index')));
 app.use('/oauth', require(path.join(__dirname, 'application/routers/oauth')));
-// app.use('/article', require(path.join(__dirname, '/app/routers/article')));
-// app.use('/setting', require(path.join(__dirname, '/app/routers/setting')));
-// app.use('/photos', require(path.join(__dirname, '/app/routers/photos')));
-// app.use('/resume', require(path.join(__dirname, '/app/routers/resume')));
-// app.use('/oauth', require(path.join(__dirname, '/app/routers/oauth')));
+app.use('/api', require(path.join(__dirname, '/application/routers/api')));
 
 // 处理404请求
-
 app.get('*', (req, res) => {
 	res.render(path.join(__dirname, '/application/views/404'), {
 		title: 'No Found'

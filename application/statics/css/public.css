@@ -7,7 +7,10 @@ html,body{
     font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
     font-size:13px;
     color:#606266;
+    background:#f7f7f8;
 }
+
+
 
 ul,ol,dl{
     list-style-type: none;
@@ -29,67 +32,183 @@ a:link{
     text-decoration: none;
 }
 
+@font-face {
+    font-family: 'iconfont';  /* project id 558588 */
+    src: url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.eot');
+    src: url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.woff') format('woff'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.svg#iconfont') format('svg');
+  }
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
 #app{
     width:100%;
     height:100%;
+    overflow: hidden;
 }
 
-.el-header {
+.header-container{
     width:100%;
-    height:auto;
+    height:60px;
+    border-bottom: 1px solid #ddd;
+    background:#fff;
     position:fixed;
     left:0;
     top:0;
-    background-color: #fff;
-    color: #333;
+    z-index:999;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
 }
 
-.el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
-}
-
-.el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 200px;
-    margin: 0;
-}
-
-.el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-}
-
-.el-main {
+.content-container{
     width:100%;
     height:auto;
-    background-color: #fff;
-    color: #333;
-    margin:60px 0 0 0;
+    margin:61px 0 0 0;
+    padding:0 0 30px 0;
 }
 
-.article-content{
-    width:990px;
+.footer-container{
+    width:100%;
+    height:auto;
+    background: #23282D;
+    padding:40px 0;
+}
+
+.header-body,.content-body,.footer-body{
+    width:1200px;
     height:auto;
     margin:0 auto;
 }
 
-.article-content-body{
+.copy-right{
     width:100%;
-    height:auto;
-    margin:30px;
+    height:30px;
+    line-height: 30px;
+    text-align:center;
 }
 
-.el-footer {
-    width:100%;
+.login-block{
+    display:block;
+    float:left;
+    width:auto;
     height:auto;
-    background: #fff;
-    color: #333;
+}
+
+.nav-block{
+    display:block;
+    float:left;
+    width:auto;
+    height:auto;
+}
+
+.nav-items{
+    display:block;
+    float:left;
+    width:auto;
+    height:60px;
+    padding:0 30px;
+}
+
+.nav-items a{
+    display:block;
+    width:100%;
+    height:60px;
+    line-height: 60px;
+    text-align:center;
+    color:#606266;
+    font-size: 14px;
+}
+
+.search{
+    width:220px;
+    height:38px;
+    border:1px solid #eee;
+    background:#eee;
+    border-radius:25px;
+    margin:10px 0;
+    padding: 0 0 0 20px;
+}
+
+.search input{
+    display:block;
+    float:left;
+    width:180px;
+    height:38px;
+    line-height: 38px;
+    border:none;
+    background: none;
+    outline:none;
+    font-size: 13px;
+}
+
+.search a{
+    display:block;
+    float:left;
+    width:20px;
+    height:20px;
+    line-height: 20px;
+    text-align: center;
+    border:none;
+    background: none;
+    margin:10px 0;
+    border-radius:50%;
+    color:#969696;
+}
+
+.user-info-block{
+    display:block;
+    float:right;
+    width:auto;
+    height:auto;
+}
+
+.user-info,.write-article-but{
+    float:right;
+    width:auto;
+    height:60px;
+    line-height: 60px;
+    padding:0 10px;
+}
+
+.write-article-but a{
+    display:block;
+    width:100%;
+    height:60px;
+    line-height: 60px;
+    text-align:center;
+    color:#606266;
+}
+
+.toggle-but{
+    display:block;
+    float:left;
+    width:151px;
+    height:48px;
+    line-height:48px;
+    border-bottom:3px solid #fff;
+    color:#969696;
+    font-weight: 500;
+    font-size:15px;
+}
+
+.toggle-active{
+    color:#ea6f5a;
+    border-bottom:3px solid #ea6f5a;
+}
+
+.label-required::before{
+    content: '*';
+    margin:0 8px 0 0;
+    color:#f00;
 }

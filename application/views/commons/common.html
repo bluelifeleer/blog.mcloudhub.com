@@ -5,31 +5,54 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/static/css/public.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" />
-        <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         {% block link %}
         {% endblock %}
         <script type="text/javascript" src="/static/js/vue.js"></script>
         <!-- <script type="text/javascript" src="/static/js/vue.main.js"></script> -->
         <script type="text/javascript" src="/static/js/vue-resource.js"></script>
-        <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
- -->        <script type="text/javascript" src="/static/js/bdtj.js"></script>
+        <script type="text/javascript" src="/static/js/utils/utils.js"></script>
+        <script type="text/javascript" src="/static/js/bdtj.js"></script>
     </head>
     <body>
         <div id="app">
-            <el-container>
-              <el-header>Header</el-header>
-              <el-main>
-                    {% block article %}
-                    {% endblock %}
-              </el-main>
-              <el-footer>Footer</el-footer>
-            </el-container>
+            <div class="header-container">
+                <div class="header-body">
+                    <div class="login-block"><img src="/static/images/logo.png" alt=""></div>
+                    <div class="nav-block">
+                        <span class="nav-items"><a href="" class="nav-item-a">首页</a></span>
+                        <span class="nav-items"><a href="" class="nav-item-a">文章</a></span>
+                        <!-- <transition name="search-blur"> -->
+                            <span class="nav-items search">
+                                <input type="text" name="search" placeholder="搜索：输入关键字" @blur="searchBlurListener($event)"/>
+                                <a href="javascript:void(0);" class="search-but"><i class="icon iconfont">&#xe71e;</i></a>
+                            </span>
+                        <!-- </transition> -->
+                    </div>
+                    <div class="user-info-block">
+                        <div class="user-info">
+                            <span v-if="user.name">${user.name}<i class="icon iconfont">&#xe68f;</i></span>
+                            <span v-else>
+                                <element>登录</element>
+                                <element>|</element>
+                                <element>注册</element>
+                            </span>
+                        </div>
+                        <div class="write-article-but">
+                            <a href="" class="nav-item-a"><i class="icon iconfont">&#xe63e;</i>写文章</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-container">
+                {% block article %}
+                {% endblock %}
+            </div>
+            <div class="footer-container">
+                <div class="footer-body">
+                    <div class="copy-right">Copy&nbsp;&nbsp;&copy;&nbsp;&nbsp;Right&nbsp;&nbsp;blog.mcloudhub.com&nbsp;&nbsp;ALL&nbsp;&nbsp;Server&nbsp;&nbsp;京ICP备16036924号</div>
+                    <div class="link">友情连接：</div>
+                </div>
+            </div>
         </div>
     </body>
 
