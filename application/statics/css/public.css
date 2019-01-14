@@ -1,46 +1,66 @@
-html,body,div,p,b,h1,h2,h3,h4,h5,h6,span,a,ul,ol,dl,li,table,thead,tbody,tr,td,a{
-    padding:0;
-    margin:0;
+html,
+body,
+div,
+p,
+b,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+ul,
+ol,
+dl,
+li,
+table,
+thead,
+tbody,
+tr,
+td,
+a {
+    padding: 0;
+    margin: 0;
 }
 
-html,body{
-    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
-    font-size:13px;
-    color:#606266;
-    background:#f7f7f8;
+html,
+body {
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+    font-size: 13px;
+    color: #606266;
+    background: #f7f7f8;
 }
 
-
-
-ul,ol,dl{
+ul,
+ol,
+dl {
     list-style-type: none;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-a:hover{
+a:hover {
     text-decoration: none;
 }
 
-a:visited{
+a:visited {
     text-decoration: none;
 }
 
-a:link{
+a:link {
     text-decoration: none;
 }
 
 @font-face {
-    font-family: 'iconfont';  /* project id 558588 */
-    src: url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.eot');
-    src: url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.woff') format('woff'),
-    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_558588_1hofgh0u7lj.svg#iconfont') format('svg');
-  }
+    font-family: 'iconfont';
+    /* project id 558588 */
+    src: url('//at.alicdn.com/t/font_558588_qp5oz29sfum.eot');
+    src: url('//at.alicdn.com/t/font_558588_qp5oz29sfum.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_558588_qp5oz29sfum.woff2') format('woff2'), url('//at.alicdn.com/t/font_558588_qp5oz29sfum.woff') format('woff'), url('//at.alicdn.com/t/font_558588_qp5oz29sfum.ttf') format('truetype'), url('//at.alicdn.com/t/font_558588_qp5oz29sfum.svg#iconfont') format('svg');
+}
 
 .iconfont {
     font-family: "iconfont" !important;
@@ -51,164 +71,170 @@ a:link{
     -moz-osx-font-smoothing: grayscale;
 }
 
-
-#app{
-    width:100%;
-    height:100%;
+#app {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
 
-.header-container{
-    width:100%;
-    height:60px;
+.header-container {
+    width: 100%;
+    height: 60px;
     border-bottom: 1px solid #ddd;
-    background:#fff;
-    position:fixed;
-    left:0;
-    top:0;
-    z-index:999;
+    background: #fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
     opacity: 0.9;
     filter: alpha(opacity=90);
 }
 
-.content-container{
-    width:100%;
-    height:auto;
-    margin:61px 0 0 0;
-    padding:0 0 30px 0;
+.content-container {
+    width: 100%;
+    height: auto;
+    margin: 61px 0 0 0;
+    padding: 0;
 }
 
-.footer-container{
-    width:100%;
-    height:auto;
+.footer-container {
+    width: 100%;
+    height: auto;
     background: #23282D;
-    padding:40px 0;
+    padding: 40px 0;
 }
 
-.header-body,.content-body,.footer-body{
-    width:1200px;
-    height:auto;
-    margin:0 auto;
+.header-body,
+.content-body,
+.footer-body {
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
 }
 
-.copy-right{
-    width:100%;
-    height:30px;
+.copy-right {
+    width: 100%;
+    height: 30px;
     line-height: 30px;
-    text-align:center;
+    text-align: center;
 }
 
-.login-block{
-    display:block;
-    float:left;
-    width:auto;
-    height:auto;
+.login-block {
+    display: block;
+    float: left;
+    width: auto;
+    height: auto;
 }
 
-.nav-block{
-    display:block;
-    float:left;
-    width:auto;
-    height:auto;
+.nav-block {
+    display: block;
+    float: left;
+    width: auto;
+    height: auto;
 }
 
-.nav-items{
-    display:block;
-    float:left;
-    width:auto;
-    height:60px;
-    padding:0 30px;
+.nav-items {
+    display: block;
+    float: left;
+    width: auto;
+    height: 60px;
+    padding: 0 30px;
 }
 
-.nav-items a{
-    display:block;
-    width:100%;
-    height:60px;
+.nav-items a {
+    display: block;
+    width: 100%;
+    height: 60px;
     line-height: 60px;
-    text-align:center;
-    color:#606266;
+    text-align: center;
+    color: #606266;
     font-size: 14px;
 }
 
-.search{
-    width:220px;
-    height:38px;
-    border:1px solid #eee;
-    background:#eee;
-    border-radius:25px;
-    margin:10px 0;
+.search {
+    width: 220px;
+    height: 38px;
+    border: 1px solid #eee;
+    background: #eee;
+    border-radius: 25px;
+    margin: 10px 0;
     padding: 0 0 0 20px;
 }
 
-.search input{
-    display:block;
-    float:left;
-    width:180px;
-    height:38px;
+.search input {
+    display: block;
+    float: left;
+    width: 180px;
+    height: 38px;
     line-height: 38px;
-    border:none;
+    border: none;
     background: none;
-    outline:none;
+    outline: none;
     font-size: 13px;
 }
 
-.search a{
-    display:block;
-    float:left;
-    width:20px;
-    height:20px;
+.search a {
+    display: block;
+    float: left;
+    width: 20px;
+    height: 20px;
     line-height: 20px;
     text-align: center;
-    border:none;
+    border: none;
     background: none;
-    margin:10px 0;
-    border-radius:50%;
-    color:#969696;
+    margin: 10px 0;
+    border-radius: 50%;
+    color: #969696;
 }
 
-.user-info-block{
-    display:block;
-    float:right;
-    width:auto;
-    height:auto;
+.user-info-block {
+    display: block;
+    float: right;
+    width: auto;
+    height: auto;
 }
 
-.user-info,.write-article-but{
-    float:right;
-    width:auto;
-    height:60px;
+.user-info,
+.write-article-but {
+    float: right;
+    width: auto;
+    height: 60px;
     line-height: 60px;
-    padding:0 10px;
+    padding: 0 10px;
 }
 
-.write-article-but a{
-    display:block;
-    width:100%;
-    height:60px;
+.user-info a {
+    color: #606266;
+}
+
+.write-article-but a {
+    display: block;
+    width: 100%;
+    height: 60px;
     line-height: 60px;
-    text-align:center;
-    color:#606266;
+    text-align: center;
+    color: #606266;
 }
 
-.toggle-but{
-    display:block;
-    float:left;
-    width:151px;
-    height:48px;
-    line-height:48px;
-    border-bottom:3px solid #fff;
-    color:#969696;
+.toggle-but {
+    display: block;
+    float: left;
+    width: 151px;
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 3px solid #fff;
+    color: #969696;
     font-weight: 500;
-    font-size:15px;
+    font-size: 15px;
 }
 
-.toggle-active{
-    color:#ea6f5a;
-    border-bottom:3px solid #ea6f5a;
+.toggle-active {
+    color: #ea6f5a;
+    border-bottom: 3px solid #ea6f5a;
 }
 
-.label-required::before{
+.label-required::before {
     content: '*';
-    margin:0 8px 0 0;
-    color:#f00;
+    margin: 0 8px 0 0;
+    color: #f00;
 }

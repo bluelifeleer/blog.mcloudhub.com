@@ -14,7 +14,7 @@ module.exports = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    heart: Number,  // 喜欢
+    heart: Number, // 喜欢
     hearts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -29,27 +29,25 @@ module.exports = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
-    share: Number,  // 分享数
+    share: Number, // 分享数
     shares: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
     comment: Number,
-    comments: [{    // 文章评论数
+    comments: [{ // 文章评论数
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
-    read: Number,   // 文章阅读
-    reads: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        }
-    ],
-    KeyWords: Number,   // 文章字数
-    virtualLink: String,    // 文章虚拟连接
-    trueLink: String,       // 真实连接
-    qrcode: String,     // 文章唯一二维码
+    read: Number, // 文章阅读
+    reads: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    KeyWords: Number, // 文章字数
+    virtualLink: String, // 文章虚拟连接
+    trueLink: String, // 真实连接
+    qrcode: String, // 文章唯一二维码
     deleted: Boolean,
     date: Date, // 文章创建时间
     updateTime: Date // 文章修改时间

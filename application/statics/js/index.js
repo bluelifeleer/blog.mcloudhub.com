@@ -1,5 +1,5 @@
 const VUE = new Vue({
-	delimiters: ['${', '}'],
+    delimiters: ['${', '}'],
     el: '#app',
     data: {
         searchBlur: false,
@@ -11,27 +11,29 @@ const VUE = new Vue({
             email: ''
         }
     },
-    created(){},
+    created() {},
     methods: {
-        init: function(){
-            this.getUser();
+        init: function() {
+            if (Utils.getCookie('uid')) {
+                this.getUser();
+            }
         },
-        getUser: function(){
+        getUser: function() {
             let uid = Utils.getCookie('uid');
-            this.$http.get('/api/user/get?id='+uid).then(res=>{
-                if(res.body.code && res.body.ok){
+            this.$http.get('/api/user/get?id=' + uid).then(res => {
+                if (res.body.code && res.body.ok) {
                     let data = res.body.data;
                     this.user = data;
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err);
-            })
+            });
         },
-        searchBlurListener: function(){
+        searchBlurListener: function() {
             this.searchBlur = true;
         }
     },
-    mounted(){
+    mounted() {
         this.init();
     }
-})
+});

@@ -8,11 +8,11 @@ module.exports = new mongoose.Schema({
     name: String,
     remark: String,
     logo: String,
-    own: {  // 标签所属者
+    own: { // 标签所属者
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    artices: [{ // 标签下的文章
+    articles: [{ // 标签下的文章
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Article',
     }],

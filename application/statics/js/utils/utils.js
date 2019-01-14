@@ -1,5 +1,18 @@
 'use strict';
-(function(global, fl = false){
+(function(global, factory) {
+    if (typeof module == 'object' && typeof module.exports == 'object') {
+        module.exports = global.document ? factory(global, true) : function(w) {
+            if (!w.document) {
+                throw new Error("jQuery requires a window with a document");
+            }
+            // 如果不是浏览器，将函数返回
+            return factory(global);
+        }
+    } else {
+        factory(global);
+    }
+})(typeof window !== 'undefined' ? window : this, function(window, noGlobal) {
+    'use strict';
     const Utils = {
         /**
          * [getQueryString description]
@@ -48,7 +61,7 @@
          * @Date: 2019-01-12 02:57:01 
          * @Desc:  
          */
-        deleteCookie: function (key){
+        deleteCookie: function(key) {
             this.set(key, '', -1);
         },
         /**
@@ -76,11 +89,11 @@
          * @Date: 2019-01-12 02:57:01 
          * @Desc:  
          */
-        storageSetItem: function(){
-            if('localStorage' in window){
-            window.localStorage.setItem(key, value);
-            }else{
-            alert('您的浏览器不支持Storage，请使用Cookie');
+        storageSetItem: function() {
+            if ('localStorage' in window) {
+                window.localStorage.setItem(key, value);
+            } else {
+                alert('您的浏览器不支持Storage，请使用Cookie');
             }
         },
         /**
@@ -91,11 +104,11 @@
          * @Date: 2019-01-12 02:57:01 
          * @Desc:  
          */
-        storageGetItem: function(key){
-            if('localStorage' in window){
-            window.localStorage.getItem(key);
-            }else{
-            alert('您的浏览器不支持Storage，请使用Cookie');
+        storageGetItem: function(key) {
+            if ('localStorage' in window) {
+                window.localStorage.getItem(key);
+            } else {
+                alert('您的浏览器不支持Storage，请使用Cookie');
             }
         },
         /**
@@ -105,9 +118,9 @@
          * @Date: 2019-01-12 02:57:01 
          * @Desc:  
          */
-        storageDeleteItem: function(){
-            if('localStorage' in window){
-            window.localStorage.removeItem(key);
+        storageDeleteItem: function() {
+            if ('localStorage' in window) {
+                window.localStorage.removeItem(key);
             }
         },
         /**
@@ -117,9 +130,9 @@
          * @Date: 2019-01-12 02:57:01 
          * @Desc:  
          */
-        storageClear: function(){
-            if('localStorage' in window){
-            window.localStorage.clear();
+        storageClear: function() {
+            if ('localStorage' in window) {
+                window.localStorage.clear();
             }
         },
         /**
@@ -130,12 +143,16 @@
          * @Desc:  
          */
         formateDate: function(date) {
-            let MyDate = new Date(date);
+            let MyDate = date ? new Date(date) : new Date();
             return MyDate.getFullYear() + '-' + ((MyDate.getMonth() + 1) <= 9 ? '0' + (MyDate.getMonth() + 1) : (MyDate.getMonth() + 1)) + '-' + (MyDate.getDate() <= 9 ? '0' + MyDate.getDate() : MyDate.getDate()) + ' ' + (MyDate.getHours() <= 9 ? '0' + MyDate.getHours() : MyDate.getHours()) + ':' + (MyDate.getMinutes() <= 9 ? '0' + MyDate.getMinutes() : MyDate.getMinutes()) + ':' + (MyDate.getSeconds() <= 9 ? '0' + MyDate.getSeconds() : MyDate.getSeconds());
         },
-        message: function(){
-            
+        message: function() {
+
         }
     }
-    global.Utils = Utils;
-})(window);
+    if (!noGlobal) {
+        window.Utils = window.$U = Utils;
+    } else {
+        return Utils;
+    }
+});
