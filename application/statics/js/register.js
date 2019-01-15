@@ -53,6 +53,7 @@ const VUE = new Vue({
 				if(res.body.code && res.body.ok){
 					if(res.body.code == 1){
 						alert(res.body.msg)
+						window.location.href = '/login';
 					}else{
 						alert(res.body.msg)
 					}

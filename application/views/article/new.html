@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/static/js/libs/editor.md-master/css/editormd.css" />
 <link href="/static/js/libs/wangEditor-3.1.1/release/wangEditor.min.css" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/article/new.css" /> {% endblock %} {% block script %}
-<script type="text/javascript" src="/static/js/libs/editor.md-master/editormd.min.js"></script>
+<script type="text/javascript" src="/static/js/libs/editor.md-master/editormd.js"></script>
 <script src="/static/js/libs/wangEditor-3.1.1/release/wangEditor.js"></script>
 <script type="text/javascript" src="/static/js/article/new.js"></script>
 {% endblock %} {% block article %}
@@ -32,8 +32,12 @@
             <a href="javascript:void(0);" class="add-new-article-but" @click="addArticle($event)"><i class="icon iconfont">&#xe6e0;</i><span>新建文章</span></a>
         </div>
         <div class="article-title-data-list" ref="articleTitleItem" v-if="articles.length">
-            <div class="article-title-items" v-for="(article, $index) in articles" :key="$index" :data-id="article._id" :class="{'article-title-items-selected':article.selected}"><a href="javascript:void(0);" class="article-title-but" @click="articleTitleItemSelect($event, $index, article)" :data-id="article._id" :data-selected="article.selected"><i
-                        class="icon iconfont">&#xe62e;</i><span>${article.title}</span></a></div>
+            <div class="article-title-items" v-for="(article, $index) in articles" :key="$index" :data-id="article._id" :class="{'article-title-items-selected':article.selected}">
+                <a href="javascript:void(0);" class="article-title-but" @click="articleTitleItemSelect($event, $index, article)" :data-id="article._id" :data-selected="article.selected" :title="article.title">
+                    <i class="icon iconfont">&#xe62e;</i>
+                    <span>${article.nowTitle}</span>
+                </a>
+            </div>
         </div>
     </div>
     <div class="article-new-page-layout content-editor">
@@ -41,7 +45,9 @@
             <input type="text" name="article-title" placeholder="输入文章标题" v-model="form.article.title" @blur="articleTitleInputBlurListener($event)" @input="articleTitleInputInputListener($event)" />
             <a href="javascript:void(0);" class="article-editor-form-submit" @click="articleEditorSave($event)"><i
                     class="icon iconfont">&#xe662;</i></a>
-            <span class="save-tip">已保存</span>
+            <transition name="article-save-tip">
+                <span class="article-save-tip" v-show="articleSaveTip">已保存</span>
+            </transition>
         </div>
         <div id="editor-container">
             <textarea style="display:none;" calss="editormd-markdown-textarea" name="editormd-markdown-doc" v-if="user.editor"></textarea>

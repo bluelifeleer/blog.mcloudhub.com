@@ -8,7 +8,7 @@ router.get('/new', (req, res, next) => {
         res.render('../views/article/new', {
             platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
             uid: req.session.uid && req.cookies.uid,
-            page_type: 'editor',
+            page_type: 'editor-new',
         });
     } else {
         res.redirect(302, '/login?redirect_uri=' + redirect_uri);

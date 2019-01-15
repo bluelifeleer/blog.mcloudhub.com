@@ -36,6 +36,7 @@ const VUE = new Vue({
 			this.form.user.created = this.form.checkbox.value;
 		},
 		signinFormSubmit: function(e){
+			let redirect_uri = Utils.getQueryString('redirect_uri');
 			if(!this.form.user.name){
 				alert('用户名不能为空');
 				return false;
@@ -49,8 +50,17 @@ const VUE = new Vue({
 			this.$http.post('/api/signin', {name: this.form.user.name, password: this.form.user.password, checked: this.form.user.checked}).then(res=>{
 				console.log(res);
 				if(res.body.code && res.body.ok){
-					alert('登录成功');
-					window.location.href = '/';
+					switch(res.body.code){
+						case 2:
+						window.location.href = '/register'
+						break;
+						default:
+							window.location.href = redirect_uri ? redirect_uri : '/';
+						break;
+					}
+				}else{
+					alert(res.body.msg);
+					return false;
 				}
 			}).catch(err=>{
 				console.log(err);

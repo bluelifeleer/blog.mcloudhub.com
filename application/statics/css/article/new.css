@@ -263,8 +263,15 @@
     color: #606266;
 }
 
-.save-tip {
-    display: none;
+.article-save-tip-enter-active, .article-save-tip-leave-active {
+    transition: opacity .5s;
+}
+
+.article-save-tip-enter, .article-save-tip-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}
+
+.article-save-tip {
     width: 10%;
     height: 20px;
     line-height: 20px;

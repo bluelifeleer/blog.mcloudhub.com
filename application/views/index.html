@@ -14,7 +14,7 @@
 			<article class="article-list-items" v-for="(article, $index) in articles.list" :key="$index" :data-id="article._id" :class="{'has-img':article.hasImg}">
 				<div class="article-item-box" v-if="article.hasImg">
 					<div class="article-list-item-layout-left">
-						<div class="article-title"><a :href="article.href" class="article-title-link">${article.title}</a></div>
+						<div class="article-title"><a :href="article.href" class="article-title-link" :title="article.title">${article.nowTitle}</a></div>
 						<div class="article-contents">${article.content}</div>
 						<div class="article-meta">
 							<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>
@@ -26,7 +26,7 @@
 					<div class="article-list-item-layout-right" v-html="article.icon"></div>
 				</div>
 				<div class="article-item-box" v-else>
-					<div class="article-title"><a :href="article.href" class="article-title-link">${article.title}</a></div>
+					<div class="article-title"><a :href="article.href" class="article-title-link" :title="article.title">${article.nowTitle}</a></div>
 					<div class="article-contents">${article.content}</div>
 					<div class="article-meta">
 						<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>

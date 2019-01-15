@@ -65,17 +65,17 @@ router.post('/signin', (req, res, next) => {
             if (md5(password + user.sale === user.password)) {
                 if (checked) {
                     res.cookie('checked', checked, {
-                        maxAge: 1800000 * 24 * 7
+                        maxAge: 1200000
                     });
                     res.cookie('name', user.name, {
-                        maxAge: 1800000 * 24 * 7
+                        maxAge: 1200000
                     });
                     res.cookie('password', password, {
-                        maxAge: 1800000 * 24 * 7
+                        maxAge: 1200000
                     });
                 }
                 res.cookie('uid', user._id, {
-                    maxAge: 1800000 * 24 * 7
+                    maxAge: 1200000
                 });
                 req.session.uid = user._id;
                 req.session.name = user.name;
@@ -99,9 +99,9 @@ router.post('/signin', (req, res, next) => {
             }
         } else {
             output = {
-                code: 0,
+                code: 2,
                 msg: '无此用户',
-                ok: false,
+                ok: true,
                 data: null
             };
             res.json(output);
@@ -120,12 +120,38 @@ router.post('/signin', (req, res, next) => {
     });
 });
 
+router.get('/signout', (req, res, next) => {
+    res.clearCookie('uid'); // 清除cookie中的uid
+	req.session.destroy(() => { // 销毁session中的uid
+		output = {
+            code: 1,
+            msg: 'success',
+            ok: true,
+            data: null
+        };
+        res.json(output);
+        return;
+	});
+});
+
 router.post('/signup', (req, res, next) => {
     let name = req.body.name;
     let password = req.body.password;
     let confirmPassword = req.body.confirmPassword;
     let email = req.body.email;
     let now = new Date();
+
+    if(password != confirmPassword){
+        output = {
+            code: 2,
+            msg: '再次输入密码不同',
+            ok: true,
+            data: null
+        };
+        res.json(output);
+        return;
+    }
+
     User.findOne({
         name: name
     }).then(user => {
@@ -133,7 +159,7 @@ router.post('/signup', (req, res, next) => {
             output = {
                 code: 3,
                 msg: '此用户已存在',
-                ok: false,
+                ok: true,
                 data: null
             };
             res.json(output);
@@ -204,6 +230,7 @@ router.post('/signup', (req, res, next) => {
                     });
                 }
             }).catch(err => {
+                console.log(err)
                 output = {
                     code: 0,
                     msg: '注册失败',
@@ -550,6 +577,7 @@ router.post('/article/save', (req, res, next) => {
         content: content,
         html: html,
         markDown: markDown,
+        KeyWords: content.length,
         updateTime: new Date()
     }, {
         new: true,
@@ -627,8 +655,8 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
     let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
     // let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/' + now_timer + '/';
     // let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/'+ now_timer + '/';
-    // let dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
-    let dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+    let dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+    // let dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
     fs.existsSync(dirname) || fs.mkdirSync(dirname); // 目录不存在创建目录
     fs.writeFile(dirname + filename, req.file.buffer, err => {
         if (!err) {

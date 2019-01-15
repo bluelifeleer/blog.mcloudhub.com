@@ -86,7 +86,10 @@
     height: auto;
 }
 
-
+.article-content-container img{
+    display:block;
+    width:800px;
+}
 /* .article {
     width: 100%;
     height: auto;

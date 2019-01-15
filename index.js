@@ -77,7 +77,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cookieParser('session_id', {
-    maxAge: 1800000,
+    maxAge: 1200000,
     secure: true
 }));
 
@@ -105,7 +105,7 @@ app.use(session({
     saveUninitialized: false, // 是否保存未初始化的session
     cookie: {
         secure: true,
-        maxAge: 1800000,
+        maxAge: 1200000,  // 设置session、cookie有效时间20分钟
     },
     rolling: true
 }));
@@ -240,6 +240,7 @@ app.use('/', require(path.join(__dirname, '/application/routers/index')));
 app.use('/oauth', require(path.join(__dirname, 'application/routers/oauth')));
 app.use('/api', require(path.join(__dirname, '/application/routers/api')));
 app.use('/article', require(path.join(__dirname, '/application/routers/article')));
+app.use('/user', require(path.join(__dirname, '/application/routers/user')));
 
 // 处理404请求
 app.get('*', (req, res) => {

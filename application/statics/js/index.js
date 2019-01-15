@@ -9,7 +9,8 @@ const VUE = new Vue({
             name: '',
             avatar: '',
             phone: '',
-            email: ''
+            email: '',
+            href: ''
         },
         articles:{
             count: 0,
@@ -31,6 +32,7 @@ const VUE = new Vue({
             this.$http.get('/api/user/get?id=' + uid).then(res => {
                 if (res.body.code && res.body.ok) {
                     let data = res.body.data;
+                    data.href = '/user/profile?id='+data._id;
                     this.user = data;
                 }
             }).catch(err => {
@@ -52,26 +54,35 @@ const VUE = new Vue({
                         if(/<img.*?(?:>|\/>)/gi.test(item.content)){
                             item.hasImg = true;
                             item.icon = item.content.match(/<img.*?(?:>|\/>)/gi)[0];
-                            console.log(item.icon)
                         }else{
                             item.hasImg = false;
                             item.icon = '';
                         }
                         let content = item.content ? item.content.replace(/<[^>]*>/g, "") : '';
                         item.content = content.length >= 100 ? content.substr(0, 100)+ '...': content;
+                        item.nowTitle = item.title.length >=70 ? (item.title.substr(0, 70)+ '....'): item.title;
                         item.href = '/article/detaile?id='+item._id;
-                        item.own.href = '/user/center?id='+item.own._id;
+                        item.own.href = '/user/profile?id='+item.own._id;
                         item.updateTime = Utils.formateDate(item.updateTime)
                     });
                     this.articles.count = data.count;
                     this.articles.size = data.size;
                     this.articles.num = data.num;
                     this.articles.list = data.list;
-                    console.log(this.articles)
                 }
             }).catch(err=>{
                 console.log(err)
             })
+        },
+        signout: function(){
+            this.showUserProfile = !this.showUserProfile;
+            this.$http.get('/api/signout').then(res=>{
+                if(res.body.code && res.body.ok){
+                    window.location.href= '/login';
+                }
+            }).catch(err=>{
+                console.log(err)
+            });
         }
     },
     mounted() {

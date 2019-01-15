@@ -4,12 +4,14 @@ const VUE = new Vue({
     data: {
         newLabelToggle: false,
         showUserProfile: false,
+        articleSaveTip: false,
         user: {
             name: '',
             phone: '',
             avatar: '',
             email: '',
-            editor: 1
+            editor: 1,
+            href: ''
         },
         form: {
             label: {
@@ -50,8 +52,8 @@ const VUE = new Vue({
             this.$http.get('/api/user/get?id=' + uid).then(res => {
                 if (res.body.code && res.body.ok) {
                     let data = res.body.data;
+                    data.href = '/user/profile?id='+data._id;
                     this.user = data;
-                    this
                     this.form.label.uid = this.user._id;
                     this.form.article.uid = this.user._id;
                     this.getLabels();
@@ -80,6 +82,7 @@ const VUE = new Vue({
                     this.articles = articles;
                     this.articles.forEach((article, index) => {
                         article.selected = false;
+                        article.nowTitle = article.title.length >=20 ? (article.title.substr(0, 20)+ '....'): article.title;
                         if (index == 0) {
                             article.selected = true;
                             this.form.article.id = article._id;
@@ -91,6 +94,7 @@ const VUE = new Vue({
                             this.form.article.html = article.html;
                         }
                     });
+                    console.log(this.articles)
                 }
             }).catch(err => {
                 console.log(err);
@@ -104,9 +108,9 @@ const VUE = new Vue({
                 uid: this.form.label.uid,
                 name: this.form.label.name
             }).then(res => {
-                if (res.body.code && res.body.ok) {
-                    alert('添加成功');
-                }
+                // if (res.body.code && res.body.ok) {
+                //     alert('添加成功');
+                // }
                 this.getLabels();
             }).catch(err => {
                 console.log(err);
@@ -234,10 +238,12 @@ const VUE = new Vue({
             labelItems[index].setAttribute('data-selected', true);
             this.form.article.labelId = this.labels[index]._id;
             this.articles = this.labels[index].articles ? this.labels[index].articles : [];
+            console.log(this.articles)
             this.labelIndex = index;
             if (this.articles.length) {
                 this.articles.forEach((article, index) => {
                     article.selected = false;
+                    article.nowTitle = article.title.length >=20 ? (article.title.substr(0, 20)+ '....'): article.title;
                     if (index == 0) {
                         article.selected = true;
                         _this.form.article.title = article.title;
@@ -281,6 +287,7 @@ const VUE = new Vue({
             this.articleIndex = index;
         },
         articleEditorSave: function() {
+            let _this = this;
             if (this.user.editor) {
                 this.form.article.content = this.editor.getHTML();
                 this.form.article.markDown = this.editor.getMarkdown();
@@ -290,17 +297,31 @@ const VUE = new Vue({
                 this.form.article.markDown = '';
                 this.form.article.html = this.editor.txt.html();
             }
-            console.log(this.form.article)
             this.$http.post('/api/article/save', {
                 id: this.form.article.id,
                 content: this.form.article.content,
                 html: this.form.article.html,
                 markDown: this.form.article.markDown
             }).then(res => {
-                console.log(res);
+                if(res.body.code && res.body.ok){
+                    this.articleSaveTip = !this.articleSaveTip;
+                    setTimeout(function(){
+                        _this.articleSaveTip = !_this.articleSaveTip;
+                    },500);
+                }
             }).catch(err => {
                 console.log(err);
-            })
+            });
+        },
+        signout: function(){
+            this.showUserProfile = !this.showUserProfile;
+            this.$http.get('/api/signout').then(res=>{
+                if(res.body.code && res.body.ok){
+                    window.location.href= '/login';
+                }
+            }).catch(err=>{
+                console.log(err)
+            });
         }
     },
     mounted() {

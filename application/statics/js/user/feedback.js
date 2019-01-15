@@ -1,19 +1,20 @@
 const VUE = new Vue({
     delimiters: ['${', '}'],
     el: '#app',
-    data: {
+    data:{
+        showUserProfile: false,
         user: {
-            id: '',
             name: '',
-            avatar: '',
             phone: '',
             email: '',
+            editor: 1,
+            avatar: '',
             href: ''
         }
     },
-    created() {},
-    methods: {
-        init: function() {
+    created(){},
+    methods:{
+        init: function(){
             if (Utils.getCookie('uid')) {
                 this.getUser();
             }
@@ -30,6 +31,9 @@ const VUE = new Vue({
                 console.log(err);
             });
         },
+        showUserProfileToggle: function(e) {
+            this.showUserProfile = !this.showUserProfile;
+        },
         signout: function(){
             this.showUserProfile = !this.showUserProfile;
             this.$http.get('/api/signout').then(res=>{
@@ -41,7 +45,7 @@ const VUE = new Vue({
             });
         }
     },
-    mounted() {
+    mounted(){
         this.init();
     }
 });
