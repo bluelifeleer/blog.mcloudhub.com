@@ -16,7 +16,7 @@ router.get('/new', (req, res, next) => {
 });
 
 router.get('/detaile', (req, res, next) => {
-    res.render('../views/article/details', (req, res, next) => {
+    res.render('../views/article/details', {
         title: '文章内容'
     });
 });

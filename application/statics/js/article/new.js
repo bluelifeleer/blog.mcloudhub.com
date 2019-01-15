@@ -61,7 +61,7 @@ const VUE = new Vue({
                 console.log(err);
             });
         },
-        showUserProfileToggle: function(e){
+        showUserProfileToggle: function(e) {
             this.showUserProfile = !this.showUserProfile;
         },
         getLabels: function() {
@@ -78,9 +78,9 @@ const VUE = new Vue({
                     })
                     this.labels = lists;
                     this.articles = articles;
-                    this.articles.forEach((article, index)=>{
+                    this.articles.forEach((article, index) => {
                         article.selected = false;
-                        if(index == 0){
+                        if (index == 0) {
                             article.selected = true;
                             this.form.article.id = article._id;
                             this.form.article.uid = article.uid;
@@ -104,7 +104,10 @@ const VUE = new Vue({
                 uid: this.form.label.uid,
                 name: this.form.label.name
             }).then(res => {
-                console.log(res);
+                if (res.body.code && res.body.ok) {
+                    alert('添加成功');
+                }
+                this.getLabels();
             }).catch(err => {
                 console.log(err);
             })
@@ -127,13 +130,16 @@ const VUE = new Vue({
                 console.log(err);
             })
         },
-        articleTitleInputInputListener: function(e){
+        articleTitleInputInputListener: function(e) {
             this.articles[this.articleIndex].title = this.form.article.title;
         },
-        articleTitleInputBlurListener: function(e){
-            this.$http.post('/api/article/modify', {id: this.form.article.id, title: this.form.article.title}).then(res=>{
+        articleTitleInputBlurListener: function(e) {
+            this.$http.post('/api/article/modify', {
+                id: this.form.article.id,
+                title: this.form.article.title
+            }).then(res => {
                 console.log(res);
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err);
             });
         },
@@ -244,9 +250,9 @@ const VUE = new Vue({
                 this.form.article.content = this.articles[0].content;
                 this.form.article.markDown = this.articles[0].markDown;
                 this.form.article.html = this.articles[0].html;
-                if(this.user.editor){
+                if (this.user.editor) {
                     this.editor.setMarkdown(this.form.article.markDown);
-                }else{
+                } else {
                     this.editor.txt.html(this.form.article.html);
                 }
             }
@@ -267,27 +273,32 @@ const VUE = new Vue({
             this.form.article.content = article.content;
             this.form.article.markDown = article.markDown;
             this.form.article.html = article.html;
-            if(this.user.editor){
+            if (this.user.editor) {
                 this.editor.setMarkdown(this.form.article.markDown);
-            }else{
+            } else {
                 this.editor.txt.html(this.form.article.html);
             }
             this.articleIndex = index;
         },
         articleEditorSave: function() {
-            if(this.user.editor){
+            if (this.user.editor) {
                 this.form.article.content = this.editor.getHTML();
                 this.form.article.markDown = this.editor.getMarkdown();
                 this.form.article.html = this.editor.getHTML();
-            }else{
+            } else {
                 this.form.article.content = this.editor.txt.html();
                 this.form.article.markDown = '';
                 this.form.article.html = this.editor.txt.html();
             }
             console.log(this.form.article)
-            this.$http.post('/api/article/save', {id: this.form.article.id, content: this.form.article.content, html: this.form.article.html, markDown: this.form.article.markDown}).then(res=>{
+            this.$http.post('/api/article/save', {
+                id: this.form.article.id,
+                content: this.form.article.content,
+                html: this.form.article.html,
+                markDown: this.form.article.markDown
+            }).then(res => {
                 console.log(res);
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err);
             })
         }

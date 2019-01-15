@@ -33,16 +33,18 @@
         </div>
         <div class="article-title-data-list" ref="articleTitleItem" v-if="articles.length">
             <div class="article-title-items" v-for="(article, $index) in articles" :key="$index" :data-id="article._id" :class="{'article-title-items-selected':article.selected}"><a href="javascript:void(0);" class="article-title-but" @click="articleTitleItemSelect($event, $index, article)" :data-id="article._id" :data-selected="article.selected"><i
-            class="icon iconfont">&#xe62e;</i><span>${article.title}</span></a></div>
+                        class="icon iconfont">&#xe62e;</i><span>${article.title}</span></a></div>
         </div>
     </div>
     <div class="article-new-page-layout content-editor">
         <div class="article-title-editor-form-box">
-            <input type="text" name="article-title" placeholder="输入文章标题" v-model="form.article.title" @blur="articleTitleInputBlurListener($event)" @input="articleTitleInputInputListener($event)"/>
-            <a href="javascript:void(0);" class="article-editor-form-submit" @click="articleEditorSave($event)"><i class="icon iconfont">&#xe662;</i></a>
+            <input type="text" name="article-title" placeholder="输入文章标题" v-model="form.article.title" @blur="articleTitleInputBlurListener($event)" @input="articleTitleInputInputListener($event)" />
+            <a href="javascript:void(0);" class="article-editor-form-submit" @click="articleEditorSave($event)"><i
+                    class="icon iconfont">&#xe662;</i></a>
             <span class="save-tip">已保存</span>
         </div>
         <div id="editor-container">
+            <textarea style="display:none;" calss="editormd-markdown-textarea" name="editormd-markdown-doc" v-if="user.editor"></textarea>
             <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
         </div>
     </div>

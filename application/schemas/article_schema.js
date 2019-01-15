@@ -14,7 +14,7 @@ module.exports = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    label:{
+    label: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Label',
     },
@@ -52,7 +52,8 @@ module.exports = new mongoose.Schema({
     virtualLink: String, // 文章虚拟连接
     trueLink: String, // 真实连接
     qrcode: String, // 文章唯一二维码
-    type: Number,    // 文章使用编辑器类型，1：Editor.md；0：wangEditor；
+    type: Number, // 文章使用编辑器类型，1：Editor.md；0：wangEditor；
+    permission: Number, // 文章权限，0：公开；1：私有的
     deleted: Boolean,
     date: Date, // 文章创建时间
     updateTime: Date // 文章修改时间

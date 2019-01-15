@@ -1,0 +1,32 @@
+{% extends '../commons/common.html' %} {% block link %}
+<link rel="stylesheet" href="/static/css/article/detile.css" />
+<link rel="stylesheet" href="/static/js/libs/editor.md-master/css/editormd.preview.min.css"> {% endblock %} {% block script %}
+<script type="text/javascript" src="/static/js/article/detile.js"></script>
+{% endblock %} {% block article %}
+<div class="article-detaile-page">
+    <div class="article-detail-page-title">${article.title}</div>
+    <div class="article-detaile-container">
+        <div class="article-author-icon"><img src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt=""></div>
+        <div class="article-detaile-info">
+            <div class="author-name">
+                <span class="name"><a href="/" class="author-name-link">${article.own.name}</a></span>
+                <a href="javascript:void(0);" class="author-follow-but"><i class="icon iconfont">&#xe628;</i>关注</a>
+            </div>
+            <div class="article-info">
+                <span>${article.updateTime}</span>
+                <span>字数 ${article.KeyWords} </span>
+                <span>阅读 ${article.read}</span>
+                <span>评论 ${article.comment}</span>
+                <span>喜欢 ${article.heart}</span>
+            </div>
+        </div>
+    </div>
+    <div class="article-content-container">
+        <div class="article" v-html="article.content"></div>
+    </div>
+    <div class="article-footer">
+        <span><a href="/" class="article-label"><i class="icon iconfont">&#xe644;</i>&nbsp;&nbsp;<span class="label-text">${article.label.name}</span></a>
+        </span>
+    </div>
+</div>
+{% endblock %}

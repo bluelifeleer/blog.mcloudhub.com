@@ -7,8 +7,8 @@ const md5 = require('md5');
 const oauth2orize = require('oauth2orize');
 const utils = require('../utils');
 const server = oauth2orize.createServer();
-const client = require('../models/oauth/client_model');
-const user = require('../models/oauth/user_model');
+// const client = require('../models/oauth/client_model');
+// const user = require('../models/oauth/user_model');
 const router = express.Router();
 
 router.get('/code', (req, res, next) => {

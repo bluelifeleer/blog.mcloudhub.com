@@ -20,8 +20,8 @@
                 <div class="header-body">
                     <div class="login-block"><img src="/static/images/logo.png" alt=""></div>
                     <div class="nav-block">
-                        <span class="nav-items"><a href="" class="nav-item-a">首页</a></span>
-                        <span class="nav-items"><a href="" class="nav-item-a">文章</a></span>
+                        <span class="nav-items"><a href="/" class="nav-item-a">首页</a></span>
+                        <!--span class="nav-items"><a href="" class="nav-item-a">文章</a></span-->
                         <!-- <transition name="search-blur"> -->
                             <span class="nav-items search">
                                 <input type="text" name="search" placeholder="搜索：输入关键字" @blur="searchBlurListener($event)"/>
@@ -39,7 +39,7 @@
                             </span>
                         </div>
                         <div class="write-article-but">
-                            <a href="/article/new" class="nav-item-a"><i class="icon iconfont">&#xe63e;</i>&nbsp;&nbsp;<span>写文章</span></i></a>
+                            <a href="/article/new" class="nav-item-a"><i class="icon iconfont-werite"></i>&nbsp;&nbsp;<span class="write-text">写文章</span></i></a>
                         </div>
                         <transition name="user-profile">
                             <div class="user-profile" v-show="showUserProfile">
@@ -60,7 +60,7 @@
             </div>
             <div class="footer-container">
                 <div class="footer-body">
-                    <div class="copy-right">Copy&nbsp;&nbsp;&copy;&nbsp;&nbsp;Right&nbsp;&nbsp;blog.mcloudhub.com&nbsp;&nbsp;ALL&nbsp;&nbsp;Server&nbsp;&nbsp;京ICP备16036924号</div>
+                    <div class="copy-right">Copy&nbsp;&nbsp;&copy;&nbsp;&nbsp;Right&nbsp;&nbsp;blog.mcloudhub.com&nbsp;&nbsp;ALL&nbsp;&nbsp;Server&nbsp;&nbsp;晋ICP备13007655号</div>
                     <div class="link">友情连接：</div>
                 </div>
             </div>
