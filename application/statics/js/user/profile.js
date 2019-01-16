@@ -1,7 +1,8 @@
 const VUE = new Vue({
     delimiters: ['${', '}'],
     el: '#app',
-    data:{
+    data: {
+        searchBlurListener: false,
         showUserProfile: false,
         user: {
             name: '',
@@ -12,9 +13,9 @@ const VUE = new Vue({
             href: ''
         }
     },
-    created(){},
-    methods:{
-        init: function(){
+    created() {},
+    methods: {
+        init: function() {
             if (Utils.getCookie('uid')) {
                 this.getUser();
             }
@@ -24,7 +25,7 @@ const VUE = new Vue({
             this.$http.get('/api/user/get?id=' + uid).then(res => {
                 if (res.body.code && res.body.ok) {
                     let data = res.body.data;
-                    data.href = '/user/profile?id='+data._id;
+                    data.href = '/user/profile?id=' + data._id;
                     this.user = data;
                 }
             }).catch(err => {
@@ -34,18 +35,18 @@ const VUE = new Vue({
         showUserProfileToggle: function(e) {
             this.showUserProfile = !this.showUserProfile;
         },
-        signout: function(){
+        signout: function() {
             this.showUserProfile = !this.showUserProfile;
-            this.$http.get('/api/signout').then(res=>{
-                if(res.body.code && res.body.ok){
-                    window.location.href= '/login';
+            this.$http.get('/api/signout').then(res => {
+                if (res.body.code && res.body.ok) {
+                    window.location.href = '/login';
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err)
             });
         }
     },
-    mounted(){
+    mounted() {
         this.init();
     }
 });

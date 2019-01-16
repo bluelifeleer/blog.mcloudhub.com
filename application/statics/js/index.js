@@ -3,6 +3,7 @@ const VUE = new Vue({
     el: '#app',
     data: {
         searchBlur: false,
+        searchBlurListener: false,
         showUserProfile: false,
         user: {
             id: '',
@@ -12,7 +13,7 @@ const VUE = new Vue({
             email: '',
             href: ''
         },
-        articles:{
+        articles: {
             count: 0,
             size: 1,
             num: 10,
@@ -32,7 +33,7 @@ const VUE = new Vue({
             this.$http.get('/api/user/get?id=' + uid).then(res => {
                 if (res.body.code && res.body.ok) {
                     let data = res.body.data;
-                    data.href = '/user/profile?id='+data._id;
+                    data.href = '/user/profile?id=' + data._id;
                     this.user = data;
                 }
             }).catch(err => {
@@ -42,27 +43,27 @@ const VUE = new Vue({
         searchBlurListener: function() {
             this.searchBlur = true;
         },
-        showUserProfileToggle: function(e){
+        showUserProfileToggle: function(e) {
             this.showUserProfile = !this.showUserProfile;
         },
-        getArticles: function(){
-            this.$http.get('/api/article/lists?num='+this.articles.num+'&size='+this.articles.size+'&count='+this.articles.count).then(res=>{
-                if(res.body.code && res.body.ok){
+        getArticles: function() {
+            this.$http.get('/api/article/lists?num=' + this.articles.num + '&size=' + this.articles.size + '&count=' + this.articles.count).then(res => {
+                if (res.body.code && res.body.ok) {
                     let data = res.body.data;
                     let list = data.list;
-                    list.forEach((item, index)=>{
-                        if(/<img.*?(?:>|\/>)/gi.test(item.content)){
+                    list.forEach((item, index) => {
+                        if (/<img.*?(?:>|\/>)/gi.test(item.content)) {
                             item.hasImg = true;
                             item.icon = item.content.match(/<img.*?(?:>|\/>)/gi)[0];
-                        }else{
+                        } else {
                             item.hasImg = false;
                             item.icon = '';
                         }
                         let content = item.content ? item.content.replace(/<[^>]*>/g, "") : '';
-                        item.content = content.length >= 100 ? content.substr(0, 100)+ '...': content;
-                        item.nowTitle = item.title.length >=70 ? (item.title.substr(0, 70)+ '....'): item.title;
-                        item.href = '/article/detaile?id='+item._id;
-                        item.own.href = '/user/profile?id='+item.own._id;
+                        item.content = content.length >= 100 ? content.substr(0, 100) + '...' : content;
+                        item.nowTitle = item.title.length >= 70 ? (item.title.substr(0, 70) + '....') : item.title;
+                        item.href = '/article/detaile?id=' + item._id;
+                        item.own.href = '/user/profile?id=' + item.own._id;
                         item.updateTime = Utils.formateDate(item.updateTime)
                     });
                     this.articles.count = data.count;
@@ -70,17 +71,17 @@ const VUE = new Vue({
                     this.articles.num = data.num;
                     this.articles.list = data.list;
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err)
             })
         },
-        signout: function(){
+        signout: function() {
             this.showUserProfile = !this.showUserProfile;
-            this.$http.get('/api/signout').then(res=>{
-                if(res.body.code && res.body.ok){
-                    window.location.href= '/login';
+            this.$http.get('/api/signout').then(res => {
+                if (res.body.code && res.body.ok) {
+                    window.location.href = '/login';
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err)
             });
         }

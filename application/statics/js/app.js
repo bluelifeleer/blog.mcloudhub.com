@@ -2,6 +2,8 @@ const VUE = new Vue({
     delimiters: ['${', '}'],
     el: '#app',
     data: {
+        searchBlurListener: false,
+        showUserProfile: false,
         user: {
             id: '',
             name: '',
@@ -23,20 +25,20 @@ const VUE = new Vue({
             this.$http.get('/api/user/get?id=' + uid).then(res => {
                 if (res.body.code && res.body.ok) {
                     let data = res.body.data;
-                    data.href = '/user/profile?id='+data._id;
+                    data.href = '/user/profile?id=' + data._id;
                     this.user = data;
                 }
             }).catch(err => {
                 console.log(err);
             });
         },
-        signout: function(){
+        signout: function() {
             this.showUserProfile = !this.showUserProfile;
-            this.$http.get('/api/signout').then(res=>{
-                if(res.body.code && res.body.ok){
-                    window.location.href= '/login';
+            this.$http.get('/api/signout').then(res => {
+                if (res.body.code && res.body.ok) {
+                    window.location.href = '/login';
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err)
             });
         }
