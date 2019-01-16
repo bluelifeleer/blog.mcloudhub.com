@@ -180,6 +180,9 @@ router.post('/signup', (req, res, next) => {
                 type: 1, // 注册方式，1：用户名，2：手机号，3：邮箱，4：QQ，5：微信，6：github.
                 editor: 1,
                 link: '', // 用户个人连接
+                keyWord: 0,
+                follow: 0,
+                follows: [],
                 deleted: false,
                 date: now
             }).save().then(user => {
@@ -269,6 +272,37 @@ router.get('/user/get', (req, res, next) => {
     }).catch(err => {
         console.log(err);
     });
+});
+
+router.post('/user/follow', (req, res, next) => {
+    let id = req.body.id || req.session.uid || req.cookies.uid;
+    let articleOwnId = req.body.articleOwnId;
+    User.findById(id).then(user=>{
+        if(user){
+            User.findById(articleOwnId).then(articleOwn=>{
+                articleOwn.follow++;
+                articleOwn.follows.push(user);
+                articleOwn.save().then(status=>{
+                    if(status){
+                        output = {
+                            code: 1,
+                            msg: 'success',
+                            ok: true,
+                            data: null
+                        };
+                        res.json(output);
+                        return;
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }).catch(err=>{
+                console.log(err);
+            })
+        }
+    }).catch(err=>{
+        console.log(err);
+    })
 });
 
 router.post('/label/add', (req, res, next) => {
@@ -484,10 +518,20 @@ router.get('/article/get', (req, res, next) => {
     let id = req.query.id;
     Article.findById(id).populate([{
         path: 'own',
-        select: 'name avatar'
+        select: 'name avatar keyWord follow'
     }, {
         path: 'label',
         select: 'name'
+    }, {
+        path: 'commentsOwn',
+        select: 'name avatar'
+    }, {
+        path: 'comments',
+        select: 'uid labelId articleId content date replys',
+        populate:{
+            path: 'own',
+            select: 'name avatar'
+        }
     }]).then(article => {
         if (article) {
             output = {
@@ -569,42 +613,85 @@ router.get('/article/lists', (req, res, next) => {
 });
 
 router.post('/article/save', (req, res, next) => {
+    let uid = req.body.uid || req.session.uid || req.cookies.uid;
     let id = req.body.id;
     let content = req.body.content;
     let html = req.body.html;
     let markDown = req.body.markDown;
-    Article.findByIdAndUpdate(id, {
-        content: content,
-        html: html,
-        markDown: markDown,
-        KeyWords: content.length,
-        updateTime: new Date()
-    }, {
-        new: true,
-        runValidators: true
-    }).then(status => {
-        if (status) {
-            output = {
-                code: 1,
-                msg: 'success',
-                ok: true,
-                data: null
-            };
-            res.json(output);
-            return;
-        } else {
-            output = {
-                code: 0,
-                msg: 'error',
-                ok: false,
-                data: null
-            };
-            res.json(output);
-            return;
+    User.findById(uid).then(user=>{
+        if(user){
+            Article.findByIdAndUpdate(id, {
+                content: content,
+                html: html,
+                markDown: markDown,
+                KeyWords: content.length,
+                updateTime: new Date()
+            }, {
+                new: true,
+                runValidators: true
+            }).then(status => {
+                if (status) {
+                    // user.keyWord = user.keyWord+content.length;
+                    // user.save()
+                    output = {
+                        code: 1,
+                        msg: 'success',
+                        ok: true,
+                        data: null
+                    };
+                    res.json(output);
+                    return;
+                } else {
+                    output = {
+                        code: 0,
+                        msg: 'error',
+                        ok: false,
+                        data: null
+                    };
+                    res.json(output);
+                    return;
+                }
+            }).catch(err => {
+                console.log(err);
+            })
         }
-    }).catch(err => {
+    }).catch(err=>{
         console.log(err);
     })
+});
+
+router.post('/article/heart', (req, res, next) => {
+    let id = req.body.id;
+    let uid = req.body.uid || req.session.uid || req.cookies.uid;
+    User.findById(uid).then(user=>{
+        if(user){
+            Article.findById(id).then(article=>{
+                if(article){
+                    article.heart++;
+                    article.hearts.push(user);
+                    article.save().then(status=>{
+                        if(status){
+                            output = {
+                                code: 1,
+                                msg: 'success',
+                                ok: true,
+                                data: null
+                            };
+                            res.json(output);
+                            return;
+                        }
+                    }).catch(err=>{
+                        console.log(err);
+                    });
+                }
+            }).catch(err=>{
+                console.log(err);
+            });
+        }
+    }).catch(err=>{
+        console.log(err);
+    });
+    
 });
 
 router.post('/app/add', (req, res, next) => {
@@ -628,7 +715,49 @@ router.get('/app/lists', (req, res, next) => {
 });
 
 router.post('/comment/add', (req, res, next) => {
-
+    let uid = req.body.uid;
+    let id = req.body.id;
+    let content = req.body.content;
+    User.findById(uid).then(user=>{
+        let article = Article.findById(id);
+        return Promise.all([user, article]);
+    }).spread((user, article)=>{
+        new Comment({
+            uid: user._id,
+            labelId: article.labelId,
+            articleId: article._id,
+            content: content,
+            own: user,
+            article: article,
+            replys: [],
+            deleted: false,
+            date: new Date()
+        }).save().then(comment=>{
+            if(comment){
+                article.comments.push(comment);
+                article.commentsOwn.push(user);
+                article.comment++;
+                article.save().then(status=>{
+                    if(status){
+                        output = {
+                            code: 1,
+                            msg: 'success',
+                            ok: false,
+                            data: null
+                        };
+                        res.json(output);
+                        return;
+                    }
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }).catch(err=>{
+        console.log(err);
+    })
 });
 
 router.post('/comment/delete', (req, res, next) => {

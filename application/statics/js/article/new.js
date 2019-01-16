@@ -298,6 +298,7 @@ const VUE = new Vue({
                 this.form.article.html = this.editor.txt.html();
             }
             this.$http.post('/api/article/save', {
+                uid: this.user._id,
                 id: this.form.article.id,
                 content: this.form.article.content,
                 html: this.form.article.html,

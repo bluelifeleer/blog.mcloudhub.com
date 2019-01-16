@@ -39,9 +39,13 @@ module.exports = new mongoose.Schema({
         ref: 'User',
     }],
     comment: Number,
-    comments: [{ // 文章评论数
+    commentsOwn: [{ // 文章评论作者
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+    }],
+    comments: [{ // 文章评
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
     }],
     read: Number, // 文章阅读
     reads: [{

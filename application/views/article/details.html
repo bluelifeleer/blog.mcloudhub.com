@@ -6,11 +6,12 @@
 <div class="article-detaile-page">
     <div class="article-detail-page-title">${article.title}</div>
     <div class="article-detaile-container">
-        <div class="article-author-icon"><img src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt=""></div>
+        <div class="article-author-icon"><img v-if="article.own.avatar" :src="article.own.avatar" alt="" /><img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" /></div>
         <div class="article-detaile-info">
             <div class="author-name">
                 <span class="name"><a :href="article.own.href" class="author-name-link">${article.own.name}</a></span>
-                <a href="javascript:void(0);" class="author-follow-but"><i class="icon iconfont">&#xe628;</i>关注</a>
+                <a v-if="user._id" href="javascript:void(0);" class="author-follow-but" :data-logined="true" @click="articleAuthorFollow($event, user._id, article.own._id)"><i class="icon iconfont">&#xe628;</i>关注</a>
+                <a v-else href="javascript:void(0);" class="author-follow-but" :data-logined="false" @click="articleAuthorFollow($event, '', article.own._id)"><i class="icon iconfont">&#xe628;</i>关注</a>
             </div>
             <div class="article-info">
                 <span>${article.updateTime}</span>
@@ -31,30 +32,78 @@
     </div>
     <div class="article-author-info-box">
         <div class="article-author-info">
-            <div class="article-author-avatar"><img src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt=""></div>
+            <div class="article-author-avatar">
+                    <img v-if="article.own.avatar" :src="article.own.avatar" alt="" />
+                    <img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" />
+            </div>
             <div class="article-author">
-                <div class="article-author-name">bluelife</div>
+                <div class="article-author-name"><a :href="article.own.href" class="article-author-name-link">${article.own.name}</a></div>
                 <div class="article-author-detaile-info">
-                    <p>写了 944432 字，被 20606 人关注，获得了 5605 个喜欢</p>
+                    <p>写了 ${article.own.keyWord} 字，被 ${article.own.follow} 人关注，获得了 ${article.heart} 个喜欢</p>
                 </div>
             </div>
-            <div class="article-author-info-follow-box"><a href="javascript:void(0);" class="article-author-follow-but"><i
-                        class="icon iconfont">&#xe628;</i>关注</a></div>
+            <div class="article-author-info-follow-box">
+                    <a v-if="user._id" href="javascript:void(0);" class="article-author-follow-but" @click="articleAuthorFollow($event, user._id, article.own._id)"><i class="icon iconfont">&#xe628;</i>关注</a>
+                    <a v-else href="javascript:void(0);" class="article-author-follow-but" @click="articleAuthorFollow($event, '', article.own._id)"><i class="icon iconfont">&#xe628;</i>关注</a>
+            </div>
         </div>
         <div class="article-author-desc">专注即时通讯技术的学习、交流与传播，希望不再零碎和封闭。个人空间：http://www.52im.net/space-uid-1.htm</div>
     </div>
     <div class="heart-and-share-box">
         <div class="heart-box">
-            <a href="javascript:void(0);" class="article-header-but">喜欢</a>
-            <span class="heart-number">20</span>
+            <a href="javascript:void(0);" class="article-header-but" @click="articleHeart($event, article._id)">喜欢</a>
+            <span class="heart-number">${article.heart}</span>
         </div>
         <div class="share-box">
             <a href="javascript:void(0);" class="article-share-but more">更多分享</a>
-            <a href="javascript:void(0);" class="article-share-but picture"><i class="icon iconfont">&#xe67b;</i></a>
-            <a href="javascript:void(0);" class="article-share-but sina"><i class="icon iconfont">&#xe6b8;</i></a>
-            <a href="javascript:void(0);" class="article-share-but wechat"><i class="icon iconfont">&#xe640;</i></a>
+            <a href="javascript:void(0);" class="article-share-but picture" :data-id="article._id"><i class="icon iconfont">&#xe67b;</i></a>
+            <a href="javascript:void(0);" class="article-share-but sina" :data-id="article._id"><i class="icon iconfont">&#xe6b8;</i></a>
+            <a href="javascript:void(0);" class="article-share-but wechat" :data-id="article._id"><i class="icon iconfont">&#xe640;</i></a>
         </div>
     </div>
-    <div class="article-comment-box"></div>
+    <div class="article-comment-box">
+        <div class="article-comment-form">
+            <div class="article-comment-form-item">
+                <div class="article-comment-author">
+                    <a v-if="user.href" :href="user.href" class="articl-comment-author-icon">
+                            <img v-if="user.avatar" :src="user.avatar" alt="" />
+                            <img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" />
+                    </a>
+                    <a v-else href="javascript:void(0);" class="articl-comment-author-icon"><img src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt=""></a>
+                </div>
+                <div class="article-comment-form-box" v-if="user._id">
+                    <textarea name="comment" cols="30" rows="10" id="commen-text" v-model="form.comment.content" :data-uid="form.comment.uid" :data-id="form.comment.id" placeholder="写下你的评论..."></textarea>
+                    <p class="article-comment-form-but">
+                        <a href="javascript:void(0);" class="article-comment-form-submit-but" @click="articleCommentFormSubmit($event)">提交</a>
+                        <a href="javascript:void(0);" class="article-comment-form-cancle-but" @click="articleCommentFormCancle($event)">取消</a>
+                    </p>
+                </div>
+                <div class="article-comment-form-box unlogin" v-else>
+                    <a href="/login" class="article-comment-login-but">登录</a>
+                    <span class="article-comment-login-tip">后发表评论</span>
+                </div>
+            </div>
+        </div>
+        <div class="article-comment-list-box">
+            <div class="article-comment-list-group" v-if="article.comments.length">
+                <div class="article-comment-list-items" v-for="(comment,$index) in article.comments" :key="$index" :data-index="$index" :data-id="comment._id">
+                    <div class="article-comment-list-author">
+                        <div class="article-comment-list-author-icon"><a :href="article.own.href" class=""><img v-if="comment.own.avatar" :src="comment.own.avatar" alt="" /><img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" /></a></div>
+                        <div class="article-comment-list-author-info">
+                            <div class="article-comment-list-author-name">${comment.own.name}</div>
+                            <div class="article-comment-list-author-date">
+                                <span class="comment-date">${comment.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="article-comment-content">${comment.content}</div>
+                    <div class="article-comment-list-buts-box">
+                        <a href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞</span></a>
+                        <a href="javascript:void(0);" class="article-comment-list-but comment" :data-id="comment._id"><i class="icon iconfont">&#xe646;</i>&nbsp;&nbsp;<span>回复</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
