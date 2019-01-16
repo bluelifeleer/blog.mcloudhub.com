@@ -51,7 +51,8 @@
     </div>
     <div class="heart-and-share-box">
         <div class="heart-box">
-            <a href="javascript:void(0);" class="article-header-but" @click="articleHeart($event, article._id)">喜欢</a>
+            <a v-if="user._id" href="javascript:void(0);" class="article-header-but" @click="articleHeart($event, article._id, user._id)">喜欢</a>
+            <a v-else href="javascript:void(0);" class="article-header-but" @click="articleHeart($event, article._id, '')">喜欢</a>
             <span class="heart-number">${article.heart}</span>
         </div>
         <div class="share-box">

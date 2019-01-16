@@ -96,12 +96,16 @@ const VUE = new Vue({
             this.form.comment.id = '';
             this.form.comment.content = '';
         },
-        articleHeart: function(e, id){
-            this.$http.post('/api/article/heart', {id:id, uid:this.user._id}).then(res=>{
-                console.log(res)
-            }).catch(err=>{
-                console.log(err)
-            })
+        articleHeart: function(e, id, userId){
+            if(!userId){
+                window.location.href = '/login';
+            }else{
+                this.$http.post('/api/article/heart', {id: id, uid: userId}).then(res=>{
+                    console.log(res)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
         },
         articleAuthorFollow: function(e, id, articleOwnId){
             if(!id){
