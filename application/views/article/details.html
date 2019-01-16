@@ -25,7 +25,8 @@
         <div class="article" v-html="article.content"></div>
     </div>
     <div class="article-footer">
-        <span><a href="/" class="article-label"><i class="icon iconfont">&#xe644;</i>&nbsp;&nbsp;<span class="label-text">${article.label.name}</span></a>
+        <span><a :href="article.label.href" class="article-label"><i class="icon iconfont">&#xe644;</i>&nbsp;&nbsp;<span
+                    class="label-text">${article.label.name}</span></a>
         </span>
     </div>
     <div class="article-author-info-box">
