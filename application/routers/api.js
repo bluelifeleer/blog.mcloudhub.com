@@ -122,8 +122,8 @@ router.post('/signin', (req, res, next) => {
 
 router.get('/signout', (req, res, next) => {
     res.clearCookie('uid'); // 清除cookie中的uid
-	req.session.destroy(() => { // 销毁session中的uid
-		output = {
+    req.session.destroy(() => { // 销毁session中的uid
+        output = {
             code: 1,
             msg: 'success',
             ok: true,
@@ -131,7 +131,7 @@ router.get('/signout', (req, res, next) => {
         };
         res.json(output);
         return;
-	});
+    });
 });
 
 router.post('/signup', (req, res, next) => {
@@ -141,7 +141,7 @@ router.post('/signup', (req, res, next) => {
     let email = req.body.email;
     let now = new Date();
 
-    if(password != confirmPassword){
+    if (password != confirmPassword) {
         output = {
             code: 2,
             msg: '再次输入密码不同',
@@ -257,7 +257,8 @@ router.get('/user/get', (req, res, next) => {
         email: true,
         phone: true,
         avatar: true,
-        editor: true
+        editor: true,
+        introduce: true
     }).then(user => {
         if (user) {
             output = {
@@ -277,13 +278,13 @@ router.get('/user/get', (req, res, next) => {
 router.post('/user/follow', (req, res, next) => {
     let id = req.body.id || req.session.uid || req.cookies.uid;
     let articleOwnId = req.body.articleOwnId;
-    User.findById(id).then(user=>{
-        if(user){
-            User.findById(articleOwnId).then(articleOwn=>{
+    User.findById(id).then(user => {
+        if (user) {
+            User.findById(articleOwnId).then(articleOwn => {
                 articleOwn.follow++;
                 articleOwn.follows.push(user);
-                articleOwn.save().then(status=>{
-                    if(status){
+                articleOwn.save().then(status => {
+                    if (status) {
                         output = {
                             code: 1,
                             msg: 'success',
@@ -293,14 +294,14 @@ router.post('/user/follow', (req, res, next) => {
                         res.json(output);
                         return;
                     }
-                }).catch(err=>{
+                }).catch(err => {
                     console.log(err);
                 })
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err);
             })
         }
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err);
     })
 });
@@ -446,6 +447,7 @@ router.post('/article/add', (req, res, next) => {
             share: 0, // 分享数
             shares: [],
             comment: 0,
+            commentsOwn: [],
             comments: [],
             read: 0, // 文章阅读
             reads: [],
@@ -518,7 +520,7 @@ router.get('/article/get', (req, res, next) => {
     let id = req.query.id;
     Article.findById(id).populate([{
         path: 'own',
-        select: 'name avatar keyWord follow'
+        select: 'name avatar keyWord follow introduce'
     }, {
         path: 'label',
         select: 'name'
@@ -527,11 +529,14 @@ router.get('/article/get', (req, res, next) => {
         select: 'name avatar'
     }, {
         path: 'comments',
-        select: 'uid labelId articleId content date replys',
-        populate:{
+        select: 'uid labelId articleId content date replys heart',
+        populate: [{
             path: 'own',
             select: 'name avatar'
-        }
+        }, {
+            path: 'hearts',
+            select: 'name avatar'
+        }]
     }]).then(article => {
         if (article) {
             output = {
@@ -579,7 +584,7 @@ router.get('/article/lists', (req, res, next) => {
                 permission: true,
             }).skip(num * (size - 1)).limit(num).populate([{
                 path: 'own',
-                select: 'name avatar'
+                select: 'name avatar introduce'
             }]).then(articles => {
                 if (articles) {
                     output = {
@@ -618,8 +623,8 @@ router.post('/article/save', (req, res, next) => {
     let content = req.body.content;
     let html = req.body.html;
     let markDown = req.body.markDown;
-    User.findById(uid).then(user=>{
-        if(user){
+    User.findById(uid).then(user => {
+        if (user) {
             Article.findByIdAndUpdate(id, {
                 content: content,
                 html: html,
@@ -655,7 +660,7 @@ router.post('/article/save', (req, res, next) => {
                 console.log(err);
             })
         }
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err);
     })
 });
@@ -663,14 +668,14 @@ router.post('/article/save', (req, res, next) => {
 router.post('/article/heart', (req, res, next) => {
     let id = req.body.id;
     let uid = req.body.uid || req.session.uid || req.cookies.uid;
-    User.findById(uid).then(user=>{
-        if(user){
-            Article.findById(id).then(article=>{
-                if(article){
+    User.findById(uid).then(user => {
+        if (user) {
+            Article.findById(id).then(article => {
+                if (article) {
                     article.heart++;
                     article.hearts.push(user);
-                    article.save().then(status=>{
-                        if(status){
+                    article.save().then(status => {
+                        if (status) {
                             output = {
                                 code: 1,
                                 msg: 'success',
@@ -680,18 +685,18 @@ router.post('/article/heart', (req, res, next) => {
                             res.json(output);
                             return;
                         }
-                    }).catch(err=>{
+                    }).catch(err => {
                         console.log(err);
                     });
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err);
             });
         }
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err);
     });
-    
+
 });
 
 router.post('/app/add', (req, res, next) => {
@@ -718,10 +723,10 @@ router.post('/comment/add', (req, res, next) => {
     let uid = req.body.uid;
     let id = req.body.id;
     let content = req.body.content;
-    User.findById(uid).then(user=>{
+    User.findById(uid).then(user => {
         let article = Article.findById(id);
         return Promise.all([user, article]);
-    }).spread((user, article)=>{
+    }).spread((user, article) => {
         new Comment({
             uid: user._id,
             labelId: article.labelId,
@@ -730,32 +735,34 @@ router.post('/comment/add', (req, res, next) => {
             own: user,
             article: article,
             replys: [],
+            heart: 0,
+            hearts: [],
             deleted: false,
             date: new Date()
-        }).save().then(comment=>{
-            if(comment){
+        }).save().then(comment => {
+            if (comment) {
                 article.comments.push(comment);
                 article.commentsOwn.push(user);
                 article.comment++;
-                article.save().then(status=>{
-                    if(status){
+                article.save().then(status => {
+                    if (status) {
                         output = {
                             code: 1,
                             msg: 'success',
-                            ok: false,
+                            ok: true,
                             data: null
                         };
                         res.json(output);
                         return;
                     }
-                }).catch(err=>{
+                }).catch(err => {
                     console.log(err)
                 })
             }
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         });
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err);
     })
 });
@@ -774,6 +781,40 @@ router.get('/comment/get', (req, res, next) => {
 
 router.get('/comment/lists', (req, res, next) => {
 
+});
+
+router.post('/comment/heart', (req, res, next) => {
+    let id = req.body.id;
+    let uid = req.body.userId || req.session.uid || req.cookies.uid;
+    let articleId = req.body.articleId;
+    User.findById(uid).then(user => {
+        if (user) {
+            Comment.findById(id).then(comment => {
+                if (comment) {
+                    comment.heart++;
+                    comment.hearts.push(user);
+                    comment.save().then(status => {
+                        if (status) {
+                            output = {
+                                code: 1,
+                                msg: 'success',
+                                ok: true,
+                                data: null
+                            };
+                            res.json(output);
+                            return;
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    }).catch(err => {
+        console.log(err);
+    });
 });
 
 router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res, next) => {

@@ -2,7 +2,7 @@ const VUE = new Vue({
     delimiters: ['${', '}'],
     el: '#app',
     data: {
-        searchBlurListener: false,
+        searchBlur: false,
         showUserProfile: false,
         user: {
             name: '',
@@ -10,7 +10,8 @@ const VUE = new Vue({
             email: '',
             editor: 1,
             avatar: '',
-            href: ''
+            href: '',
+            introduce: ''
         },
         article: {
             title: '',
@@ -24,7 +25,7 @@ const VUE = new Vue({
             },
             comments: []
         },
-        form:{
+        form: {
             comment: {
                 id: '',
                 uid: '',
@@ -56,6 +57,9 @@ const VUE = new Vue({
         showUserProfileToggle: function(e) {
             this.showUserProfile = !this.showUserProfile
         },
+        searchBlurListener: function() {
+            this.searchBlur = true;
+        },
         getArticle: function() {
             id = Utils.getQueryString('id')
             this.$http.get('/api/article/get?id=' + id).then(res => {
@@ -63,15 +67,16 @@ const VUE = new Vue({
                     let article = res.body.data.article
                     this.form.comment.id = article._id;
                     article.own.href = '/user/profile?id=' + article.own._id
+                    article.own.introduce = article.own.introduce ? article.own.introduce : '暂无介绍。。。';
                     article.own.keyWord = article.own.keyWord ? article.own.keyWord : 0;
                     article.own.follow = article.own.follow ? article.own.follow : 0;
                     article.label.href = '/user/label?id=' + article.label._id
                     article.nowTitle = article.title.length >= 100 ? article.title.substr(0, 100) + '....' : article.title
                     article.updateTime = Utils.formateDate(article.updateTime)
                     let comments = article.comments;
-                    if(comments.length){
-                        comments.forEach((comment, index)=>{
-                            comment.own.href = '/user/profile?id='+comment.own._id;
+                    if (comments.length) {
+                        comments.forEach((comment, index) => {
+                            comment.own.href = '/user/profile?id=' + comment.own._id;
                             comment.date = Utils.formateDate(comment.date);
                         });
                     }
@@ -81,39 +86,68 @@ const VUE = new Vue({
                 console.log(err)
             })
         },
-        articleCommentFormSubmit: function(e){
-            this.$http.post('/api/comment/add', {uid:this.form.comment.uid, id:this.form.comment.id, content:this.form.comment.content}).then(res=>{
-                console.log(res);
-                if(res.body.code && res.body.ok){
+        articleCommentFormSubmit: function(e, id, uid) {
+            if (!uid) {
+                window.location.href = '/login';
+            } else {
+                this.$http.post('/api/comment/add', {
+                    uid: this.form.comment.uid,
+                    id: this.form.comment.id,
+                    content: this.form.comment.content
+                }).then(res => {
+                    console.log(res);
+                    if (res.body.code && res.body.ok) {
 
-                }
-            }).catch(err=>{
-                console.log(err);
-            })
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
         },
-        articleCommentFormCancle: function(e){
+        articleCommentFormCancle: function(e) {
             this.form.comment.uid = '';
             this.form.comment.id = '';
             this.form.comment.content = '';
         },
-        articleHeart: function(e, id, userId){
-            if(!userId){
+        articleHeart: function(e, id, userId) {
+            if (!userId) {
                 window.location.href = '/login';
-            }else{
-                this.$http.post('/api/article/heart', {id: id, uid: userId}).then(res=>{
+            } else {
+                this.$http.post('/api/article/heart', {
+                    id: id,
+                    uid: userId
+                }).then(res => {
                     console.log(res)
-                }).catch(err=>{
+                }).catch(err => {
                     console.log(err)
                 })
             }
         },
-        articleAuthorFollow: function(e, id, articleOwnId){
-            if(!id){
+        commentHeart: function(e, id, userId, articleId) {
+            if (!userId) {
+                window.location.href = '/login';
+            } else {
+                this.$http.post('/api/comment/heart', {
+                    id: id,
+                    userId: userId,
+                    articleId: articleId
+                }).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+        },
+        articleAuthorFollow: function(e, id, articleOwnId) {
+            if (!id) {
                 window.location.href = '/login'
-            }else{
-                this.$http.post('/api/user/follow', {id: id, articleOwnId:articleOwnId}).then(res=>{
+            } else {
+                this.$http.post('/api/user/follow', {
+                    id: id,
+                    articleOwnId: articleOwnId
+                }).then(res => {
                     console.log(res)
-                }).catch(err=>{
+                }).catch(err => {
                     console.log(err);
                 })
             }

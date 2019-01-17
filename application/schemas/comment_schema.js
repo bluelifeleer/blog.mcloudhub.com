@@ -32,6 +32,11 @@ module.exports = new mongoose.Schema({
             }
         }
     ],
+    heart: Number,
+    hearts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
     deleted: Boolean,
     date: Date
 });
