@@ -133,6 +133,7 @@ pre code {
     border: 1px solid #ddd;
     font-size: 13px;
     color: #606266;
+    overflow: auto;
 }
 
 

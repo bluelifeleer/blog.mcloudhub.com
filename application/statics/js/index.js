@@ -16,7 +16,7 @@ const VUE = new Vue({
 		articles: {
 			count: 0,
 			size: 1,
-			num: 10,
+			num: 20,
 			list: []
 		}
 	},

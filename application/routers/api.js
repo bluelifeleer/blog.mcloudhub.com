@@ -558,7 +558,7 @@ router.get('/article/get', (req, res, next) => {
 router.get('/article/lists', (req, res, next) => {
     let count = parseInt(req.query.count) || 0;
     let size = parseInt(req.query.size) || 1;
-    let num = parseInt(req.query.num) || 10;
+    let num = parseInt(req.query.num) || 20;
     Article.countDocuments({
         deleted: false
     }, (err, count) => {
