@@ -54,7 +54,7 @@ const VUE = new Vue({
             this.$http.get('/api/user/get?id=' + uid).then(res => {
                 if (res.body.code && res.body.ok) {
                     let data = res.body.data;
-                    data.href = '/user/profile?id=' + data._id;
+                    data.href = '/user/center?id=' + data._id;
                     this.user = data;
                     this.form.label.uid = this.user._id;
                     this.form.article.uid = this.user._id;
