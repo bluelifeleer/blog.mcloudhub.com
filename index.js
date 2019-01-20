@@ -279,9 +279,10 @@ mongoose.connect('mongodb://localhost:27017/blog', {
         console.log(err);
     } else {
         // 数据库连接成功后监听80/443端口
-        app.listen(80);
-        const server = http2.createServer(ssloptions, app);
-        server.listen(443);
+        //app.listen(80);
+        app.listen(3002);
+        //const server = http2.createServer(ssloptions, app);
+        //server.listen(443);
         notifier.notify({
             title: 'blog.mcloudhub.com',
             message: 'the server started . http server listener port 80 https server listener port 443 .'

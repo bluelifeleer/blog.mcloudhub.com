@@ -817,15 +817,15 @@ router.post('/comment/heart', (req, res, next) => {
     });
 });
 
-router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res, next) => {
+router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res, next) => { 
     let uid = req.session.uid && req.cookies.uid;
     let ext = req.file.mimetype.split('/')[1];
     let now = new Date();
     let filename = sillyDateTime.format(now, 'YYYYMMMDDHHmmss') + '_' + md5(now.getTime().toString()) + '.' + ext;
     let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
     // let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/' + now_timer + '/';
-    // let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/'+ now_timer + '/';
-    let dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+    let dirname = '/home/wwwroot/node/blog.mcloudhub.com/application/statics/images/uploads/'+ now_timer + '/';
+    // let dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
     // let dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
     fs.existsSync(dirname) || fs.mkdirSync(dirname); // 目录不存在创建目录
     fs.writeFile(dirname + filename, req.file.buffer, err => {
