@@ -18,6 +18,7 @@ const Comment = require('../models/comment_model');
 const Photo = require('../models/photo_model');
 const uoloader = multer(); //{dest: 'uploads/'}设置dest表示上传文件的目录，如果不设置上传的文件永远在内存之中不会保存到磁盘上。在此处为了在内存中取出文件并重命名所以不设置文件上传路径
 const router = express.Router();
+const platform = os.platform(); // return now node runing systems : darwin=>MAC win32=>windows
 
 let output = {};
 
@@ -1049,7 +1050,6 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
     let filename = sillyDateTime.format(now, 'YYYYMMMDDHHmmss') + '_' + md5(now.getTime().toString()) + '.' + ext;
     let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
     let dirname = '';
-    let platform = os.platform.toLowerCase() // return now node runing systems : darwin=>MAC win32=>windows
     if(platform == 'darwin'){  // MAC
         dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
     }else if(platform == 'win32'){ // Windows

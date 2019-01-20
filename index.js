@@ -42,6 +42,7 @@ const errorhandler = require('errorhandler');
 const notifier = require('node-notifier');
 const flash = require('flash');
 const app = express();
+const platform = os.platform();
 //是否启动记录访问日志
 const start_log = true;
 
@@ -157,9 +158,9 @@ app.use(function(req, res, next) {
         }
         // 将系统类型添加到cookies和请求头中;
         // os.platform return now node runing systems : darwin=>MAC win32=>windows
-        res.cookie('platform', os.platform);
-        req.session.platform = os.platform;
-        req.platform = os.platform;
+        res.cookie('platform', platform);
+        req.session.platform = platform;
+        req.platform = platform;
     } else {
         return next(new Error('oh no')) // handle error
     }
@@ -283,7 +284,7 @@ mongoose.connect('mongodb://localhost:27017/blog', {
         });
     } else {
         // 数据库连接成功后监听80/443端口
-        if(os.platform.tolowercase() == 'darwin' || os.platform.tolowercase() == 'win32'){
+        if(platform.toLowerCase() == 'darwin' || platform.toLowerCase() == 'win32'){
             app.listen(80);
             const server = http2.createServer(ssloptions, app);
             server.listen(443);
