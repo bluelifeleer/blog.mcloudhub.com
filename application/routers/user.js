@@ -5,18 +5,13 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 
-router.get('/profile', (req, res, next) => {
-    let redirect_uri = req.protocol + '://' + req.get('host') + req.originalUrl;
-    if (req.session.uid && req.cookies.uid) {
-        res.render('../views/user/profile', {
-            title: '我的主页',
-            platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
-            uid: req.session.uid && req.cookies.uid,
-            page_type: 'user-profile',
-        });
-    } else {
-        res.redirect(302, '/login?redirect_uri=' + redirect_uri);
-    }
+router.get('/center', (req, res, next) => {
+    res.render('../views/user/center', {
+        title: '我的主页',
+        platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
+        uid: req.session.uid && req.cookies.uid,
+        page_type: 'user-center',
+    });
 });
 
 router.get('/collect', (req, res, next) => {
@@ -55,6 +50,62 @@ router.get('/set', (req, res, next) => {
             platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
             uid: req.session.uid && req.cookies.uid,
             page_type: 'user-set',
+        });
+    } else {
+        res.redirect(302, '/login?redirect_uri=' + redirect_uri);
+    }
+});
+
+router.get('/set/basic', (req, res, next) => {
+    let redirect_uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+    if (req.session.uid && req.cookies.uid) {
+        res.render('../views/user/setting/basic', {
+            title: '设置',
+            platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
+            uid: req.session.uid && req.cookies.uid,
+            page_type: 'user-set-basic',
+        });
+    } else {
+        res.redirect(302, '/login?redirect_uri=' + redirect_uri);
+    }
+});
+
+router.get('/set/profile', (req, res, next) => {
+    let redirect_uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+    if (req.session.uid && req.cookies.uid) {
+        res.render('../views/user/setting/profile', {
+            title: '设置',
+            platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
+            uid: req.session.uid && req.cookies.uid,
+            page_type: 'user-set-profile',
+        });
+    } else {
+        res.redirect(302, '/login?redirect_uri=' + redirect_uri);
+    }
+});
+
+router.get('/set/reward', (req, res, next) => {
+    let redirect_uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+    if (req.session.uid && req.cookies.uid) {
+        res.render('../views/user/setting/reward', {
+            title: '设置',
+            platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
+            uid: req.session.uid && req.cookies.uid,
+            page_type: 'user-set-reward',
+        });
+    } else {
+        res.redirect(302, '/login?redirect_uri=' + redirect_uri);
+    }
+});
+
+router.get('/set/misc', (req, res, next) => {
+    let redirect_uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+    if (req.session.uid && req.cookies.uid) {
+        res.render('../views/user/setting/misc', {
+            title: '设置',
+            platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
+            uid: req.session.uid && req.cookies.uid,
+            page_type: 'user-set-misc',
         });
     } else {
         res.redirect(302, '/login?redirect_uri=' + redirect_uri);

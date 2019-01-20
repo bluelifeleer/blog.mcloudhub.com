@@ -42,7 +42,7 @@
     </div>
     <div class="article-new-page-layout content-editor">
         <div class="article-title-editor-form-box">
-            <input type="text" name="article-title" placeholder="输入文章标题" v-model="form.article.title" @blur="articleTitleInputBlurListener($event)" @input="articleTitleInputInputListener($event)" />
+            <input type="text" name="article-title" placeholder="输入文章标题" v-model="form.article.title" @input="articleTitleInputInputListener($event)" />
             <a href="javascript:void(0);" class="article-editor-form-submit" @click="articleEditorSave($event)"><i
                     class="icon iconfont">&#xe662;</i></a>
             <transition name="article-save-tip">

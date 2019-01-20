@@ -67,67 +67,69 @@
         </div>
     </div>
     <div class="article-comment-box">
-        <div class="article-comment-form">
-            <div class="article-comment-form-item">
-                <div class="article-comment-author">
-                    <a v-if="user.href" :href="user.href" class="articl-comment-author-icon">
-                        <img v-if="user.avatar" :src="user.avatar" alt="" />
-                        <img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" />
-                    </a>
-                    <a v-else href="javascript:void(0);" class="articl-comment-author-icon"><img src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt=""></a>
-                </div>
-                <div class="article-comment-form-box" v-if="user._id">
-                    <textarea name="comment" cols="30" rows="10" id="commen-text" v-model="form.comment.content" :data-uid="form.comment.uid" :data-id="form.comment.id" placeholder="写下你的评论..."></textarea>
-                    <p class="article-comment-form-but">
-                        <a v-if="user._id" href="javascript:void(0);" class="article-comment-form-submit-but" @click="articleCommentFormSubmit($event,article._id,user._id)">提交</a>
-                        <a v-else href="javascript:void(0);" class="article-comment-form-submit-but" @click="articleCommentFormSubmit($event,article._id,'')">提交</a>
-                        <a href="javascript:void(0);" class="article-comment-form-cancle-but" @click="articleCommentFormCancle($event)">取消</a>
-                    </p>
-                </div>
-                <div class="article-comment-form-box unlogin" v-else>
-                    <a href="/login" class="article-comment-login-but">登录</a>
-                    <span class="article-comment-login-tip">后发表评论</span>
+        <a name="comments" class="comment-anchor">
+            <div class="article-comment-form">
+                <div class="article-comment-form-item">
+                    <div class="article-comment-author">
+                        <a v-if="user.href" :href="user.href" class="articl-comment-author-icon">
+                            <img v-if="user.avatar" :src="user.avatar" alt="" />
+                            <img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" />
+                        </a>
+                        <a v-else href="javascript:void(0);" class="articl-comment-author-icon"><img src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt=""></a>
+                    </div>
+                    <div class="article-comment-form-box" v-if="user._id">
+                        <textarea name="comment" cols="30" rows="10" id="commen-text" v-model="form.comment.content" :data-uid="form.comment.uid" :data-id="form.comment.id" placeholder="写下你的评论..."></textarea>
+                        <p class="article-comment-form-but">
+                            <a v-if="user._id" href="javascript:void(0);" class="article-comment-form-submit-but" @click="articleCommentFormSubmit($event,article._id,user._id)">提交</a>
+                            <a v-else href="javascript:void(0);" class="article-comment-form-submit-but" @click="articleCommentFormSubmit($event,article._id,'')">提交</a>
+                            <a href="javascript:void(0);" class="article-comment-form-cancle-but" @click="articleCommentFormCancle($event)">取消</a>
+                        </p>
+                    </div>
+                    <div class="article-comment-form-box unlogin" v-else>
+                        <a href="/login" class="article-comment-login-but">登录</a>
+                        <span class="article-comment-login-tip">后发表评论</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="article-comment-list-box">
-            <div class="article-comment-list-group" v-if="article.comments.length">
-                <div class="article-comment-list-items" v-for="(comment,$index) in article.comments" :key="$index" :data-index="$index" :data-id="comment._id">
-                    <div class="article-comment-list-author">
-                        <div class="article-comment-list-author-icon">
-                            <a :href="article.own.href" class=""><img v-if="comment.own.avatar" :src="comment.own.avatar" alt="" /><img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" /></a>
-                        </div>
-                        <div class="article-comment-list-author-info">
-                            <div class="article-comment-list-author-name">${comment.own.name}</div>
-                            <div class="article-comment-list-author-date">
-                                <span class="comment-date">${comment.date}</span>
+            <div class="article-comment-list-box">
+                <div class="article-comment-list-group" v-if="article.comments.length">
+                    <div class="article-comment-list-items" v-for="(comment,$index) in article.comments" :key="$index" :data-index="$index" :data-id="comment._id">
+                        <div class="article-comment-list-author">
+                            <div class="article-comment-list-author-icon">
+                                <a :href="article.own.href" class=""><img v-if="comment.own.avatar" :src="comment.own.avatar" alt="" /><img v-else src="../../static/images/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png" alt="" /></a>
                             </div>
-                        </div>
-                    </div>
-                    <div class="article-comment-content">${comment.content}</div>
-                    <div class="article-comment-list-buts-box">
-                        <a v-if="user._id" href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,user._id, article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞(${comment.heart})</span></a>
-                        <a v-else href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,'', article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞</span></a>
-                        <a href="javascript:void(0);" class="article-comment-list-but comment" :data-id="comment._id"><i
-                                class="icon iconfont">&#xe646;</i>&nbsp;&nbsp;<span>回复</span></a>
-                    </div>
-                    <div class="article-comment-list-item-replys">
-                        <div class="replys-list-box" v-if="comment.replys.length">
-                            <div class="replys-list-items" v-for="(replys, $index) in comment.replys" :key="$index">
-                                <div class="replys-author">
-                                    <span class="replys-author-name-info"><a href="/" class="replys-author-name">${replys.own.name}</a>：<a
-                                            :href="comment.own.href" class="replys-own-name">@${comment.own.name}</a></span>
-                                    <span class="replys-comment-content">${replys.content}</span>
+                            <div class="article-comment-list-author-info">
+                                <div class="article-comment-list-author-name">${comment.own.name}</div>
+                                <div class="article-comment-list-author-date">
+                                    <span class="comment-date">${comment.date}</span>
                                 </div>
-                                <div class="replys-date">${replys.date}</div>
-                                <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment"><i
-                                            class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
+                            </div>
+                        </div>
+                        <div class="article-comment-content">${comment.content}</div>
+                        <div class="article-comment-list-buts-box">
+                            <a v-if="user._id" href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,user._id, article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞(${comment.heart})</span></a>
+                            <a v-else href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,'', article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞</span></a>
+                            <a href="javascript:void(0);" class="article-comment-list-but comment" :data-id="comment._id"><i
+                                    class="icon iconfont">&#xe646;</i>&nbsp;&nbsp;<span>回复</span></a>
+                        </div>
+                        <div class="article-comment-list-item-replys">
+                            <div class="replys-list-box" v-if="comment.replys.length">
+                                <div class="replys-list-items" v-for="(replys, $index) in comment.replys" :key="$index">
+                                    <div class="replys-author">
+                                        <span class="replys-author-name-info"><a href="/" class="replys-author-name">${replys.own.name}</a>：<a
+                                                :href="comment.own.href" class="replys-own-name">@${comment.own.name}</a></span>
+                                        <span class="replys-comment-content">${replys.content}</span>
+                                    </div>
+                                    <div class="replys-date">${replys.date}</div>
+                                    <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment"><i
+                                                class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 </div>
 {% endblock %}
