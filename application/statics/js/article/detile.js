@@ -4,6 +4,14 @@ const VUE = new Vue({
     data: {
         searchBlur: false,
         showUserProfile: false,
+        components: {
+            message: {
+                enable: false,
+                type: 'info',
+                text: '',
+                icon: true
+            }
+        },
         user: {
             name: '',
             phone: '',
@@ -74,6 +82,7 @@ const VUE = new Vue({
                     article.nowTitle = article.title.length >= 100 ? article.title.substr(0, 100) + '....' : article.title
                     article.updateTime = Utils.formateDate(article.updateTime)
                     let comments = article.comments;
+                    console.log(comments)
                     if (comments.length) {
                         comments.forEach((comment, index) => {
                             comment.own.href = '/user/center?id=' + comment.own._id;
@@ -90,14 +99,30 @@ const VUE = new Vue({
             if (!uid) {
                 window.location.href = '/login';
             } else {
+
+                if(!this.form.comment.content){
+                    this.message({
+                        text: '请添加评论内容',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+
                 this.$http.post('/api/comment/add', {
                     uid: this.form.comment.uid,
                     id: this.form.comment.id,
                     content: this.form.comment.content
                 }).then(res => {
-                    console.log(res);
                     if (res.body.code && res.body.ok) {
-
+                        this.message({
+                            text: '评论成功',
+                            type: 'success'
+                        });
+                    }else{
+                        this.message({
+                            text: '评论失败',
+                            type: 'error'
+                        });
                     }
                 }).catch(err => {
                     console.log(err);
@@ -117,7 +142,17 @@ const VUE = new Vue({
                     id: id,
                     uid: userId
                 }).then(res => {
-                    console.log(res);
+                    if(res.body.code && res.body.ok){
+                        this.message({
+                            text: '操作成功',
+                            type: 'success'
+                        });
+                    }else{
+                        this.message({
+                            text: '操作失败',
+                            type: 'error'
+                        });
+                    }
                 }).catch(err => {
                     console.log(err);
                 })
@@ -132,7 +167,17 @@ const VUE = new Vue({
                     userId: userId,
                     articleId: articleId
                 }).then(res => {
-                    console.log(res);
+                    if(res.body.code && res.body.ok){
+                        this.message({
+                            text: '操作成功',
+                            type: 'success'
+                        });
+                    }else{
+                        this.message({
+                            text: '操作失败',
+                            type: 'error'
+                        });
+                    }
                 }).catch(err => {
                     console.log(err);
                 });
@@ -146,11 +191,34 @@ const VUE = new Vue({
                     id: id,
                     articleOwnId: articleOwnId
                 }).then(res => {
-                    console.log(res);
+                    if(res.body.code && res.body.ok){
+                        this.message({
+                            text: '关注作者成功',
+                            type: 'success'
+                        });
+                    }else{
+                        this.message({
+                            text: '关注作者失败',
+                            type: 'error'
+                        });
+                    }
                 }).catch(err => {
                     console.log(err);
                 });
             }
+        },
+        message:function(options){
+            let _this = this;
+            let widthW = document.body.clientWidth || document.documentElement.clientWidth;
+            let componentMessage = this.$refs.componentMessage;
+            componentMessage.style.left = parseInt((widthW-400)/2)+'px'
+            this.components.message.enable = options.enable ? options.enable : true ;
+            this.components.message.type = options.type ? options.type : this.components.message.type ;
+            this.components.message.text = options.text ? options.text : this.components.message.text ;
+            this.components.message.icon = options.icon ? options.icon : this.components.message.icon ;
+            setTimeout(function(){
+                _this.components.message.enable = false;
+            },3000);
         },
         signout: function() {
             this.showUserProfile = !this.showUserProfile;

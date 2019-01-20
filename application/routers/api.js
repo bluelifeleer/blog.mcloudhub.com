@@ -227,9 +227,25 @@ router.post('/signup', (req, res, next) => {
                             return;
                         }).catch(err => {
                             console.log(err);
+                            output = {
+                                code: 0,
+                                msg: 'error',
+                                ok: false,
+                                data: null
+                            };
+                            res.json(output);
+                            return;
                         })
                     }).catch(err => {
                         console.log(err);
+                        output = {
+                            code: 0,
+                            msg: 'error',
+                            ok: false,
+                            data: null
+                        };
+                        res.json(output);
+                        return;
                     });
                 }
             }).catch(err => {
@@ -245,7 +261,15 @@ router.post('/signup', (req, res, next) => {
             })
         }
     }).catch(err => {
-        console.log(err)
+        console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 
 });
@@ -272,6 +296,14 @@ router.get('/user/get', (req, res, next) => {
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     });
 });
 
@@ -296,13 +328,37 @@ router.post('/user/follow', (req, res, next) => {
                     }
                 }).catch(err => {
                     console.log(err);
+                    output = {
+                        code: 0,
+                        msg: 'error',
+                        ok: false,
+                        data: null
+                    };
+                    res.json(output);
+                    return;
                 })
             }).catch(err => {
                 console.log(err);
+                output = {
+                    code: 0,
+                    msg: 'error',
+                    ok: false,
+                    data: null
+                };
+                res.json(output);
+                return;
             })
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 });
 
@@ -355,14 +411,38 @@ router.post('/label/add', (req, res, next) => {
                         return;
                     }).catch(err => {
                         console.log(err);
+                        output = {
+                            code: 0,
+                            msg: 'error',
+                            ok: false,
+                            data: null
+                        };
+                        res.json(output);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
+                output = {
+                    code: 0,
+                    msg: 'error',
+                    ok: false,
+                    data: null
+                };
+                res.json(output);
+                return;
             })
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 });
 
@@ -416,6 +496,14 @@ router.get('/label/lists', (req, res, next) => {
             }
         }).catch(err => {
             console.log(err);
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
         })
     });
 });
@@ -473,9 +561,25 @@ router.post('/article/add', (req, res, next) => {
             return;
         }).catch(err => {
             console.log(err);
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
         });
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 });
 
@@ -513,6 +617,14 @@ router.post('/article/modify', (req, res, next) => {
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 });
 
@@ -552,6 +664,14 @@ router.get('/article/get', (req, res, next) => {
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 });
 
@@ -563,7 +683,15 @@ router.get('/article/lists', (req, res, next) => {
         deleted: false
     }, (err, count) => {
         if (err) {
-            console.log(err)
+            console.log(err);
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
         } else {
             Article.find({
                 deleted: false
@@ -593,7 +721,8 @@ router.get('/article/lists', (req, res, next) => {
                         ok: true,
                         data: {
                             count: count,
-                            size: size,
+                            pages: Math.ceil(count/num),
+                            size: parseInt(size+1),
                             num: num,
                             list: articles
                         }
@@ -611,7 +740,15 @@ router.get('/article/lists', (req, res, next) => {
                     return;
                 }
             }).catch(err => {
-                console.log(err)
+                console.log(err);
+                output = {
+                    code: 0,
+                    msg: 'error',
+                    ok: false,
+                    data: null
+                };
+                res.json(output);
+                return;
             })
         }
     });
@@ -658,10 +795,26 @@ router.post('/article/save', (req, res, next) => {
                 }
             }).catch(err => {
                 console.log(err);
+                output = {
+                    code: 0,
+                    msg: 'error',
+                    ok: false,
+                    data: null
+                };
+                res.json(output);
+                return;
             })
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 });
 
@@ -687,14 +840,38 @@ router.post('/article/heart', (req, res, next) => {
                         }
                     }).catch(err => {
                         console.log(err);
+                        output = {
+                            code: 0,
+                            msg: 'error',
+                            ok: false,
+                            data: null
+                        };
+                        res.json(output);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
+                output = {
+                    code: 0,
+                    msg: 'error',
+                    ok: false,
+                    data: null
+                };
+                res.json(output);
+                return;
             });
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     });
 
 });
@@ -756,14 +933,38 @@ router.post('/comment/add', (req, res, next) => {
                         return;
                     }
                 }).catch(err => {
-                    console.log(err)
+                    console.log(err);
+                    output = {
+                        code: 0,
+                        msg: 'error',
+                        ok: false,
+                        data: null
+                    };
+                    res.json(output);
+                    return;
                 })
             }
         }).catch(err => {
-            console.log(err)
+            console.log(err);
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
         });
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     })
 });
 
@@ -806,14 +1007,38 @@ router.post('/comment/heart', (req, res, next) => {
                         }
                     }).catch(err => {
                         console.log(err);
+                        output = {
+                            code: 0,
+                            msg: 'error',
+                            ok: false,
+                            data: null
+                        };
+                        res.json(output);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
+                output = {
+                    code: 0,
+                    msg: 'error',
+                    ok: false,
+                    data: null
+                };
+                res.json(output);
+                return;
             });
         }
     }).catch(err => {
         console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
     });
 });
 
@@ -823,14 +1048,19 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
     let now = new Date();
     let filename = sillyDateTime.format(now, 'YYYYMMMDDHHmmss') + '_' + md5(now.getTime().toString()) + '.' + ext;
     let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
-    // let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/' + now_timer + '/';
-    // let dirname = '/home/wwwroot/node/blog.mcloudhub.com/app/public/images/uploads/'+ now_timer + '/';
-    // let dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
-    let dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+    let dirname = '';
+    let platform = os.platform.toLowerCase() // return now node runing systems : darwin=>MAC win32=>windows
+    if(platform == 'darwin'){  // MAC
+        dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+    }else if(platform == 'win32'){ // Windows
+        dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+    }else{  // Linux
+        dirname = '/home/wwwroot/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+    }
+    
     fs.existsSync(dirname) || fs.mkdirSync(dirname); // 目录不存在创建目录
     fs.writeFile(dirname + filename, req.file.buffer, err => {
         if (!err) {
-            // util
             // 计算上传的图片宽度和高度
             let dimensions = imageSize(dirname + filename); // 使用绝对路径，也可以使用url，使用url要转换成buffer
             let width = dimensions.width;
@@ -851,12 +1081,23 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
                     date: new Date(),
                     deleted: 0
                 }).save().then(insert => {
-                    if (!insert) throw console.log(insert);
-                    res.json({
-                        message: '图片上传成功',
-                        url: 'https://blog.mcloudhub.com/static/images/uploads/' + now_timer + '/' + filename + '?w=' + width + '&h=' + height,
-                        success: 1
-                    });
+                    if(!insert){
+                        console.log(insert);
+                        output = {
+                            code: 0,
+                            msg: 'error',
+                            ok: false,
+                            data: null
+                        };
+                        res.json(output);
+                        return;
+                    }else{
+                        res.json({
+                            message: '图片上传成功',
+                            url: 'https://blog.mcloudhub.com/static/images/uploads/' + now_timer + '/' + filename + '?w=' + width + '&h=' + height,
+                            success: 1
+                        });
+                    }
                 });
             });
         }

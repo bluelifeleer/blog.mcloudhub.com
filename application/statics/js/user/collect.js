@@ -4,6 +4,14 @@ const VUE = new Vue({
     data: {
         searchBlur: false,
         showUserProfile: false,
+        components: {
+            message: {
+                enable: false,
+                type: 'info',
+                text: '',
+                icon: true
+            }
+        },
         user: {
             name: '',
             phone: '',
@@ -38,6 +46,19 @@ const VUE = new Vue({
         },
         searchBlurListener: function() {
             this.searchBlur = true;
+        },
+        message:function(options){
+            let _this = this;
+            let widthW = document.body.clientWidth || document.documentElement.clientWidth;
+            let componentMessage = this.$refs.componentMessage;
+            componentMessage.style.left = parseInt((widthW-400)/2)+'px'
+            this.components.message.enable = options.enable ? options.enable : true ;
+            this.components.message.type = options.type ? options.type : this.components.message.type ;
+            this.components.message.text = options.text ? options.text : this.components.message.text ;
+            this.components.message.icon = options.icon ? options.icon : this.components.message.icon ;
+            setTimeout(function(){
+                _this.components.message.enable = false;
+            },3000);
         },
         signout: function() {
             this.showUserProfile = !this.showUserProfile;

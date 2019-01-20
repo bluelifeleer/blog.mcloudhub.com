@@ -277,6 +277,10 @@ mongoose.connect('mongodb://localhost:27017/blog', {
 }, (err, res) => {
     if (err) {
         console.log(err);
+        notifier.notify({
+            title: 'blog.mcloudhub.com',
+            message: 'this MongoDB connection failed !'
+        });
     } else {
         // 数据库连接成功后监听80/443端口
         app.listen(80);

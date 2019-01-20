@@ -59,11 +59,14 @@ a:link {
 }
 
 @font-face {
-    font-family: 'iconfont';
-    /* project id 558588 */
-    src: url('//at.alicdn.com/t/font_558588_6l63v1q2trv.eot');
-    src: url('//at.alicdn.com/t/font_558588_6l63v1q2trv.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_558588_6l63v1q2trv.woff2') format('woff2'), url('//at.alicdn.com/t/font_558588_6l63v1q2trv.woff') format('woff'), url('//at.alicdn.com/t/font_558588_6l63v1q2trv.ttf') format('truetype'), url('//at.alicdn.com/t/font_558588_6l63v1q2trv.svg#iconfont') format('svg');
-}
+    font-family: 'iconfont';  /* project id 558588 */
+    src: url('//at.alicdn.com/t/font_558588_do79ckw8tbr.eot');
+    src: url('//at.alicdn.com/t/font_558588_do79ckw8tbr.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.woff') format('woff'),
+    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.svg#iconfont') format('svg');
+  }
 
 .iconfont {
     font-family: "iconfont" !important;
@@ -406,4 +409,72 @@ h6 {
     width: auto;
     height: 20px;
     margin: 20px 8px;
+}
+
+.message-components-enter-active {
+    animation: message-box-show .5s;
+}
+
+.message-components-leave-active {
+    animation: message-box-hidden .5s;
+}
+
+@keyframes message-box-show {
+    from{
+        top: -50px;
+    }
+    to{
+        top: 20px;
+    }
+}
+
+@keyframes message-box-hidden {
+    from{
+        top: 20px;
+    }
+    to{
+        top: -50px;
+    }
+}
+
+.message-components{
+    width: 400px;
+    height: auto;
+    position: fixed;;
+    left: 500px;
+    top: 20px;
+    z-index: 9999;
+}
+
+.message-box{
+    width:90%;
+    height:48px;
+    line-height: 48px;
+    border-radius:4px;
+    padding:0 5%;
+    font-size: 15px;
+}
+
+.message-success{
+    background: #E8F0DA;
+    border:1px solid #F1F9CE;
+    color:#83C254;
+}
+
+.message-error{
+    background: #FCF0F0;
+    border:1px solid #F7E3E5;
+    color:#E1796C;
+}
+
+.message-warning{
+    background: #F4EFDB;
+    border:1px solid #FDF6EC;
+    color:#DBA44F;
+}
+
+.message-info{
+    background: #EDF2Fb;
+    border:1px solid #EAEDF2;
+    color:#909398;
 }

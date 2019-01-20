@@ -6,6 +6,14 @@ const VUE = new Vue({
         newLabelToggle: false,
         showUserProfile: false,
         articleSaveTip: false,
+        components: {
+            message: {
+                enable: false,
+                type: 'info',
+                text: '',
+                icon: true
+            }
+        },
         user: {
             name: '',
             phone: '',
@@ -86,10 +94,9 @@ const VUE = new Vue({
                     this.labels = lists;
                     this.articles = articles;
                     this.articles.forEach((article, index) => {
-                        article.selected = false;
+                        article.selected = !index ? true : false ;
                         article.nowTitle = article.title.length >= 20 ? (article.title.substr(0, 20) + '....') : article.title;
-                        if (index == 0) {
-                            article.selected = true;
+                        if(index == this.articleIndex){
                             this.form.article.id = article._id;
                             this.form.article.uid = article.uid;
                             this.form.article.labelId = article.labelId;
@@ -141,8 +148,6 @@ const VUE = new Vue({
         },
         articleTitleInputInputListener: function(e) {
             this.articles[this.articleIndex].title = this.form.article.title;
-        },
-        articleTitleInputBlurListener: function(e) {
             this.$http.post('/api/article/modify', {
                 id: this.form.article.id,
                 title: this.form.article.title
@@ -317,6 +322,19 @@ const VUE = new Vue({
             }).catch(err => {
                 console.log(err);
             });
+        },
+        message:function(options){
+            let _this = this;
+            let widthW = document.body.clientWidth || document.documentElement.clientWidth;
+            let componentMessage = this.$refs.componentMessage;
+            componentMessage.style.left = parseInt((widthW-400)/2)+'px'
+            this.components.message.enable = options.enable ? options.enable : true ;
+            this.components.message.type = options.type ? options.type : this.components.message.type ;
+            this.components.message.text = options.text ? options.text : this.components.message.text ;
+            this.components.message.icon = options.icon ? options.icon : this.components.message.icon ;
+            setTimeout(function(){
+                _this.components.message.enable = false;
+            },3000);
         },
         signout: function() {
             this.showUserProfile = !this.showUserProfile;
