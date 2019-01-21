@@ -1044,6 +1044,7 @@ router.post('/comment/heart', (req, res, next) => {
 });
 
 router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res, next) => {
+    console.log(req.file);
     let uid = req.session.uid && req.cookies.uid;
     let ext = req.file.mimetype.split('/')[1];
     let now = new Date();
@@ -1094,6 +1095,7 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
                     }else{
                         res.json({
                             message: '图片上传成功',
+                            name: req.file.originalname,
                             url: 'https://blog.mcloudhub.com/static/images/uploads/' + now_timer + '/' + filename + '?w=' + width + '&h=' + height,
                             success: 1
                         });
