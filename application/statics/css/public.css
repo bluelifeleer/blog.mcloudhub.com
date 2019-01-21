@@ -59,14 +59,11 @@ a:link {
 }
 
 @font-face {
-    font-family: 'iconfont';  /* project id 558588 */
+    font-family: 'iconfont';
+    /* project id 558588 */
     src: url('//at.alicdn.com/t/font_558588_do79ckw8tbr.eot');
-    src: url('//at.alicdn.com/t/font_558588_do79ckw8tbr.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.woff') format('woff'),
-    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_558588_do79ckw8tbr.svg#iconfont') format('svg');
-  }
+    src: url('//at.alicdn.com/t/font_558588_do79ckw8tbr.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_558588_do79ckw8tbr.woff2') format('woff2'), url('//at.alicdn.com/t/font_558588_do79ckw8tbr.woff') format('woff'), url('//at.alicdn.com/t/font_558588_do79ckw8tbr.ttf') format('truetype'), url('//at.alicdn.com/t/font_558588_do79ckw8tbr.svg#iconfont') format('svg');
+}
 
 .iconfont {
     font-family: "iconfont" !important;
@@ -88,8 +85,11 @@ a:link {
 /* table 样式 */
 
 table {
+    width: 100%;
+    height: auto;
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
+    border-collapse: collapse;
 }
 
 table td,
@@ -100,7 +100,7 @@ table th {
 }
 
 table th {
-    border-bottom: 2px solid #ccc;
+    /* border-bottom: 2px solid #ccc; */
     text-align: center;
 }
 
@@ -420,61 +420,62 @@ h6 {
 }
 
 @keyframes message-box-show {
-    from{
+    from {
         top: -50px;
     }
-    to{
+    to {
         top: 20px;
     }
 }
 
 @keyframes message-box-hidden {
-    from{
+    from {
         top: 20px;
     }
-    to{
+    to {
         top: -50px;
     }
 }
 
-.message-components{
+.message-components {
     width: 400px;
     height: auto;
-    position: fixed;;
+    position: fixed;
+    ;
     left: 500px;
     top: 20px;
     z-index: 9999;
 }
 
-.message-box{
-    width:90%;
-    height:48px;
+.message-box {
+    width: 90%;
+    height: 48px;
     line-height: 48px;
-    border-radius:4px;
-    padding:0 5%;
+    border-radius: 4px;
+    padding: 0 5%;
     font-size: 15px;
 }
 
-.message-success{
+.message-success {
     background: #E8F0DA;
-    border:1px solid #F1F9CE;
-    color:#83C254;
+    border: 1px solid #F1F9CE;
+    color: #83C254;
 }
 
-.message-error{
+.message-error {
     background: #FCF0F0;
-    border:1px solid #F7E3E5;
-    color:#E1796C;
+    border: 1px solid #F7E3E5;
+    color: #E1796C;
 }
 
-.message-warning{
+.message-warning {
     background: #F4EFDB;
-    border:1px solid #FDF6EC;
-    color:#DBA44F;
+    border: 1px solid #FDF6EC;
+    color: #DBA44F;
 }
 
-.message-info{
+.message-info {
     background: #EDF2Fb;
-    border:1px solid #EAEDF2;
-    color:#909398;
+    border: 1px solid #EAEDF2;
+    color: #909398;
 }
