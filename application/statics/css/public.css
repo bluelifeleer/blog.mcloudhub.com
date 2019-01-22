@@ -172,6 +172,28 @@ h6 {
     color: #999;
 }
 
+.image-box{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.image-title{
+    display: block;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    color: #c8c8c8;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.image-title:hover{
+    cursor: pointer;
+}
+
 .header-container {
     width: 100%;
     height: 60px;

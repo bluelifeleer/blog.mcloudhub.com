@@ -231,7 +231,7 @@ const VUE = new Vue({
                 this.editor.create();
                 // 读取/设置html内容
                 console.log(this.form.article['content'])
-                this.editor.txt.html('');
+                this.editor.txt.html(this.form.article['content']);
                 // 读取/设置Text内容
                 // this.editor.txt.text();
             }
