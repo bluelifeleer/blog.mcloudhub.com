@@ -42,4 +42,10 @@ router.get('/tools', (req, res, next) => {
     });
 });
 
+router.get('/canvas', (req, res, next) => {
+    res.render('../views/canvas', {
+        title: 'canvas'
+    });
+});
+
 module.exports = router;

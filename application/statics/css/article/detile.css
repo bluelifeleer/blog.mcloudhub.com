@@ -91,6 +91,9 @@
     width: 800px;
 }
 
+.article-content-container p{
+    margin:0 0 20px 0;
+}
 
 /* .article {
     width: 100%;

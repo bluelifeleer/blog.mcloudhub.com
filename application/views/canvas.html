@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <script type="text/javascript">
+        window.onload = () =>{
+           let canvas = document.getElementById('canvas');
+           if(!canvas.getContext){
+            alert('您的浏览器不支持canvas')
+           }
+           let ctx = canvas.getContext('2d');
+           console.log(ctx);
+           let items = {
+               title: '四天浏览数据',
+               data: [{
+                label: '2019-01-21',
+                value:100,
+                offsetLeft: 30,
+                offsetTop: 30,
+                marginLeft: 30
+            },{
+                label: '2019-01-22',
+                value:110,
+                offsetLeft: 30,
+                offsetTop: 30,
+                marginLeft: 30
+            },{
+                label: '2019-01-23',
+                value:150,
+                offsetLeft: 30,
+                offsetTop: 30,
+                marginLeft: 30
+            },{
+                label: '2019-01-24',
+                value:380,
+                offsetLeft: 30,
+                offsetTop: 30,
+                marginLeft: 30
+            }]
+           };
+
+           let titleTextMea = ctx.measureText(items.title);
+           ctx.fillStyle = "rgb(200,200,200)";
+           ctx.textBaseline = 'middle';
+           ctx.fillText(items.title, parseInt((500-titleTextMea.width)/2), 10, titleTextMea.width);
+           items.data.forEach((item,index)=>{
+               // 预获取文本宽度信息
+               let text = ctx.measureText(item.label);
+               ctx.fillStyle = "rgb(200,200,200)";
+               // ctx.font = '12px sans-serif';
+               ctx.textBaseline = 'middle';
+               ctx.fillText(item.label, item.offsetLeft, (30*index)+30, text.width);
+               ctx.fillStyle = "rgb("+Math.random()*255+","+Math.random()*255+","+Math.random()*255+")";
+               ctx.fillRect (item.offsetLeft+text.width+10, (30*index)+20, item.value, 20);
+               let valueMea = ctx.measureText(item.value)
+               ctx.fillStyle = "rgb(255,255,255)";
+               ctx.textBaseline = 'middle';
+               console.log(valueMea.width)
+               console.log(item.offsetLeft+text.width+10+parseInt((item.value-valueMea.width)/2))
+               ctx.fillText(item.value, parseInt(item.offsetLeft+text.width+10+parseInt((item.value-valueMea.width)/2)), (30*index)+30, text.width);
+           });
+        }
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="400"></canvas>
+</body>
+</html>
