@@ -4,6 +4,7 @@
  */
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
 const assert = require('assert');
 const express = require('express');
 const httpConcat = require('http-concat');
@@ -15,7 +16,7 @@ const rfs = require('rotating-file-stream');
 const http = require('http');
 //引入http2模块
 const http2 = require('spdy');
-const fs = require('fs');
+const SocketIO = require('socket.io');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 // const RedisStore = require('connect-redis')(session);
@@ -106,7 +107,7 @@ app.use(session({
     saveUninitialized: false, // 是否保存未初始化的session
     cookie: {
         secure: true,
-        maxAge: 1200000,  // 设置session、cookie有效时间20分钟
+        maxAge: 1200000, // 设置session、cookie有效时间20分钟
     },
     rolling: true
 }));
@@ -284,15 +285,20 @@ mongoose.connect('mongodb://localhost:27017/blog', {
         });
     } else {
         // 数据库连接成功后监听80/443端口
-        if(platform.toLowerCase() == 'darwin' || platform.toLowerCase() == 'win32'){
+        if (platform.toLowerCase() == 'darwin' || platform.toLowerCase() == 'win32') {
             app.listen(80);
             const server = http2.createServer(ssloptions, app);
             server.listen(443);
+            const SocketServer = new SocketIO(server);
+            SocketServer.on('connection', (socket, err) => {
+                console.log(socket);
+                console.log(err)
+            });
             notifier.notify({
                 title: 'blog.mcloudhub.com',
                 message: 'the server started . http server listener port 80 https server listener port 443 .'
             });
-        }else{
+        } else {
             app.listen(3002);
             notifier.notify({
                 title: 'blog.mcloudhub.com',

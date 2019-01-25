@@ -722,8 +722,8 @@ router.get('/article/lists', (req, res, next) => {
                         ok: true,
                         data: {
                             count: count,
-                            pages: Math.ceil(count/num),
-                            size: parseInt(size+1),
+                            pages: Math.ceil(count / num),
+                            size: parseInt(size + 1),
                             num: num,
                             list: articles
                         }
@@ -1051,14 +1051,14 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
     let filename = sillyDateTime.format(now, 'YYYYMMMDDHHmmss') + '_' + md5(now.getTime().toString()) + '.' + ext;
     let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
     let dirname = '';
-    if(platform == 'darwin'){  // MAC
+    if (platform == 'darwin') { // MAC
         dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
-    }else if(platform == 'win32'){ // Windows
+    } else if (platform == 'win32') { // Windows
         dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
-    }else{  // Linux
+    } else { // Linux
         dirname = '/home/wwwroot/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
     }
-    
+
     fs.existsSync(dirname) || fs.mkdirSync(dirname); // 目录不存在创建目录
     fs.writeFile(dirname + filename, req.file.buffer, err => {
         if (!err) {
@@ -1082,7 +1082,7 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
                     date: new Date(),
                     deleted: 0
                 }).save().then(insert => {
-                    if(!insert){
+                    if (!insert) {
                         console.log(insert);
                         output = {
                             code: 0,
@@ -1092,7 +1092,7 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
                         };
                         res.json(output);
                         return;
-                    }else{
+                    } else {
                         res.json({
                             message: '图片上传成功',
                             name: req.file.originalname,
@@ -1102,6 +1102,53 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
                     }
                 });
             });
+        }
+    });
+});
+
+router.get('/qrcode', (req, res, next) => {
+    let version = parseInt(req.query.version) || 8;
+    let level = req.query.level || 'H';
+    let mask = parseInt(req.query.mask) || 8;
+    let margin = parseInt(req.query.margin) || 4;
+    let scale = parseInt(req.query.scale) || 4;
+    let width = parseInt(req.query.width) || 150;
+    let color = req.query.color || '#000000';
+    let background = req.query.background || '#ffffff';
+    let type = req.query.type;
+    let callBack = req.query.callBack;
+    let text = req.query.text;
+    qrcode.toDataURL(text, {
+        version: version,
+        errorCorrectionLevel: level,
+        maskPattern: mask,
+        // toSJISFunc: function(){},
+        margin: margin,
+        scale: scale,
+        width: width,
+        color: {
+            dark: color,
+            light: background
+        }
+    }, (err, url) => {
+        if (err) {
+            console.log(err);
+        } else {
+            output = {
+                code: 1,
+                msg: 'success',
+                ok: true,
+                data: {
+                    url: url
+                }
+            };
+            if (callBack) {
+                res.write(callBack + '(' + output + ')');
+                return;
+            } else {
+                res.json(output);
+                return;
+            }
         }
     });
 });

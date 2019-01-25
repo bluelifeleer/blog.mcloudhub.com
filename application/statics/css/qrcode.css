@@ -1,0 +1,107 @@
+html,
+body,
+div,
+b,
+p,
+ul,
+ol,
+dl,
+li,
+table,
+tr,
+td,
+thead,
+tbody,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul,
+ol,
+dl {
+    list-style-type: none;
+}
+
+#app {
+    width: 100%;
+    height: auto;
+}
+
+.qrcode-container {
+    width: 990px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.qrcode-container-layout-left {
+    float: left;
+    width: 70%;
+    height: auto;
+}
+
+.qrcode-from-box {
+    width: 100%;
+    height: auto;
+}
+
+.qrcode-form-item {
+    width: 100%;
+    height: auto;
+    margin: 0 0 20px 0;
+}
+
+.qrcode-form-item input {
+    display: block;
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 0 0 2%;
+    box-sizing: border-box;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+}
+
+.qrcode-form-submit {
+    display: block;
+    width: 30%;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    background: #dcdcdc;
+    color: #606266;
+    margin: 0 auto;
+}
+
+.qrcode-container-layout-right {
+    float: left;
+    width: 30%;
+    height: auto;
+}
+
+.qrcode-img-box {
+    width: 96%;
+    height: auto;
+    margin: 2%;
+    border: 1px solid #dcdcdc;
+}
+
+.qrcode-img {
+    display: block;
+    width: 100%;
+}

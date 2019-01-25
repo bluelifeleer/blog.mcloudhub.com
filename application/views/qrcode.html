@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/qrcode.css" />
+    <script type="text/javascript" src="static/js/libs/vue.js"></script>
+    <script type="text/javascript" src="static/js/libs/vue-resource.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="qrcode-container">
+            <div class="qrcode-container-layout-left">
+                <div class="qrcode-from-box">
+                    <div class="qrcode-form-item">
+                        <input type="text" name="" v-model="form.text" placeholder="输入内容" />
+                    </div>
+                    <div class="qrcode-form-item">
+                        <a href="javascript:void(0);" class="qrcode-form-submit" @click="qrcodeFormSubmit($event)">生成</a>
+                    </div>
+                </div>
+            </div>
+            <div class="qrcode-container-layout-right">
+                <div class="qrcode-img-box"><img :src="qrcode.url" alt="" class="qrcode-img"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/static/js/qrcode.js"></script>
+
+</html>
