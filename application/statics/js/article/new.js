@@ -298,7 +298,7 @@ const VUE = new Vue({
         articleEditorSave: function() {
             let _this = this;
             if (this.user.editor) {
-                this.form.article.content = this.editor.getHTML();
+                this.form.article.content = this.editor.getPreviewedHTML();
                 this.form.article.markDown = this.editor.getMarkdown();
                 this.form.article.html = this.editor.getHTML();
             } else {
