@@ -715,7 +715,15 @@ router.get('/article/lists', (req, res, next) => {
                 path: 'own',
                 select: 'name avatar introduce'
             }]).then(articles => {
+                let list = [];
                 if (articles) {
+                    if(articles.length){
+                        articles.forEach((article,index)=>{
+                            if(article.content){
+                                list.push(article);
+                            }
+                        });
+                    }
                     output = {
                         code: 1,
                         msg: 'success',
@@ -725,7 +733,7 @@ router.get('/article/lists', (req, res, next) => {
                             pages: Math.ceil(count / num),
                             size: parseInt(size + 1),
                             num: num,
-                            list: articles
+                            list: list
                         }
                     };
                     res.json(output);
