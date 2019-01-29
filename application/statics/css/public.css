@@ -134,6 +134,7 @@ code {
 pre code {
     display: block;
     border: 1px solid #ddd;
+    font-family: 'Andale Mono','Ubuntu Mono',monospace,Consolas,Monaco;
     font-size: 13px;
     color: #606266;
     overflow: auto;
