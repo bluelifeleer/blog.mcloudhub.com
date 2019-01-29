@@ -1052,66 +1052,69 @@ router.post('/comment/heart', (req, res, next) => {
 });
 
 router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res, next) => {
-    console.log(req.file);
-    let uid = req.session.uid && req.cookies.uid;
-    let ext = req.file.mimetype.split('/')[1];
-    let now = new Date();
-    let filename = sillyDateTime.format(now, 'YYYYMMMDDHHmmss') + '_' + md5(now.getTime().toString()) + '.' + ext;
-    let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
-    let dirname = '';
-    if (platform == 'darwin') { // MAC
-        dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
-    } else if (platform == 'win32') { // Windows
-        dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
-    } else { // Linux
-        dirname = '/home/wwwroot/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
-    }
-
-    fs.existsSync(dirname) || fs.mkdirSync(dirname); // 目录不存在创建目录
-    fs.writeFile(dirname + filename, req.file.buffer, err => {
-        if (!err) {
-            // 计算上传的图片宽度和高度
-            let dimensions = imageSize(dirname + filename); // 使用绝对路径，也可以使用url，使用url要转换成buffer
-            let width = dimensions.width;
-            let height = dimensions.height;
-            User.findById(uid).then(user => {
-                new Photo({
-                    user_id: user._id,
-                    own: user,
-                    originalname: req.file.originalname,
-                    filename: filename,
-                    path: dirname,
-                    fullpath: dirname + filename,
-                    encoding: req.file.encoding,
-                    mimetype: req.file.mimetype,
-                    size: req.file.size,
-                    width: width,
-                    height: height,
-                    date: new Date(),
-                    deleted: 0
-                }).save().then(insert => {
-                    if (!insert) {
-                        console.log(insert);
-                        output = {
-                            code: 0,
-                            msg: 'error',
-                            ok: false,
-                            data: null
-                        };
-                        res.json(output);
-                        return;
-                    } else {
-                        res.json({
-                            message: '图片上传成功',
-                            name: req.file.originalname,
-                            url: 'https://blog.mcloudhub.com/static/images/uploads/' + now_timer + '/' + filename + '?w=' + width + '&h=' + height,
-                            success: 1
-                        });
-                    }
-                });
-            });
+    if(req.session.uid && req.cookies.uid){
+        let uid = req.session.uid && req.cookies.uid;
+        let ext = req.file.mimetype.split('/')[1];
+        let now = new Date();
+        let filename = sillyDateTime.format(now, 'YYYYMMMDDHHmmss') + '_' + md5(now.getTime().toString()) + '.' + ext;
+        let now_timer = sillyDateTime.format(now, 'YYYYMMMDD');
+        let dirname = '';
+        if (platform == 'darwin') { // MAC
+            dirname = '/Users/bluelifeleer/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+        } else if (platform == 'win32') { // Windows
+            dirname = 'C:/web/www/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
+        } else { // Linux
+            dirname = '/home/wwwroot/node/blog.mcloudhub.com/application/statics/images/uploads/' + now_timer + '/';
         }
-    });
+
+        fs.existsSync(dirname) || fs.mkdirSync(dirname); // 目录不存在创建目录
+        fs.writeFile(dirname + filename, req.file.buffer, err => {
+            if (!err) {
+                // 计算上传的图片宽度和高度
+                let dimensions = imageSize(dirname + filename); // 使用绝对路径，也可以使用url，使用url要转换成buffer
+                let width = dimensions.width;
+                let height = dimensions.height;
+                User.findById(uid).then(user => {
+                    new Photo({
+                        user_id: user._id,
+                        own: user,
+                        originalname: req.file.originalname,
+                        filename: filename,
+                        path: dirname,
+                        fullpath: dirname + filename,
+                        encoding: req.file.encoding,
+                        mimetype: req.file.mimetype,
+                        size: req.file.size,
+                        width: width,
+                        height: height,
+                        date: new Date(),
+                        deleted: 0
+                    }).save().then(insert => {
+                        if (!insert) {
+                            console.log(insert);
+                            output = {
+                                code: 0,
+                                msg: 'error',
+                                ok: false,
+                                data: null
+                            };
+                            res.json(output);
+                            return;
+                        } else {
+                            res.json({
+                                message: '图片上传成功',
+                                name: req.file.originalname,
+                                url: 'https://blog.mcloudhub.com/static/images/uploads/' + now_timer + '/' + filename + '?w=' + width + '&h=' + height,
+                                success: 1
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    }else{
+        res.redirect(302, '/login?redirect_uri=/article/new');
+    }
 });
 
 router.get('/qrcode', (req, res, next) => {
