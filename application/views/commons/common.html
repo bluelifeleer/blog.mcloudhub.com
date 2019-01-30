@@ -67,7 +67,7 @@
 
             <!-- Message components -->
             <transition name="message-components">
-                <div class="message-components" v-if="components.message.enable" ref="componentMessage">
+                <div class="message-components" v-show="components.message.enable" ref="componentMessage">
                     <div class="message-box message-success" v-if="components.message.type=='success'"><i class="icon iconfont" v-if="components.message.icon">&#xe617;</i>&nbsp;&nbsp;<span>${components.message.text}</span></div>
                     <div class="message-box message-error" v-else-if="components.message.type=='error'"><i class="icon iconfont" v-if="components.message.icon">&#xe647;</i>&nbsp;&nbsp;<span>${components.message.text}</span></div>
                     <div class="message-box message-warning" v-else-if="components.message.type=='warning'"><i class="icon iconfont" v-if="components.message.icon">&#xe674;</i>&nbsp;&nbsp;<span>${components.message.text}</span></div>
