@@ -1104,7 +1104,7 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
                             res.json({
                                 message: '图片上传成功',
                                 name: req.file.originalname,
-                                url: 'https://blog.mcloudhub.com/static/images/uploads/' + now_timer + '/' + filename + '?w=' + width + '&h=' + height,
+                                url: '/static/images/uploads/' + now_timer + '/' + filename + '?w=' + width + '&h=' + height,
                                 success: 1
                             });
                         }
