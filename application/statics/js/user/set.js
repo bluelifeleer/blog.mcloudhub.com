@@ -4,6 +4,10 @@ const VUE = new Vue({
     data: {
         searchBlur: false,
         showUserProfile: false,
+        search:{
+            Keyword:'',
+            result:[],
+        },
         components: {
             message: {
                 enable: false,
@@ -44,8 +48,22 @@ const VUE = new Vue({
         showUserProfileToggle: function(e) {
             this.showUserProfile = !this.showUserProfile;
         },
-        searchBlurListener: function() {
+        searchFoucsListener: function(e){
+            let searchButIcon = this.$refs.searchButIcon;
+            searchButIcon.style.background = '#969696';
+            searchButIcon.style.color = '#FFF';
+        },
+        searchBlurListener: function(e) {
             this.searchBlur = true;
+            let searchButIcon = this.$refs.searchButIcon;
+            searchButIcon.style.background = '';
+            searchButIcon.style.color = '#969696';
+        },
+        searchSubmit: function(e){
+            if(!this.search.keyword){
+                alert('请输入要搜索的关键字')
+            }
+            console.error('search keyword')
         },
         message:function(options){
             let _this = this;

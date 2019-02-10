@@ -48,8 +48,8 @@ const platform = os.platform();
 const start_log = true;
 
 let ssloptions = {
-    key: fs.readFileSync(path.join(__dirname + '/ssl/214483626110776.key')),
-    cert: fs.readFileSync(path.join(__dirname + '/ssl/214483626110776.pem'))
+    key: fs.readFileSync(path.join(__dirname + '/ssl/blog.mcloudhub.com.key')),
+    cert: fs.readFileSync(path.join(__dirname + '/ssl/blog.mcloudhub.com.pem'))
 };
 
 //设置模板引擎

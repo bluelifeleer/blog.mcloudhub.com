@@ -234,13 +234,13 @@ h6 {
 .search a {
     display: block;
     float: left;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
     border: none;
     background: none;
-    margin: 10px 0;
+    margin: 4px 0 4px 4px;
     border-radius: 50%;
     color: #969696;
 }

@@ -24,10 +24,10 @@
                     <div class="nav-block">
                         <span class="nav-items"><a href="/" class="nav-item-a">首页</a></span>
                         <!--span class="nav-items"><a href="" class="nav-item-a">文章</a></span-->
-                        <!-- <transition name="search-blur"> -->
+                        <!-- <transition name="search-bar"> -->
                             <span class="nav-items search">
-                                <input type="text" name="search" placeholder="搜索：输入关键字" @blur="searchBlurListener($event)"/>
-                                <a href="javascript:void(0);" class="search-but"><i class="icon iconfont">&#xe71e;</i></a>
+                                <input type="text" name="search" placeholder="搜索：输入关键字" @focus="searchFoucsListener($event)" @blur="searchBlurListener($event)" v-model="search.Keyword"/>
+                                <a href="javascript:void(0);" class="search-but" ref="searchButIcon" @click="searchSubmit($event)"><i class="icon iconfont">&#xe71e;</i></a>
                             </span>
                         <!-- </transition> -->
                     </div>

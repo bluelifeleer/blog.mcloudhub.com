@@ -48,7 +48,6 @@ const VUE = new Vue({
 			}
 
 			this.$http.post('/api/signin', {name: this.form.user.name, password: this.form.user.password, checked: this.form.user.checked}).then(res=>{
-				console.log(res);
 				if(res.body.code && res.body.ok){
 					switch(res.body.code){
 						case 2:
