@@ -15,38 +15,59 @@
 </head>
 
 <body>
-	<div id="app" :style="pageSet">
-		<div class="form-box">
-			<div class="form-box-header">
-				<a href="/login" class="toggle-but toggle-active">登录</a>
-				<a href="/register" class="toggle-but">注册</a>
-			</div>
-			<div class="form-box-body">
-				<div class="form-items">
-					<div class="form-input-box">
-						<label for="name">用户名：</label>
-						<input type="text" name="name" v-model="form.user.name" placeholder="用户名" />
+	<div id="app">
+		<div class="page-bg" :style="pageSet">
+				<div class="form-box">
+						<div class="form-box-header">
+							<a href="/login" class="toggle-but toggle-active">登录</a>
+							<a href="/register" class="toggle-but">注册</a>
+						</div>
+						<div class="form-box-body">
+							<div class="form-items">
+								<div class="form-input-box">
+									<label for="name" class="form-item-label label-required">用户名：</label>
+									<input type="text" name="name" v-model="form.user.name" placeholder="用户名" />
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div>
+							<div class="form-items">
+								<div class="form-input-box">
+									<label for="password" class="form-item-label label-required">密码：</label>
+									<input type="password" name="password" ref="passwordInputBox" v-model="form.user.password" placeholder="密码" />
+									<a v-if="form.showPassword" href="javascript:void(0);" class="password-view-toggle" @click="passwordViewToggle($event)"><i class="icon iconfont">&#xe61e;</i></a>
+									<a v-else href="javascript:void(0);" class="password-view-toggle" @click="passwordViewToggle($event)"><i class="icon iconfont">&#xe629;</i></a>
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div>
+							<div class="form-items">
+								<div class="form-input-box">
+									<label for="verifyCode" class="form-item-label label-required">验证码：</label>
+									<input type="text" name="verifyCode" class="verify-code" v-model="form.user.verifyCode" placeholder="验证码" />
+									<img class="verify-code-img" src="https://blog.mcloudhub.com/captcha/captcha" alt="刷新加载" />
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div>
+							<div class="form-items">
+								<div class="form-input-box">
+									<label for="checked"></label>
+									<a href="javascript:void(0);" class="remember-password" @click="checkboxToggle($event)" :data-checked="form.checkbox.value"><i class="icon iconfont iconfont-style" v-html="form.checkbox.icon"></i>${form.checkbox.label}</a>
+			
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div>
+							<div class="form-items">
+								<a href="javascript:void(0);" class="form-login-submit" @click="signinFormSubmit($event)">登录</a>
+							</div>
+						</div>
+						<div class="other-lognin-box">
+							<div class="other-login-title">
+								其他帐号登录
+							</div>
+							<div class="other-loginin-lists-box">
+								<a href="javascript:void(0);" class="other-ligin-buts github" title="GitHub" @click="otherLoginIn($event, 'github')"><i class="icon iconfont">&#xe691;</i></a>
+							</div>
+						</div>
 					</div>
-					<div class="form-input-tip-box"></div>
-				</div>
-				<div class="form-items">
-					<div class="form-input-box">
-						<label for="password">密码：</label>
-						<input type="password" name="password" v-model="form.user.password" placeholder="密码" />
-					</div>
-					<div class="form-input-tip-box"></div>
-				</div>
-				<div class="form-items">
-					<div class="form-input-box">
-						<label for="checked"></label>
-						<a href="javascript:void(0);" class="remember-password" @click="checkboxToggle($event)" :data-checked="form.checkbox.value"><i class="icon iconfont iconfont-style" v-html="form.checkbox.icon"></i>${form.checkbox.label}</a>
-					</div>
-					<div class="form-input-tip-box"></div>
-				</div>
-				<div class="form-items">
-					<a href="javascript:void(0);" class="form-login-submit" @click="signinFormSubmit($event)">登录</a>
-				</div>
-			</div>
 		</div>
 	</div>
 </body>

@@ -36,7 +36,7 @@ router.post('/signin', (req, res, next) => {
     let name = req.body.name;
     let password = req.body.password;
     let checked = req.body.checked;
-
+    let verifyCode = req.body.verifyCode;
     if (name == '') {
         output = {
             code: 0,
@@ -52,6 +52,17 @@ router.post('/signin', (req, res, next) => {
         output = {
             code: 0,
             msg: '用户密码不能为空',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
+    }
+
+    if(verifyCode == req.session.verify_code){
+        output = {
+            code: 0,
+            msg: '验证码错误',
             ok: false,
             data: null
         };
@@ -140,13 +151,25 @@ router.post('/signup', (req, res, next) => {
     let password = req.body.password;
     let confirmPassword = req.body.confirmPassword;
     let email = req.body.email;
+    let verifyCode = req.body.verifyCode;
     let now = new Date();
 
-    if (password != confirmPassword) {
+    // if (password != confirmPassword) {
+    //     output = {
+    //         code: 2,
+    //         msg: '再次输入密码不同',
+    //         ok: true,
+    //         data: null
+    //     };
+    //     res.json(output);
+    //     return;
+    // }
+
+    if(verifyCode == req.session.verify_code){
         output = {
-            code: 2,
-            msg: '再次输入密码不同',
-            ok: true,
+            code: 0,
+            msg: '验证码错误',
+            ok: false,
             data: null
         };
         res.json(output);
@@ -172,15 +195,17 @@ router.post('/signup', (req, res, next) => {
                 name: name,
                 password: nowPassword,
                 sale: sale,
-                avarat: '',
+                avatar: '',
                 email: email,
                 phone: '',
                 sex: 0,
                 age: 0,
+                github_id: '',
                 github: {},
                 type: 1, // 注册方式，1：用户名，2：手机号，3：邮箱，4：QQ，5：微信，6：github.
                 editor: 1,
                 link: '', // 用户个人连接
+                website: '',
                 keyWord: 0,
                 follow: 0,
                 follows: [],
@@ -508,6 +533,31 @@ router.get('/label/lists', (req, res, next) => {
         })
     });
 });
+
+router.get('/label/all', (req, res, next) => {
+    Label.find({}).then(label=>{
+        output = {
+            code: 1,
+            msg: 'success',
+            ok: true,
+            data: {
+                label: label
+            }
+        };
+        res.json(output);
+        return;
+    }).catch(err=>{
+        console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
+    })
+})
 
 router.post('/article/add', (req, res, next) => {
     let uid = req.body.uid || req.secure.uid || req.cookies.uid;

@@ -76,9 +76,14 @@ a:link {
 
 #app {
     width: 100%;
-    height: 100%;
+    height: auto;
     font-family: "apple-system", "SF UI Text", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", "sans-serif", "inconsolata";
     overflow: hidden;
+}
+
+.page-bg{
+    width:100%;
+    height:880px;
 }
 
 /* ul ol 样式 */
@@ -111,6 +116,10 @@ h5 {
 h6 {
     font-size: 14px;
     color: #999;
+}
+
+input,textarea{
+    outline: none;
 }
 
 .image-box{

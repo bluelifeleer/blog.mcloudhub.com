@@ -17,7 +17,7 @@
         <script type="text/javascript" src="/static/js/libs/jquery-3.3.1.min.js"></script>
     </head>
     <body>
-        <div id="app">
+        <div id="app" @click="documentClickListener($event)">
             <div class="header-container">
                 <div class="header-body">
                     <div class="login-block"><img src="/static/images/logo.png" alt=""></div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="user-info-block">
                         <div class="user-info">
-                            <span v-if="user.name" @click="showUserProfileToggle($event)" class="user-profile-toggle">${user.name}<i class="icon iconfont">&#xe68f;</i></span>
+                            <span v-if="user.name" @click.stop="showUserProfileToggle($event)" class="user-profile-toggle">${user.name}<i class="icon iconfont">&#xe68f;</i></span>
                             <span v-else>
                                 <element><a href="/login" class="header-login-link">登录</a></element>
                                 <element>|</element>

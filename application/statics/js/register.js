@@ -11,9 +11,11 @@ const VUE = new Vue({
             user: {
                 name: '',
                 password: '',
-                confirmPassword: '',
-                email: ''
-            }
+                // confirmPassword: '',
+                email: '',
+                verifyCode: ''
+            },
+            showPassword: false
         }
     },
     created() {},
@@ -25,6 +27,10 @@ const VUE = new Vue({
             this.$http.get('https://api.i-meto.com/api/v1/bing/random?new').then(res => {
                 this.pageSet.background = 'url("' + res.body.url + '") no-repeat 0 0';
             });
+        },
+        passwordViewToggle: function(e){
+            this.form.showPassword = !this.form.showPassword;
+            this.$refs.passwordInputBox.type = this.form.showPassword ? 'text' : 'password';
         },
         signupFormSubmit: function(e) {
 
@@ -38,21 +44,22 @@ const VUE = new Vue({
                 return false;
             }
 
-            if (!this.form.user.confirmPassword) {
-                alert('确认密码不能为空');
-                return false;
-            }
+            // if (!this.form.user.confirmPassword) {
+            //     alert('确认密码不能为空');
+            //     return false;
+            // }
 
-            if (!this.form.user.password == this.form.user.confirmPassword) {
-                alert('两次输入密码不同');
-                return false;
-            }
+            // if (!this.form.user.password == this.form.user.confirmPassword) {
+            //     alert('两次输入密码不同');
+            //     return false;
+            // }
 
             this.$http.post('/api/signup', {
                 name: this.form.user.name,
                 password: this.form.user.password,
-                confirmPassword: this.form.user.confirmPassword,
-                email: this.form.user.email
+                // confirmPassword: this.form.user.confirmPassword,
+                email: this.form.user.email,
+                verifyCode: this.form.user.verifyCode
             }).then(res => {
                 if (res.body.code && res.body.ok) {
                     if (res.body.code == 1) {
@@ -69,6 +76,11 @@ const VUE = new Vue({
         }
     },
     mounted() {
-        this.init()
+        this.init();
+        document.addEventListener('keyup',function(e){
+			if(e.keyCode == 13){
+				_this.signupFormSubmit(e)
+			}
+		},false)
     }
 })

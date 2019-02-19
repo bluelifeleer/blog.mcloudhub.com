@@ -12,6 +12,7 @@ module.exports = new mongoose.Schema({
 	phone: String,
 	sex: Number,
 	age: Number,
+	github_id: String,
 	github: {},
 	introduce: String,
 	keyWord: 0,
@@ -23,6 +24,7 @@ module.exports = new mongoose.Schema({
 	editor: Number, // 编辑器，支持1：Editor.md；0：wangEditor
 	type: Number, // 注册方式，1：用户名，2：手机号，3：邮箱，4：QQ，5：微信，6：github.
 	link: String, // 用户个人连接
+	website:String, // 用户网站
 	deleted: Boolean,
 	date: Date
 });

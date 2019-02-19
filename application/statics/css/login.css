@@ -2,10 +2,11 @@
 	width:410px;
 	height:auto;
     overflow: hidden;
-    margin:255px auto;
-	/* position: relative;
-	right:0;
-	top:200px; */
+    /* margin:255px auto; */
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 	border: 1px solid #c1c1c1;
 	border-radius:4px;
     padding:20px;
@@ -43,6 +44,7 @@
 	height:auto;
 	overflow: hidden;
 	margin:0 0 10px 0;
+	position: relative;
 }
 
 .form-input-box{
@@ -124,4 +126,89 @@
 .iconfont-style{
 	margin: 0 5px 0 0;
 	color:#409eff;
+}
+
+.verify-code{
+	width:150px !important;
+	height:40px !important;
+}
+
+.verify-code-img{
+	display:block;
+	float:left;
+	width:150px;
+	height:40px;
+}
+
+.password-view-toggle{
+	display:block;
+	width:30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	color:#606266;
+	position: absolute;
+	right:0;
+	top:5px;
+}
+
+.other-lognin-box{
+	width:100%;
+	height:auto;
+}
+
+.other-login-title{
+	width:100%;
+	height:50px;
+	line-height: 50px;
+	text-align: center;
+	margin:20px 0;
+	position: relative;
+	font-size: 16px;
+}
+
+.other-login-title::before{
+	display:block;
+	width:35%;
+	height:1px;
+	content: '';
+	background:#dcdcdc;
+	position: absolute;
+	left:0;
+	top:24px;
+}
+
+.other-login-title::after{
+	display:block;
+	width:35%;
+	height:1px;
+	content: '';
+	background:#dcdcdc;
+	position: absolute;
+	right:0;
+	top:24px;
+}
+
+.other-loginin-lists-box{
+	width:100%;
+	height:auto;
+	text-align: center;
+}
+
+.other-ligin-buts{
+	display:inline-block;
+	width:48px;
+	height:48px;
+	line-height: 48px;
+	text-align: center;
+	border:1px solid #dcdcdc;
+	border-radius: 50%;
+}
+
+.github{
+	color:#606266;
+}
+
+.other-ligin-buts i{
+	font-size: 30px !important;
 }

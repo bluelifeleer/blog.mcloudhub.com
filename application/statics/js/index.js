@@ -41,6 +41,9 @@ const VUE = new Vue({
             }
             this.getArticles();
         },
+        documentClickListener: function(e){
+            this.showUserProfile = false;
+        },
         getUser: function() {
             let uid = Utils.getCookie('uid');
             this.$http.get('/api/user/get?id=' + uid).then(res => {
@@ -89,7 +92,7 @@ const VUE = new Vue({
                         }
                         let content = item.content ? item.content.replace(/<[^>]*>/g, "") : '';
                         item.content = content.length >= 100 ? content.substr(0, 100) + '...' : content;
-                        item.nowTitle = item.title.length >= 70 ? (item.title.substr(0, 70) + '....') : item.title;
+                        item.nowTitle = item.title.length >= 60 ? (item.title.substr(0, 60) + '....') : item.title;
                         item.href = '/article/detaile?id=' + item._id;
                         item.own.href = '/user/center?id=' + item.own._id;
                         item.updateTime = Utils.formateDate(item.updateTime);

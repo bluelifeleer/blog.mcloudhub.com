@@ -4,6 +4,7 @@ const VUE = new Vue({
     data: {
         searchBlur: false,
         showUserProfile: false,
+        commentReplysForm: false,
         search:{
             Keyword:'',
             result:[],
@@ -53,6 +54,9 @@ const VUE = new Vue({
             }
             this.getArticle();
         },
+        documentClickListener: function(e){
+            this.showUserProfile = false;
+        },
         getUser: function() {
             let uid = Utils.getCookie('uid')
             this.$http.get('/api/user/get?id=' + uid).then(res => {
@@ -100,10 +104,10 @@ const VUE = new Vue({
                     article.nowTitle = article.title.length >= 100 ? article.title.substr(0, 100) + '....' : article.title
                     article.updateTime = Utils.formateDate(article.updateTime)
                     let comments = article.comments;
-                    console.log(comments)
                     if (comments.length) {
                         comments.forEach((comment, index) => {
                             comment.own.href = '/user/center?id=' + comment.own._id;
+                            comment.heart = comment.heart ? comment.heart : 0;
                             comment.date = Utils.formateDate(comment.date);
                         });
                     }
@@ -224,6 +228,9 @@ const VUE = new Vue({
                     console.log(err);
                 });
             }
+        },
+        showCommentReplysForm: function(e){
+            this.commentReplysForm = !this.commentReplysForm;
         },
         message:function(options){
             let _this = this;

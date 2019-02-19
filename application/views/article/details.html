@@ -108,8 +108,8 @@
                         <div class="article-comment-content">${comment.content}</div>
                         <div class="article-comment-list-buts-box">
                             <a v-if="user._id" href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,user._id, article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞(${comment.heart})</span></a>
-                            <a v-else href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,'', article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞</span></a>
-                            <a href="javascript:void(0);" class="article-comment-list-but comment" :data-id="comment._id"><i
+                            <a v-else href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,'', article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞(${comment.heart})</span></a>
+                            <a href="javascript:void(0);" class="article-comment-list-but comment" :data-id="comment._id" @click.stop="showCommentReplysForm($event)"><i
                                     class="icon iconfont">&#xe646;</i>&nbsp;&nbsp;<span>回复</span></a>
                         </div>
                         <div class="article-comment-list-item-replys">
@@ -121,9 +121,33 @@
                                         <span class="replys-comment-content">${replys.content}</span>
                                     </div>
                                     <div class="replys-date">${replys.date}</div>
-                                    <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment"><i
-                                                class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
+                                    <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment" @click.stop="showCommentReplysForm($event)"><i class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
+                                    <transition name="comment-replys-form">
+                                        <div class="comment-replys-form-box" v-show="commentReplysForm">
+                                            <div class="comment-replys-form-textarea">
+                                                <textarea name="comment-replys" id="comment-replys-textarea" cols="" rows=""></textarea>
+                                            </div>
+                                            <div class="comment-replys-form-submit">
+                                                <a href="javascript:void(0);" class="comment-replys-form-submit-but">提交</a>
+                                            </div>
+                                        </div>
+                                    </transition>
                                 </div>
+                            </div>
+                            <div class="replys-list-box" v-else>
+                                <transition name="comment-replys-form">
+                                    <div class="comment-replys-form-box" v-show="commentReplysForm">
+                                        <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment"><i class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
+                                        <div class="comment-replys-form">
+                                            <div class="comment-replys-form-textarea">
+                                                <textarea name="comment-replys" id="comment-replys-textarea" cols="" rows=""></textarea>
+                                            </div>
+                                            <div class="comment-replys-form-submit">
+                                                <a href="javascript:void(0);" class="comment-replys-form-submit-but">提交</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </transition>
                             </div>
                         </div>
                     </div>

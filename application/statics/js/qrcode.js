@@ -13,6 +13,9 @@ const VUE = new Vue({
     created() {},
     methods: {
         init: function() {},
+        documentClickListener: function(e){
+            this.showUserProfile = false;
+        },
         qrcodeFormSubmit: function(e) {
             this.$http.get('/api/qrcode?text=' + this.form.text).then(res => {
                 console.log(res)

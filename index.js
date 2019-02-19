@@ -26,7 +26,7 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet')
 const swig = require('swig');
-const config = require('./application/config');
+const config = require(path.join(__dirname, '/application/config'));
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 const bodyParser = require('body-parser');
@@ -227,6 +227,7 @@ app.use('/ftp', express.static(path.join(__dirname, '/application/ftp')), serveI
     'icons': true
 }));
 app.use('/root.txt', express.static(path.join(__dirname, 'root.txt')));
+app.use('/robots.txt', express.static(path.join(__dirname, 'robots.txt')));
 app.use(httpConcat({
     base: path.join(__dirname, 'public'),
     path: '/'
@@ -243,6 +244,8 @@ app.use('/oauth', require(path.join(__dirname, 'application/routers/oauth')));
 app.use('/api', require(path.join(__dirname, '/application/routers/api')));
 app.use('/article', require(path.join(__dirname, '/application/routers/article')));
 app.use('/user', require(path.join(__dirname, '/application/routers/user')));
+app.use('/captcha', require(path.join(__dirname, '/application/routers/captcha')));
+app.use('/other', require(path.join(__dirname, '/application/routers/other')));
 
 // 处理404请求
 app.get('*', (req, res) => {

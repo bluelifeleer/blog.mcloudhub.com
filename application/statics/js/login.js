@@ -11,13 +11,15 @@ const VUE = new Vue({
 			user: {
 				name: '',
 				password: '',
-				checked: false
+				checked: false,
+				verifyCode:''
 			},
 			checkbox: {
 				label: '记住密码',
 				value: false,
 				icon: '&#xe6c5;'
-			}
+			},
+			showPassword:false
 		}
 	},
 	created() {},
@@ -30,6 +32,10 @@ const VUE = new Vue({
 			this.pageSet.background = 'url("'+res.body.url+'") no-repeat 0 0';
 			});
 		},
+		passwordViewToggle: function(e){
+            this.form.showPassword = !this.form.showPassword;
+            this.$refs.passwordInputBox.type = this.form.showPassword ? 'text' : 'password';
+        },
 		checkboxToggle: function(e) {
 			this.form.checkbox.value = !this.form.checkbox.value;
 			this.form.checkbox.icon = this.form.checkbox.value ? '&#xe642;' : '&#xe6c5;';
@@ -47,7 +53,12 @@ const VUE = new Vue({
 				return false;
 			}
 
-			this.$http.post('/api/signin', {name: this.form.user.name, password: this.form.user.password, checked: this.form.user.checked}).then(res=>{
+			if(!this.form.user.verifyCode){
+				alert('验证码不能为空');
+				return false;
+			}
+
+			this.$http.post('/api/signin', {name: this.form.user.name, password: this.form.user.password, checked: this.form.user.checked, verifyCode: this.form.user.verifyCode}).then(res=>{
 				if(res.body.code && res.body.ok){
 					switch(res.body.code){
 						case 2:
@@ -64,9 +75,27 @@ const VUE = new Vue({
 			}).catch(err=>{
 				console.log(err);
 			})
+		},
+		otherLoginIn: function(e, type){
+			this.$http.get('/other/loginin?type='+type).then(res=>{
+				if(res.ok && res.status == 200){
+					if(res.body.ok && res.body.code){
+						let data = res.body.data;
+						window.location.href = 'https://github.com/login/oauth/authorize?client_id='+data.client_id+'&redirect_uri='+data.redirect_uri+'&state='+data.state+'&scope=user';
+					}
+				}
+			}).catch(err=>{
+				console.log(err)
+			})
 		}
 	},
 	mounted() {
 		this.init()
+		let _this = this;
+		document.addEventListener('keyup',function(e){
+			if(e.keyCode == 13){
+				_this.signinFormSubmit(e)
+			}
+		},false)
 	}
 })

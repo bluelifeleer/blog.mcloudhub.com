@@ -22,6 +22,7 @@
         <div class="label-data-list" ref="labelListItem" v-if="labels.length">
             <div class="label-list-items" v-for="(label, $index) in labels" :key="$index" :data-index="$index" :data-id="label._id" :class="{'label-list-items-selected':label.selected}">
                 <a href="javascript:void(0);" class="label-list-select" data-selected="true" :data-index="$index" :data-id="label._id" @click="labelItemSelector($event,$index)">${label.name}</a>
+                <span class="label-list-opations"><i class="icon iconfont iconfont-size">&#xe68f;</i></span>
             </div>
         </div>
     </div>
@@ -35,6 +36,7 @@
                     <i class="icon iconfont">&#xe62e;</i>
                     <span>${article.nowTitle}</span>
                 </a>
+                <span class="article-title-list-opations"><i class="icon iconfont iconfont-size">&#xe68f;</i></span>
             </div>
         </div>
     </div>

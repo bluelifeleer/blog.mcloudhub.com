@@ -21,47 +21,59 @@
   <script type="text/javascript" src="/static/js/bdtj.js"></script>
 </head>
 <body>
-	<div id="app" :style="pageSet">
-		<div class="form-box">
-			<div class="form-box-header">
-				<a href="/login" class="toggle-but">登录</a>
-				<a href="/register" class="toggle-but toggle-active">注册</a>
-			</div>
-			<div class="form-box-body">
-				<div class="form-items">
-					<div class="form-input-box">
-							<label for="name" class="form-item-label label-required">用户名：</label>
-							<input type="text" name="name" v-model="form.user.name" placeholder="用户名" />
-					</div>
-					<div class="form-input-tip-box"></div>
-				</div>
-				<div class="form-items">
-					<div class="form-input-box">
-						<label for="password" class="form-item-label label-required">密码：</label>
-						<input type="password" name="password" v-model="form.user.password" placeholder="密码" />
-					</div>
-					<div class="form-input-tip-box"></div>
-				</div>
-				<div class="form-items">
-					<div class="form-input-box">
-						<label for="password" class="form-item-label label-required">确认密码：</label>
-						<input type="password" name="password" v-model="form.user.confirmPassword" placeholder="确认密码" />
-					</div>
-					<div class="form-input-tip-box"></div>
-				</div>
-				<div class="form-items">
-					<div class="form-input-box">
-						<label for="password">邮箱：</label>
-						<input type="text" name="password" v-model="form.user.email" placeholder="邮箱" />
-					</div>
-					<div class="form-input-tip-box">
-							<span class="form-tip">注册确认信将会被寄给您。</span>
+	<div id="app">
+		<div class="page-bg" :style="pageSet">
+				<div class="form-box">
+						<div class="form-box-header">
+							<a href="/login" class="toggle-but">登录</a>
+							<a href="/register" class="toggle-but toggle-active">注册</a>
 						</div>
-				</div>
-				<div class="form-items">
-					<a href="javascript:void(0);" class="form-login-submit" @click="signupFormSubmit($event)">注册</a>
-				</div>
-			</div>
+						<div class="form-box-body">
+							<div class="form-items">
+								<div class="form-input-box">
+										<label for="name" class="form-item-label label-required">用户名：</label>
+										<input type="text" name="name" v-model="form.user.name" placeholder="用户名" />
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div>
+							<div class="form-items">
+								<div class="form-input-box">
+									<label for="password" class="form-item-label label-required">密码：</label>
+									<input type="password" name="password" ref="passwordInputBox" v-model="form.user.password" placeholder="密码" />
+									<a v-if="form.showPassword" href="javascript:void(0);" class="password-view-toggle" @click="passwordViewToggle($event)"><i class="icon iconfont">&#xe61e;</i></a>
+									<a v-else href="javascript:void(0);" class="password-view-toggle" @click="passwordViewToggle($event)"><i class="icon iconfont">&#xe629;</i></a>
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div>
+							<!-- <div class="form-items">
+								<div class="form-input-box">
+									<label for="password" class="form-item-label label-required">确认密码：</label>
+									<input type="password" name="password" v-model="form.user.confirmPassword" placeholder="确认密码" />
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div> -->
+							<div class="form-items">
+								<div class="form-input-box">
+									<label for="password">邮箱：</label>
+									<input type="text" name="password" v-model="form.user.email" placeholder="邮箱" />
+								</div>
+								<div class="form-input-tip-box">
+										<span class="form-tip">注册确认信将会被寄给您。</span>
+									</div>
+							</div>
+							<div class="form-items">
+								<div class="form-input-box">
+									<label for="verifyCode" class="form-item-label label-required">验证码：</label>
+									<input type="text" name="verifyCode" class="verify-code" v-model="form.user.verifyCode" placeholder="验证码" />
+									<img class="verify-code-img" src="https://blog.mcloudhub.com/captcha/captcha" alt="刷新加载" />
+								</div>
+								<div class="form-input-tip-box"></div>
+							</div>
+							<div class="form-items">
+								<a href="javascript:void(0);" class="form-login-submit" @click="signupFormSubmit($event)">注册</a>
+							</div>
+						</div>
+					</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="/static/js/register.js"></script>

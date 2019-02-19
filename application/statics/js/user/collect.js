@@ -33,6 +33,9 @@ const VUE = new Vue({
                 this.getUser();
             }
         },
+        documentClickListener: function(e){
+            this.showUserProfile = false;
+        },
         getUser: function() {
             let uid = Utils.getCookie('uid');
             this.$http.get('/api/user/get?id=' + uid).then(res => {

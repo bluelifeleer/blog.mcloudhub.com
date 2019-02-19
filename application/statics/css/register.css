@@ -2,10 +2,11 @@
 	width:410px;
 	height:auto;
     overflow: hidden;
-    margin:200px auto;
-	/* position: relative;
-	right:0;
-	top:200px; */
+    /* margin:200px auto; */
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 	border: 1px solid #c1c1c1;
 	border-radius:4px;
     padding:20px;
@@ -83,7 +84,8 @@
     width:auto;
     height:30px;
     line-height: 30px;
-    margin:0 0 0 90px;
+	margin:0 0 0 100px;
+	font-size: 12px;
 }
 
 .remember-password{
@@ -119,4 +121,28 @@
 .form-login-submit:hover{
 	text-decoration: none;
 	color: #FFF;
+}
+
+.verify-code{
+	width:150px !important;
+	height:40px !important;
+}
+
+.verify-code-img{
+	display:block;
+	float:left;
+	width:150px;
+	height:40px;
+}
+
+.password-view-toggle{
+	display:block;
+	width:30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	color:#606266;
+	position: absolute;
+	right:0;
+	top:5px;
 }
