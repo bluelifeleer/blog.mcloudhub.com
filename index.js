@@ -42,6 +42,8 @@ const expressWinston = require('express-winston');
 const errorhandler = require('errorhandler');
 const notifier = require('node-notifier');
 const flash = require('flash');
+const webp = require('webp-converter');
+// const static = require('node-static');
 const app = express();
 const platform = os.platform();
 //是否启动记录访问日志
