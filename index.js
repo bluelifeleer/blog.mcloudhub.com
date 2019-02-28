@@ -19,9 +19,7 @@ const http2 = require('spdy');
 const SocketIO = require('socket.io');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-// const RedisStore = require('connect-redis')(session);
 const MongoDBStore = require('connect-mongodb-session')(session);
-const webSocket = require('ws');
 const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet')
@@ -43,7 +41,6 @@ const errorhandler = require('errorhandler');
 const notifier = require('node-notifier');
 const flash = require('flash');
 const webp = require('webp-converter');
-// const static = require('node-static');
 const app = express();
 const platform = os.platform();
 //是否启动记录访问日志
@@ -101,7 +98,7 @@ store.on('error', error => {
 
 app.use(session({
     genid: function(req) {
-        return uuidv4() // use UUIDs for session IDs
+        return uuidv4(); // use UUIDs for session IDs
     },
     secret: 'session_id', // 与cookieParser中的一致
     resave: true,
@@ -113,40 +110,6 @@ app.use(session({
     },
     rolling: true
 }));
-
-// const sessionOptions = {
-// 	"cookie": {
-// 		"maxAge": 1800000
-// 	},
-// 	"store": {
-// 		// "client": null, // 可以复用现有的redis客户端对象， 由 redis.createClient() 创建
-// 		"host": "127.0.0.1", // Redis服务器名
-// 		"port": "6379", // Redis服务器端口
-// 		// "url": "",	// redis服务url地址
-// 		// "pass" : "123456",	// Redis数据库的密码
-// 		// "db": 0, // 使用第几个数据库
-// 		"ttl": 1800, // Redis session TTL 过期时间 （秒）
-// 		"logErrors": function(e){
-// 			console.log(e)
-// 		},
-// 		"no_ready_check": true 	// 禁止服务器就绪检查
-// 		// disableTTL: true, // 禁用设置的 TTL
-// 		// socket: null // Redis服务器的unix_socket
-// 		// prefix: 'sess:'     数据表前辍即schema, 默认为 "sess:"
-// 	}
-// };
-
-// app.use(session({
-// 	genid: function(req) {
-// 		return uuidv4() // use UUIDs for session IDs
-// 	},
-// 	secret: 'session_id',
-// 	rolling: true,
-// 	resave: true, // 重新登录就算有会话也强制保存
-// 	saveUninitialized: false, // 是否保存未初始化的session
-// 	cookie: sessionOptions.cookie,
-// 	store: new RedisStore(sessionOptions.store)
-// }));
 
 // 服务器启动时默认配置/动作
 app.use(function(req, res, next) {
@@ -290,26 +253,26 @@ mongoose.connect('mongodb://localhost:27017/blog', {
         });
     } else {
         // 数据库连接成功后监听80/443端口
-        // if (platform.toLowerCase() == 'darwin' || platform.toLowerCase() == 'win32') {
+        if (platform.toLowerCase() == 'darwin' || platform.toLowerCase() == 'win32') {
             app.listen(80);
             const server = http2.createServer(ssloptions, app);
             server.listen(443);
             const SocketServer = new SocketIO(server);
             SocketServer.on('connection', (socket, err) => {
                 console.log(socket);
-                console.log(err)
+                console.log(err);
             });
             notifier.notify({
                 title: 'blog.mcloudhub.com',
                 message: 'the server started . http server listener port 80 https server listener port 443 .'
             });
-        // } else {
-        //     app.listen(3002);
-        //     notifier.notify({
-        //         title: 'blog.mcloudhub.com',
-        //         message: 'the server started . http server listener port 3002 .'
-        //     });
-        // }
+        } else {
+            app.listen(3002);
+            notifier.notify({
+                title: 'blog.mcloudhub.com',
+                message: 'the server started . http server listener port 3002 .'
+            });
+        }
     }
 });
 
