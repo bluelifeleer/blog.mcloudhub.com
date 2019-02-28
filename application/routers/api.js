@@ -59,7 +59,7 @@ router.post('/signin', (req, res, next) => {
         return;
     }
 
-    if(verifyCode == req.session.verify_code){
+    if (verifyCode == req.session.verify_code) {
         output = {
             code: 0,
             msg: '验证码错误',
@@ -165,7 +165,7 @@ router.post('/signup', (req, res, next) => {
     //     return;
     // }
 
-    if(verifyCode == req.session.verify_code){
+    if (verifyCode == req.session.verify_code) {
         output = {
             code: 0,
             msg: '验证码错误',
@@ -490,6 +490,7 @@ router.get('/label/lists', (req, res, next) => {
     let num = parseInt(req.query.num) || 10;
     let size = parseInt(req.query.size) || 1;
     Label.countDocuments({
+        uid: uid,
         deleted: false
     }, (err, count) => {
         Label.find({
@@ -530,34 +531,56 @@ router.get('/label/lists', (req, res, next) => {
             };
             res.json(output);
             return;
-        })
+        });
     });
 });
 
 router.get('/label/all', (req, res, next) => {
-    Label.find({}).then(label=>{
-        output = {
-            code: 1,
-            msg: 'success',
-            ok: true,
-            data: {
-                label: label
+    Label.countDocuments({
+        uid: uid,
+        deleted: false
+    }, (err, count) => {
+        Label.find({
+            uid: uid,
+            deleted: false
+        }).populate([{
+            path: 'own',
+            select: 'name'
+        }, {
+            path: 'articles',
+            select: 'uid labelId title content markDown html permission'
+        }, {
+            path: 'label',
+            select: 'name'
+        }]).then(labels => {
+            if (labels) {
+                output = {
+                    code: 1,
+                    msg: 'success',
+                    ok: true,
+                    data: {
+                        count: count,
+                        size: size,
+                        num: num,
+                        list: labels
+                    }
+                };
+                res.json(output);
+                return;
             }
-        };
-        res.json(output);
-        return;
-    }).catch(err=>{
-        console.log(err);
-        output = {
-            code: 0,
-            msg: 'error',
-            ok: false,
-            data: null
-        };
-        res.json(output);
-        return;
-    })
-})
+        }).catch(err => {
+            console.log(err);
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
+        });
+    });
+});
 
 router.post('/article/add', (req, res, next) => {
     let uid = req.body.uid || req.secure.uid || req.cookies.uid;
@@ -767,9 +790,9 @@ router.get('/article/lists', (req, res, next) => {
             }]).then(articles => {
                 let list = [];
                 if (articles) {
-                    if(articles.length){
-                        articles.forEach((article,index)=>{
-                            if(article.content){
+                    if (articles.length) {
+                        articles.forEach((article, index) => {
+                            if (article.content) {
                                 list.push(article);
                             }
                         });
@@ -1102,7 +1125,7 @@ router.post('/comment/heart', (req, res, next) => {
 });
 
 router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res, next) => {
-    if(req.session.uid && req.cookies.uid){
+    if (req.session.uid && req.cookies.uid) {
         let uid = req.session.uid && req.cookies.uid;
         let ext = req.file.mimetype.split('/')[1];
         let now = new Date();
@@ -1162,7 +1185,7 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
                 });
             }
         });
-    }else{
+    } else {
         res.redirect(302, '/login?redirect_uri=/article/new');
     }
 });
