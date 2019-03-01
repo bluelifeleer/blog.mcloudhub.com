@@ -536,6 +536,7 @@ router.get('/label/lists', (req, res, next) => {
 });
 
 router.get('/label/all', (req, res, next) => {
+    let uid = req.query.uid || req.secure.uid || req.cookies.uid;
     Label.countDocuments({
         uid: uid,
         deleted: false
