@@ -102,10 +102,10 @@
 } */
 
 .pre.prettyprint{
-    padding: 2px;
-    border: 1px solid #dcdcdc;
+    border: 1px solid #ddd;
     overflow: auto;
-
+    padding: 10px;
+    border-radius:4px;
 }
 
 .article table{
