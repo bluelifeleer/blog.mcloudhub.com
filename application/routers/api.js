@@ -561,8 +561,8 @@ router.get('/label/all', (req, res, next) => {
                     ok: true,
                     data: {
                         count: count,
-                        size: size,
-                        num: num,
+                        size: 0,
+                        num: 0,
                         list: labels
                     }
                 };
