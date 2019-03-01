@@ -102,7 +102,7 @@ const VUE = new Vue({
         },
         getLabels: function() {
             let _this = this;
-            this.$http.get('/api/label/lists?uid=' + this.user._id).then(res => {
+            this.$http.get('/api/label/all?uid=' + this.user._id).then(res => {
                 if (res.body.code && res.body.ok) {
                     let lists = res.body.data.list;
                     let articles = lists[this.labelIndex].articles.length ? lists[this.labelIndex].articles : [];

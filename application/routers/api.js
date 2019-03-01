@@ -535,28 +535,48 @@ router.get('/label/lists', (req, res, next) => {
 });
 
 router.get('/label/all', (req, res, next) => {
-    Label.find({}).then(label=>{
-        output = {
-            code: 1,
-            msg: 'success',
-            ok: true,
-            data: {
-                label: label
+    let uid = req.query.uid || res.session.uid;
+    Label.countDocuments({
+        uid:uid,
+        deleted: false
+    }, (err, count) => {
+        Label.find({uid:uid,deleted: false}).populate([{
+            path: 'own',
+            select: 'name'
+        }, {
+            path: 'articles',
+            select: 'uid labelId title content markDown html permission'
+        }, {
+            path: 'label',
+            select: 'name'
+        }]).then(labels=>{
+            if (labels) {
+                output = {
+                    code: 1,
+                    msg: 'success',
+                    ok: true,
+                    data: {
+                        count: count,
+                        size: 0,
+                        num: 0,
+                        list: labels
+                    }
+                };
+                res.json(output);
+                return;
             }
-        };
-        res.json(output);
-        return;
-    }).catch(err=>{
-        console.log(err);
-        output = {
-            code: 0,
-            msg: 'error',
-            ok: false,
-            data: null
-        };
-        res.json(output);
-        return;
-    })
+        }).catch(err=>{
+            console.log(err);
+            output = {
+                code: 0,
+                msg: 'error',
+                ok: false,
+                data: null
+            };
+            res.json(output);
+            return;
+        })
+    });
 })
 
 router.post('/article/add', (req, res, next) => {
