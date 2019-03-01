@@ -101,6 +101,13 @@
     margin: 20px 0;
 } */
 
+.pre.prettyprint{
+    padding: 2px;
+    border: 1px solid #dcdcdc;
+    overflow: auto;
+
+}
+
 .article table{
     table-layout:fixed;
     /* word-break:break-all; */
