@@ -45,7 +45,7 @@ router.get('/heart', (req, res, next) => {
 router.get('/set', (req, res, next) => {
     let redirect_uri = req.protocol + '://' + req.get('host') + req.originalUrl;
     if (req.session.uid && req.cookies.uid) {
-        res.render('../views/user/set', {
+        res.render('../views/user/setting/basic', {
             title: '设置',
             platform: req.platform ? req.platform : (req.cookies.get('platform') ? req.cookies.get('platform') : ''),
             uid: req.session.uid && req.cookies.uid,

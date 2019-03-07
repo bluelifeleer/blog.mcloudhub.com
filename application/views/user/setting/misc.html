@@ -1,0 +1,23 @@
+{% extends '../../commons/common.html' %}
+{% block link %}
+<link rel="stylesheet" href="/static/css/user/set.css" />
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="/static/js/user/set.js"></script>
+{% endblock %}
+{% block article %}
+<div class="user-set-container">
+    <div class="user-set-layout-menu">
+        <ul>
+            <li class="menu-items"><a href="/user/set/basic" class="menu-items-link basic"><i class="icon iconfont">&#xe650;</i><span>基础设置</span></a></li>
+            <li class="menu-items"><a href="/user/set/profile" class="menu-items-link profile"><i class="icon iconfont">&#xe611;</i><span>个人资料</span></a></li>
+            <li class="menu-items menu-active"><a href="/user/set/misc" class="menu-items-link misc"><i class="icon iconfont">&#xe926;</i><span>帐号管理</span></a></li>
+            <li class="menu-items"><a href="/user/set/reward" class="menu-items-link reward"><i class="icon iconfont">&#xe606;</i><span>赞赏设置</span></a></li>
+        </ul>
+    </div>
+    <div class="user-set-layout-right">
+
+    </div>
+    <div class="user-set-layout-clear"></div>
+</div>
+{% endblock %}

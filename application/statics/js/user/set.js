@@ -24,6 +24,15 @@ const VUE = new Vue({
             avatar: '',
             href: '',
             introduce: ''
+        },
+        setting:{
+            account_form:{
+                name:'',
+                phone:'',
+                email:'',
+                avatar:'',
+                editor:1
+            }
         }
     },
     created() {},
@@ -67,6 +76,31 @@ const VUE = new Vue({
                 alert('请输入要搜索的关键字')
             }
             console.error('search keyword')
+        },
+        uploadAvatar:function(e){
+            let _this = this;
+            let userAvatar = this.$refs.userAvatar;
+            let file = e.target.files[0];
+            if(file){
+                let Reader = new FileReader();
+                Reader.readAsDataURL(file);
+                Reader.addEventListener('load', function(e) {
+                    userAvatar.src=Reader.result
+                    // _this.$http.post('/api/adv/picture/upload', {
+                    //     uid: _this.users.uid,
+                    //     name: file.name,
+                    //     size: file.size,
+                    //     type: file.type,
+                    //     base_data: Reader.result
+                    // }).then(res => {
+                    //     if (res.body.code && res.body.ok) {
+                    //         _this.adv.slides[index].url = res.body.data.url;
+                    //     }
+                    // }).catch(err => {
+                    //     console.log(err)
+                    // })
+                }, false);
+            }
         },
         message:function(options){
             let _this = this;
