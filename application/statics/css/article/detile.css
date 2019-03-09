@@ -101,7 +101,7 @@
     margin: 20px 0;
 } */
 
-.pre.prettyprint{
+.pre .prettyprint{
     border: 1px solid #ddd;
     overflow: auto;
     padding: 10px;
