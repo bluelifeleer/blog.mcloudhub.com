@@ -16,7 +16,7 @@
                         class="icon iconfont">&#xe628;</i>关注</a>
             </div>
             <div class="article-info">
-                <span>${article.updateTime}</span>
+                <span>${article.date}</span>
                 <span>字数 ${article.KeyWords} </span>
                 <span>阅读 ${article.read}</span>
                 <span>评论 ${article.comment}</span>
@@ -28,9 +28,8 @@
         <div class="article" v-html="article.content"></div>
     </div>
     <div class="article-footer">
-        <span><a :href="article.label.href" class="article-label"><i class="icon iconfont">&#xe644;</i>&nbsp;&nbsp;<span
-                    class="label-text">${article.label.name}</span></a>
-        </span>
+        <a :href="article.label.href" class="article-label" :title="article.label.name"><i class="icon iconfont">&#xe644;</i>&nbsp;&nbsp;<span class="label-text">${article.label.name}</span></a>
+        <a href="javascript:void(0);" class="article-updatetime" :title="article.updateTime"><i class="icon iconfont">&#xe663;</i>&nbsp;&nbsp;<span class="updatetime--text">${article.updateTime}</span></a>
     </div>
     <div class="article-author-info-box">
         <div class="article-author-info">
@@ -92,7 +91,7 @@
                 </div>
             </div>
             <div class="article-comment-list-box">
-                <div class="article-comment-list-group" v-if="article.comments.length">
+                <div class="article-comment-list-group" v-if="article.comments.length" ref="commentList">
                     <div class="article-comment-list-items" v-for="(comment,$index) in article.comments" :key="$index" :data-index="$index" :data-id="comment._id">
                         <div class="article-comment-list-author">
                             <div class="article-comment-list-author-icon">
@@ -109,7 +108,7 @@
                         <div class="article-comment-list-buts-box">
                             <a v-if="user._id" href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,user._id, article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞(${comment.heart})</span></a>
                             <a v-else href="javascript:void(0);" class="article-comment-list-but heart" :data-id="comment._id" @click="commentHeart($event, comment._id,'', article._id)"><i class="icon iconfont">&#xe645;</i>&nbsp;&nbsp;<span>赞(${comment.heart})</span></a>
-                            <a href="javascript:void(0);" class="article-comment-list-but comment" :data-id="comment._id" @click.stop="showCommentReplysForm($event)"><i
+                            <a href="javascript:void(0);" class="article-comment-list-but comment" :data-id="comment._id" @click.stop="showCommentReplysForm($event, $index, comment, article._id)"><i
                                     class="icon iconfont">&#xe646;</i>&nbsp;&nbsp;<span>回复</span></a>
                         </div>
                         <div class="article-comment-list-item-replys">
@@ -121,14 +120,18 @@
                                         <span class="replys-comment-content">${replys.content}</span>
                                     </div>
                                     <div class="replys-date">${replys.date}</div>
-                                    <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment" @click.stop="showCommentReplysForm($event)"><i class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
+                                    <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment" @click.stop="showCommentReplysForm($event, $index, comment, article._id)"><i class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
                                     <transition name="comment-replys-form">
-                                        <div class="comment-replys-form-box" v-show="commentReplysForm">
+                                        <div class="comment-replys-form-box" >
                                             <div class="comment-replys-form-textarea">
-                                                <textarea name="comment-replys" id="comment-replys-textarea" cols="" rows=""></textarea>
+                                                <input type="hidden" id="comment-id" name="comment-id" v-model="form.replys.id" />
+                                                <input type="hidden" id="comment-own-id" name="comment-own-id" v-model="form.replys.ownId" />
+                                                <input type="hidden" id="article-id" name="article-id" v-model="form.replys.articleId" />
+                                                <input type="hidden" id="user-id" name="user-id" v-model="form.replys.uid" />
+                                                <textarea name="comment-replys" id="comment-replys-textarea" cols="" rows="" v-model="form.replys.content"></textarea>
                                             </div>
                                             <div class="comment-replys-form-submit">
-                                                <a href="javascript:void(0);" class="comment-replys-form-submit-but">提交</a>
+                                                <a href="javascript:void(0);" class="comment-replys-form-submit-but" @click.stop="commentReplysFormSubmit($event, $index)">提交</a>
                                             </div>
                                         </div>
                                     </transition>
@@ -136,14 +139,18 @@
                             </div>
                             <div class="replys-list-box" v-else>
                                 <transition name="comment-replys-form">
-                                    <div class="comment-replys-form-box" v-show="commentReplysForm">
+                                    <div class="comment-replys-form-box">
                                         <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment"><i class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
                                         <div class="comment-replys-form">
                                             <div class="comment-replys-form-textarea">
-                                                <textarea name="comment-replys" id="comment-replys-textarea" cols="" rows=""></textarea>
+                                                <input type="hidden" id="comment-id" name="comment-id" v-model="form.replys.id" />
+                                                <input type="hidden" id="comment-own-id" name="comment-own-id" v-model="form.replys.ownId" />
+                                                <input type="hidden" id="article-id" name="article-id" v-model="form.replys.articleId" />
+                                                <input type="hidden" id="user-id" name="user-id" v-model="form.replys.uid" />
+                                                <textarea name="comment-replys" id="comment-replys-textarea" cols="" rows="" v-model="form.replys.content"></textarea>
                                             </div>
                                             <div class="comment-replys-form-submit">
-                                                <a href="javascript:void(0);" class="comment-replys-form-submit-but">提交</a>
+                                                <a href="javascript:void(0);" class="comment-replys-form-submit-but" @click.stop="commentReplysFormSubmit($event, $index)">提交</a>
                                             </div>
                                         </div>
                                     </div>

@@ -18,7 +18,7 @@
 						<div class="article-contents">${article.content}</div>
 						<div class="article-meta">
 							<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>
-							<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>${article.updateTime}</a>
+							<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>${article.date}</a>
 							<a v-if="user._id" class="heart" href="javascript:void(0);" @click="articleHeart($event, article, user._id)"><i class="icon iconfont">&#xe641;</i>${article.heart}</a>
 							<a v-else class="heart" href="javascript:void(0);" @click="articleHeart($event, article, '')"><i class="icon iconfont">&#xe641;</i>${article.heart}</a>
 							<a v-if="user._id" class="comment" href="javascript:void(0);" @click="articleComment($event, article, user._id)"><i class="icon iconfont">&#xe684;</i>${article.comment}</a>
@@ -32,7 +32,7 @@
 					<div class="article-contents">${article.content}</div>
 					<div class="article-meta">
 						<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>
-						<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>${article.updateTime}</a>
+						<a class="date" href="javascript:void(0);"><i class="icon iconfont">&#xe663;</i>${article.date}</a>
 						<a v-if="user._id" class="heart" href="javascript:void(0);" @click="articleHeart($event, article, user._id)"><i class="icon iconfont">&#xe641;</i>${article.heart}</a>
 						<a v-else class="heart" href="javascript:void(0);" @click="articleHeart($event, article, '')"><i class="icon iconfont">&#xe641;</i>${article.heart}</a>
 						<a v-if="user._id" class="comment" href="javascript:void(0);" @click="articleComment($event, article, user._id)"><i class="icon iconfont">&#xe684;</i>${article.comment}</a>

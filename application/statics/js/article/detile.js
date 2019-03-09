@@ -43,6 +43,13 @@ const VUE = new Vue({
                 id: '',
                 uid: '',
                 content: ''
+            },
+            replys:{
+                id:'',
+                uid: '',
+                articleId:'',
+                ownId:'',
+                content: ''
             }
         }
     },
@@ -102,7 +109,8 @@ const VUE = new Vue({
                     article.own.follow = article.own.follow ? article.own.follow : 0;
                     article.label.href = '/user/label?id=' + article.label._id
                     article.nowTitle = article.title.length >= 100 ? article.title.substr(0, 100) + '....' : article.title
-                    article.updateTime = Utils.formateDate(article.updateTime)
+                    article.date = Utils.formateDate(article.date);
+                    article.updateTime = Utils.formateDate(article.updateTime);
                     let comments = article.comments;
                     if (comments.length) {
                         comments.forEach((comment, index) => {
@@ -229,8 +237,33 @@ const VUE = new Vue({
                 });
             }
         },
-        showCommentReplysForm: function(e){
-            this.commentReplysForm = !this.commentReplysForm;
+        showCommentReplysForm: function(e,index, item, articleId){
+            let commentList = this.$refs.commentList;
+            let commentReplysBoxs = commentList.getElementsByClassName('comment-replys-form-box');
+            console.log(commentReplysBoxs)
+            for(let i=0;i<commentReplysBoxs.length;i++){
+                commentReplysBoxs[i].style.display = 'none';
+            }
+            commentReplysBoxs[index].style.display = 'block';
+            this.form.replys.id = item._id;
+            this.form.replys.uid = Utils.getCookie('uid');
+            this.form.replys.articleId = articleId;
+            this.form.replys.ownId = item.own._id;
+            // this.commentReplysForm = !this.commentReplysForm;
+        },
+        commentReplysFormSubmit: function(e, index){
+            // 判断是否登录
+            if(Utils.getCookie('uid')){
+                console.log(this.form.replys)
+                this.$http.post('/api//comment/replys', {replys: this.form.replys}).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                });
+            }else{
+                window.location.href="/login"
+            }
+
         },
         message:function(options){
             let _this = this;

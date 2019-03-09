@@ -145,6 +145,18 @@
     float: left;
     width: 50%;
     height: 30px;
+    line-height: 30px;
+    text-align: left;
+    color: #c8c8c8;
+}
+
+.article-updatetime{
+    display: block;
+    float: left;
+    width: 50%;
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
     color: #c8c8c8;
 }
 
@@ -592,6 +604,7 @@
 }
 
 .comment-replys-form-box{
+    display:none;
     width:98%;
     height:auto;
     overflow: hidden;

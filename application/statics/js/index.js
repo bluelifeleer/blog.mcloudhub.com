@@ -95,6 +95,7 @@ const VUE = new Vue({
                         item.nowTitle = item.title.length >= 60 ? (item.title.substr(0, 60) + '....') : item.title;
                         item.href = '/article/detaile?id=' + item._id;
                         item.own.href = '/user/center?id=' + item.own._id;
+                        item.date = Utils.formateDate(item.date);
                         item.updateTime = Utils.formateDate(item.updateTime);
                         _this.articles.list.push(item);
                     });
