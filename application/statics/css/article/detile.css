@@ -101,11 +101,20 @@
     margin: 20px 0;
 } */
 
-pre .prettyprint{
+.article-content-container pre.prettyprint{
     border: 1px solid #ddd;
-    overflow: auto;
-    padding: 10px;
     border-radius:4px;
+    padding:10px 0;
+}
+
+.article-content-container pre.prettyprint .linenums{
+    padding:0;
+    margin:0;
+    overflow: auto;
+}
+
+.article-content-container pre.prettyprint .linenums li{
+    padding:0 10px;
 }
 
 .article table{
