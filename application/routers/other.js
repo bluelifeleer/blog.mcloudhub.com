@@ -105,6 +105,18 @@ router.get('/github', (req, res, next) => {
                         keyWord: 0,
                         follow: 0,
                         follows: [],
+                        "heart":0,
+                        "hearts":[],
+                        "collect":0,
+                        "collects":[],
+                        "comment":0,
+                        "comments":[],
+                        "follow":0,
+                        "follows":[],
+                        "share":0,
+                        "shares":[],
+                        "read":0,
+                        "reads":[],
                         deleted: false,
                         date: now
                     }).save().then(users=>{

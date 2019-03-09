@@ -209,6 +209,18 @@ router.post('/signup', (req, res, next) => {
                 keyWord: 0,
                 follow: 0,
                 follows: [],
+                "heart":0,
+                "hearts":[],
+                "collect":0,
+                "collects":[],
+                "comment":0,
+                "comments":[],
+                "follow":0,
+                "follows":[],
+                "share":0,
+                "shares":[],
+                "read":0,
+                "reads":[],
                 deleted: false,
                 date: now
             }).save().then(user => {
@@ -910,6 +922,9 @@ router.post('/article/heart', (req, res, next) => {
                 if (article) {
                     article.heart++;
                     article.hearts.push(user);
+                    user.heart++;
+                    user.hearts.push(article);
+                    user.save();
                     article.save().then(status => {
                         if (status) {
                             output = {
@@ -1006,6 +1021,9 @@ router.post('/comment/add', (req, res, next) => {
                 article.comment++;
                 article.save().then(status => {
                     if (status) {
+                        user.comment++;
+                        user.comments.push(article);
+                        user.svae();
                         output = {
                             code: 1,
                             msg: 'success',
