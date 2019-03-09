@@ -737,7 +737,7 @@ router.get('/article/get', (req, res, next) => {
             path:'replys',
             select: 'uid name avatar comment'
         }]
-    }]).select('uid labelId title KeyWords content date updateTime').then(article => {
+    }]).select('uid labelId title KeyWords content date updateTime heart').then(article => {
         if (article) {
             output = {
                 code: 1,
