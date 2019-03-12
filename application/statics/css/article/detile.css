@@ -137,7 +137,7 @@
 blockquote p code{
 	border: 1px solid #ddd;
     background: #f6f6f6;
-    padding: 3px;
+    padding: 0 5px;
     border-radius: 3px;
     font-size: 14px;
     margin:0 5px;
