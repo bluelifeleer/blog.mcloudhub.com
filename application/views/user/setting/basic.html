@@ -40,18 +40,19 @@
             <div class="user-set-form-items overhidden">
                 <label for="phone">手机：</label>
                 <span v-if="setting.account_form.phone">${setting.account_form.phone}</span>
-                <input v-else type="text" name="phone" id="phone" placeholder="输入手机号" />
+                <input v-else type="text" name="phone" id="phone" v-model="setting.account_form.phone" placeholder="输入手机号" />
             </div>
             <div class="user-set-form-items overhidden">
                 <label for="editor">常用编辑器：</label>
                 <div class="editor-radio-box">
-                    <div class="editor-radio-text"><input type="radio" name="editor" id="editor"><element class="ml10">富文本</element></div>
-                    <div class="editor-radio-markdown"><input type="radio" name="editor" id="editor" checked="checked"><element class="ml10">Markdown</element></div>
+                    <div class="editor-radio-text"><input type="radio" name="editor" id="editor" v-model="setting.account_form.editor" value="0"><element class="ml10">富文本</element></div>
+                    <div class="editor-radio-markdown"><input type="radio" name="editor" id="editor" v-model="setting.account_form.editor" value="1" checked="checked"><element class="ml10">Markdown</element></div>
                     <p class="editor-tip">切换后对新建文章生效</p>
                 </div>
             </div>
             <div class="user-set-form-items none-border">
-                <a href="javascript:void(0);" class="save-basic-form-submit">保存</a>
+                <input type="hidden" name="uid" id="uid" v-model="setting.account_form.uid" />
+                <a href="javascript:void(0);" class="save-basic-form-submit" @click="saveBaseFOrmSubmit($event)">保存</a>
             </div>
         </div>
     </div>

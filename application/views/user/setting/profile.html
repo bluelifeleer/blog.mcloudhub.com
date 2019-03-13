@@ -16,7 +16,28 @@
         </ul>
     </div>
     <div class="user-set-layout-right">
-
+            <div class="user-set-form-box">
+                <div class="user-set-form-items overhidden">
+                        <label for="sex">性别：</label>
+                        <div class="editor-radio-box">
+                            <div class="editor-radio-sex"><input type="radio" name="sex" id="sex" v-model="setting.account_form.sex" value="0" /><element class="ml10">男</element></div>
+                            <div class="editor-radio-sex"><input type="radio" name="sex" id="sex" v-model="setting.account_form.sex" value="1" /><element class="ml10">女</element></div>
+                            <div class="editor-radio-sex"><input type="radio" name="sex" id="sex" v-model="setting.account_form.sex" value="2" checked="checked" /><element class="ml10">保密</element></div>
+                        </div>
+                </div>
+                <div class="user-set-form-items overhidden">
+                        <label for="introduce">个人简介：</label>
+                        <textarea name="introduce" id="introduce" cols="30" rows="10" v-model="setting.account_form.introduce"></textarea>
+                </div>
+                <div class="user-set-form-items overhidden">
+                        <label for="website">个人网站：</label>
+                        <input type="text" name="website" id="website" v-model="setting.account_form.website" placeholder="https://||http://" />
+                </div>
+                <div class="user-set-form-items none-border">
+                    <input type="hidden" name="uid" id="uid" v-model="setting.account_form.uid" />
+                    <a href="javascript:void(0);" class="save-basic-form-submit" @click="saveBaseFOrmSubmit($event)">保存</a>
+                </div>
+            </div>
     </div>
     <div class="user-set-layout-clear"></div>
 </div>

@@ -54,7 +54,9 @@ const VUE = new Vue({
         articleIndex: 0,
         editor: null
     },
-    created() {},
+    created() {
+        this.init();
+    },
     methods: {
         init: function() {
             if (Utils.getCookie('uid')) {
@@ -369,6 +371,6 @@ const VUE = new Vue({
         }
     },
     mounted() {
-        this.init();
+        // this.init();
     }
 });

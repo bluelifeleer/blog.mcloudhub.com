@@ -1251,6 +1251,68 @@ router.post('/file/uploader', uoloader.single('editormd-image-file'), (req, res,
     }
 });
 
+router.post('/user/avatar', (req, res, next) => {
+    let uid = req.body.uid || res.cookies.uid || res.session.uid;
+    let name = req.body.name;
+    let size = req.body.size;
+    let type = req.body.type;
+    let baseData = req.body.baseData;
+    // console.log(req.body)
+    User.findById(uid).then(user => {
+        if(user){
+            user.avatar = baseData;
+            user.save().then(status=>{
+                if(status){
+                    output = {
+                        code: 1,
+                        msg: 'success',
+                        ok: true,
+                        data: null
+                    };
+                    res.json(output);
+                    return;
+                }
+            }).catch(err=>{
+                console.log(err)
+            });
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+});
+
+router.post('/user/base/save', (req, res, next) => {
+    let uid = req.body.uid || res.cookies.uid || res.session.uid;
+    let name = req.body.name;
+    let email = req.body.email;
+    let phone = req.body.phone;
+    let editor = req.body.editor;
+    User.findById(uid).then(user => {
+        if(user){
+            user.name = name;
+            user.email = email;
+            user.phone = phone;
+            user.editor = editor;
+            user.save().then(status => {
+                if(status){
+                    output = {
+                        code: 1,
+                        msg: 'success',
+                        ok: true,
+                        data: null
+                    };
+                    res.json(output);
+                    return;
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+});
+
 router.get('/qrcode', (req, res, next) => {
     let version = parseInt(req.query.version) || 8;
     let level = req.query.level || 'H';

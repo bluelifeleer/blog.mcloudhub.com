@@ -18,7 +18,9 @@ const VUE = new Vue({
             showPassword: false
         }
     },
-    created() {},
+    created() {
+        this.init();
+    },
     methods: {
         init: function() {
             this.getPageBG();
@@ -76,7 +78,7 @@ const VUE = new Vue({
         }
     },
     mounted() {
-        this.init();
+        // this.init();
         document.addEventListener('keyup',function(e){
 			if(e.keyCode == 13){
 				_this.signupFormSubmit(e)

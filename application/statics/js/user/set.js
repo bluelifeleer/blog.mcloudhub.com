@@ -27,15 +27,23 @@ const VUE = new Vue({
         },
         setting:{
             account_form:{
+                uid:'',
                 name:'',
                 phone:'',
                 email:'',
                 avatar:'',
-                editor:1
+                editor:1,
+                sex: 2,
+                introduce: '',
+                website: '',
+                reward: 1,
+                reward_desc: ''
             }
         }
     },
-    created() {},
+    created() {
+        this.init();
+    },
     methods: {
         init: function() {
             if (Utils.getCookie('uid')) {
@@ -52,6 +60,12 @@ const VUE = new Vue({
                     let data = res.body.data;
                     data.href = '/user/center?id=' + data._id;
                     this.user = data;
+                    this.setting.account_form.uid = data._id;
+                    this.setting.account_form.avatar = data.avatar;
+                    this.setting.account_form.name = data.name;
+                    this.setting.account_form.phone = data.phone;
+                    this.setting.account_form.email = data.email;
+                    this.setting.account_form.editor = data.editor;
                 }
             }).catch(err => {
                 console.log(err);
@@ -85,22 +99,34 @@ const VUE = new Vue({
                 let Reader = new FileReader();
                 Reader.readAsDataURL(file);
                 Reader.addEventListener('load', function(e) {
-                    userAvatar.src=Reader.result
-                    // _this.$http.post('/api/adv/picture/upload', {
-                    //     uid: _this.users.uid,
-                    //     name: file.name,
-                    //     size: file.size,
-                    //     type: file.type,
-                    //     base_data: Reader.result
-                    // }).then(res => {
-                    //     if (res.body.code && res.body.ok) {
-                    //         _this.adv.slides[index].url = res.body.data.url;
-                    //     }
-                    // }).catch(err => {
-                    //     console.log(err)
-                    // })
+                    userAvatar.src=Reader.result;
+                    let uid = Utils.getCookie('uid');
+                    _this.$http.post('/api/user/avatar', {
+                        uid: uid.substr(7,parseInt(uid.length-10)),
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        baseData: Reader.result
+                    }).then(res => {
+                        console.log(res)
+                    }).catch(err => {
+                        console.log(err)
+                    });
                 }, false);
             }
+        },
+        saveBaseFOrmSubmit:function(e){
+            this.$http.post('/api/user/base/save', {
+                uid:this.setting.account_form.uid,
+                name:this.setting.account_form.name,
+                email:this.setting.account_form.email,
+                phone:this.setting.account_form.phone,
+                editor:parseInt(this.setting.account_form.editor),
+            }).then(res=>{
+
+            }).catch(err=>{
+                console.log(err);
+            })
         },
         message:function(options){
             let _this = this;
@@ -127,6 +153,6 @@ const VUE = new Vue({
         }
     },
     mounted() {
-        this.init();
+        // this.init();
     }
 });

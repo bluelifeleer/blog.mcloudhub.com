@@ -38,7 +38,7 @@
 .user-set-layout-right{
     float:left;
     width:66%;
-    height:auto;
+    height:850px;
     padding:30px 0 0 0;
     margin:0 0 0 4%;
 }
@@ -90,6 +90,18 @@
     padding:0 0 0 10px;
 }
 
+.user-set-form-items textarea{
+    display:block;
+    float:left;
+    width:300px;
+    height:100px;
+    border:1px solid #c8c8c8;
+    border-radius:4px;
+    background:#F7F7F7;
+    padding:10px;
+    resize: none;
+}
+
 .editor-radio-box{
     display:block;
     float:left;
@@ -103,6 +115,13 @@
 .editor-radio-text,.editor-radio-markdown{
     float:left;
     width:120px;
+    height:30px;
+    line-height: 30px;
+}
+
+.editor-radio-sex,.editor-radio-reward{
+    float:left;
+    width:80px;
     height:30px;
     line-height: 30px;
 }
@@ -206,4 +225,21 @@
     border-radius:20px;
     color:#fff;
     background:#42c02e;
+}
+
+#website{
+    width:310px;
+}
+
+.download-article{
+    display:block;
+    float:left;
+    width:140px;
+    height:28px;
+    line-height: 28px;
+    text-align:center;
+    border:1px solid #42c02e;
+    border-radius:20px;
+    color:#42c02e;
+    font-size: 14px;
 }

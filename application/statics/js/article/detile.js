@@ -53,7 +53,9 @@ const VUE = new Vue({
             }
         }
     },
-    created() {},
+    created() {
+        this.init();
+    },
     methods: {
         init: function() {
             if (Utils.getCookie('uid')) {
@@ -290,6 +292,6 @@ const VUE = new Vue({
         }
     },
     mounted() {
-        this.init();
+        // this.init();
     }
 })
