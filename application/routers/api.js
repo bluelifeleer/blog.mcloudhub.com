@@ -1152,7 +1152,8 @@ router.post('/comment/replys', (req, res, next) => {
                 name: user.name,
                 avatar: user.avatar,
                 comment: replys.content,
-                author: user
+                author: user,
+                date: new Date()
             });
             comment.save().then(status=>{
                 if(status){

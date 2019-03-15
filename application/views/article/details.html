@@ -115,9 +115,9 @@
                             <div class="replys-list-box" v-if="comment.replys.length">
                                 <div class="replys-list-items" v-for="(replys, $index) in comment.replys" :key="$index">
                                     <div class="replys-author">
-                                        <span class="replys-author-name-info"><a href="/" class="replys-author-name">${replys.own.name}</a>：<a
+                                        <span class="replys-author-name-info"><a :href="replys.href" class="replys-author-name">${replys.name}</a>：<a
                                                 :href="comment.own.href" class="replys-own-name">@${comment.own.name}</a></span>
-                                        <span class="replys-comment-content">${replys.content}</span>
+                                        <span class="replys-comment-content">${replys.comment}</span>
                                     </div>
                                     <div class="replys-date">${replys.date}</div>
                                     <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment" @click.stop="showCommentReplysForm($event, $index, comment, article._id)"><i class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
@@ -137,7 +137,7 @@
                                     </transition>
                                 </div>
                             </div>
-                            <div class="replys-list-box" v-else>
+                            <!-- <div class="replys-list-box" v-else>
                                 <transition name="comment-replys-form">
                                     <div class="comment-replys-form-box">
                                         <div class="replys-add-comment-but-box"><a href="javascript:void(0);" class="add-comment"><i class="icon iconfont">&#xe615;</i>&nbsp;<span>添加评论</span></a></div>
@@ -155,7 +155,7 @@
                                         </div>
                                     </div>
                                 </transition>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

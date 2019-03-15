@@ -119,6 +119,12 @@ const VUE = new Vue({
                             comment.own.href = '/user/center?id=' + comment.own._id;
                             comment.heart = comment.heart ? comment.heart : 0;
                             comment.date = Utils.formateDate(comment.date);
+                            if(comment.replys.length){
+                                comment.replys.forEach((reply, index) => {
+                                    reply.href = '/user/center?id='+reply.uid;
+                                    reply.date = Utils.formateDate(reply.date);
+                                });
+                            }
                         });
                     }
                     this.article = article;
