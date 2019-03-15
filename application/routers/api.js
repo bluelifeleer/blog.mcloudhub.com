@@ -1148,12 +1148,6 @@ router.post('/comment/heart', (req, res, next) => {
 router.post('/comment/replys', (req, res, next) => {
     let replys = req.body.replys;
     let uid = req.cookies.uid || req.session.uid;
-    console.log(replys)
-    // { id: '5c3f7b7cacea9d20fb0e8600',
-    //   uid: 'j%3A%225c3c910585710f035b21350c%22',
-    //   articleId: '5c3cc65170830e13d1bf35ba',
-    //   ownId: '5c3e2295fc56f30dec47c533',
-    //   content: '人梦想成真gbad遥' }
     User.findById(uid).then(user=>{
         Comment.findById(replys.id).then(comment=>{
             comment.replys.push({
