@@ -1025,7 +1025,7 @@ router.post('/comment/add', (req, res, next) => {
                     if (status) {
                         user.comment++;
                         user.comments.push(article);
-                        user.svae();
+                        user.save();
                         output = {
                             code: 1,
                             msg: 'success',
