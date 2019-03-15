@@ -726,16 +726,13 @@ router.get('/article/get', (req, res, next) => {
         select: 'name avatar'
     }, {
         path: 'comments',
-        select: 'uid labelId articleId content date heart',
+        select: 'uid labelId articleId content date heart replys',
         populate: [{
             path: 'own',
             select: 'name avatar'
         }, {
             path: 'hearts',
             select: 'name avatar'
-        }, {
-            path:'replys',
-            select: 'uid name avatar comment'
         }]
     }]).select('uid labelId title KeyWords content date updateTime heart').then(article => {
         if (article) {
