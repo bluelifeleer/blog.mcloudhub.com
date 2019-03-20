@@ -34,7 +34,7 @@ const VUE = new Vue({
         }
     },
     created() {
-        this.init();
+        // this.init();
     },
     methods: {
         init: function() {
@@ -80,7 +80,8 @@ const VUE = new Vue({
         },
         getArticles: function() {
             let _this = this;
-            let loadingBox = this.$refs.loading;
+            let loadingBox = this.$refs.loadingBox;
+            console.log(loadingBox)
             loadingBox.style.display = 'block';
             this.$http.get('/api/article/lists?num=' + this.articles.num + '&size=' + this.articles.size + '&count=' + this.articles.count).then(res => {
                 if (res.body.code && res.body.ok) {
@@ -183,6 +184,6 @@ const VUE = new Vue({
         }
     },
     mounted() {
-        // this.init();
+        this.init();
     }
 });
