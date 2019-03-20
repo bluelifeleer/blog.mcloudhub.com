@@ -80,8 +80,11 @@ const VUE = new Vue({
         },
         getArticles: function() {
             let _this = this;
+            let loadingBox = this.$refs.loading;
+            loadingBox.style.display = 'block';
             this.$http.get('/api/article/lists?num=' + this.articles.num + '&size=' + this.articles.size + '&count=' + this.articles.count).then(res => {
                 if (res.body.code && res.body.ok) {
+                    loadingBox.style.display = 'none';
                     let data = res.body.data;
                     let list = data.list;
                     list.forEach((item, index) => {

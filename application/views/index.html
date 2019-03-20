@@ -39,6 +39,7 @@
 						<a v-else class="comment" href="javascript:void(0);" @click="articleComment($event, article, '')"><i class="icon iconfont">&#xe684;</i>${article.comment}</a>
 					</div>
 				</div>
+				<div class="article-item-box loading" ref="loading"><img src="/static/images/index-loading.gif" alt=""></div>
 			</article>
 		</div>
 		<div class="load-more"><a href="javascript:void(0);" class="load-more-but" @click="loadMores($event)">加载更多</a></div>
