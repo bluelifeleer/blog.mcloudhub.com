@@ -277,6 +277,10 @@ input,textarea{
     padding: 0 10px;
 }
 
+.user-profile{
+    display:none;
+}
+
 .user-info a {
     color: #606266;
 }
@@ -381,6 +385,10 @@ input,textarea{
     width: auto;
     height: 20px;
     margin: 20px 8px;
+}
+
+.message-components{
+    display:none;
 }
 
 .message-components-enter-active {
