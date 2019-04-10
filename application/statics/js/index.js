@@ -35,6 +35,9 @@ const VUE = new Vue({
     },
     created() {
         // this.init();
+        // this.$message({
+        //     title:'asfdvasfdv'
+        // })
     },
     methods: {
         init: function() {
@@ -81,7 +84,6 @@ const VUE = new Vue({
         getArticles: function() {
             let _this = this;
             let loadingBox = this.$refs.loadingBox;
-            console.log(loadingBox)
             loadingBox.style.display = 'block';
             this.$http.get('/api/article/lists?num=' + this.articles.num + '&size=' + this.articles.size + '&count=' + this.articles.count).then(res => {
                 if (res.body.code && res.body.ok) {

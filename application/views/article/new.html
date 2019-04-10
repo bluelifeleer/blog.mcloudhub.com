@@ -15,7 +15,7 @@
                 <div class="new-label-form" v-show="newLabelToggle">
                     <input type="hidden" name="uid" v-model="form.label.uid" />
                     <div class="add-label-input-box"><input type="text" name="add-label" placeholder="添加标签" v-model="form.label.name" /></div>
-                    <div class="add-label-input-submit-box"><a href="javascript:void(0);" class="add-label-form-submit" @click="addLabelFormSubmit($event)">保存</a><a href="javascript:void(0);" class="add-label-form-reset" @click="addLabelFormReset($event)">取消</a></div>
+                    <div class="add-label-input-submit-box"><a href="javascript:void(0);" class="add-label-form-submit" @click="addLabelFormSubmit($event)">保存</a><a href="javascript:void(0);" class="add-label-form-reset" @click="addLabelFormReset($event)">取消</a><a href="javascript:void(0);" class="add-label-form-reset" @click="showTagDialog=true">从列表中选择</a></div>
                 </div>
             </transition>
         </div>
@@ -52,6 +52,27 @@
         <div id="editor-container">
             <textarea style="display:none;" calss="editormd-markdown-textarea" name="editormd-markdown-doc" v-if="user.editor"></textarea>
             <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+        </div>
+    </div>
+
+    <!-- add tags dialog -->
+    <div :class="{'add-tags-dialog':!showTagDialog,'show-tags-dialog':showTagDialog}">
+        <div class="dialog-marker-layer"></div>
+        <div class="dialog-content-layer">
+            <div class="dialog-header">
+                <span class="dialog-header-title">选择标签：</span>
+                <a href="javascript:void(0);" class="close-dialog" @click="cleanTagBut($event)"><i class="icon iconfont">&#xe63a;</i></a>
+            </div>
+            <div class="dialog-body">
+                <div class="public-labels-group" v-if="publicLabel.length" ref="tagSelector">
+                        <a href="javascript:void(0);" v-for="(item,$index) in publicLabel" class="tag-items" :class="{'tag-item-selected':item.selected}" :key="$index" :data-id="item._id" :data-index="$index" :data-selected="item.selected" @click="selectTag($event,$index)">${item.name}</a>
+                </div>
+                <div class="public-labels-group" v-else></div>
+            </div>
+            <div class="dialog-footer">
+                <a href="javascript:void(0);" class="clean-tag-but" @click="cleanTagBut($event)">稍后再说</a>
+                <a href="javascript:void(0);" class="save-tag-but" @click="saveTagBut($event)">保存</a>
+            </div>
         </div>
     </div>
 </div>

@@ -83,7 +83,7 @@ app.use(cookieParser('session_id', {
 }));
 
 const store = new MongoDBStore({
-    uri: 'mongodb://localhost:27017',
+    uri: 'mongodb://127.0.0.1:27017',
     databaseName: 'blog',
     collection: 'sessions',
     useNewUrlParser: true
@@ -242,7 +242,7 @@ function errorNotification(err, str, req) {
 }
 
 //连接数据库
-mongoose.connect('mongodb://localhost:27017/blog', {
+mongoose.connect('mongodb://127.0.01:27017/blog', {
     useNewUrlParser: true
 }, (err, res) => {
     if (err) {

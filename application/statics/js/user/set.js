@@ -33,7 +33,7 @@ const VUE = new Vue({
                 email:'',
                 avatar:'',
                 editor:1,
-                sex: 2,
+                sex: 3,
                 introduce: '',
                 website: '',
                 reward: 1,
@@ -66,6 +66,11 @@ const VUE = new Vue({
                     this.setting.account_form.phone = data.phone;
                     this.setting.account_form.email = data.email;
                     this.setting.account_form.editor = data.editor;
+                    this.setting.account_form.sex = data.sex;
+                    this.setting.account_form.introduce = data.introduce;
+                    this.setting.account_form.website = data.website;
+                    this.setting.account_form.reward = data.reward;
+                    this.setting.account_form.reward_desc = data.reward_desc;
                 }
             }).catch(err => {
                 console.log(err);
@@ -115,18 +120,50 @@ const VUE = new Vue({
                 }, false);
             }
         },
-        saveBaseFOrmSubmit:function(e){
-            this.$http.post('/api/user/base/save', {
-                uid:this.setting.account_form.uid,
-                name:this.setting.account_form.name,
-                email:this.setting.account_form.email,
-                phone:this.setting.account_form.phone,
-                editor:parseInt(this.setting.account_form.editor),
-            }).then(res=>{
-
+        saveBaseFOrmSubmit:function(e, type){
+            let data = {};
+            switch(type){
+                case 'profile':
+                    data = {
+                        type:type,
+                        uid:this.setting.account_form.uid,
+                        sex: this.setting.account_form.sex,
+                        introduce: this.setting.account_form.introduce,
+                        website: this.setting.account_form.website
+                    }
+                break;
+                case 'reward':
+                    data = {
+                        type:type,
+                        uid:this.setting.account_form.uid,
+                        reward:this.setting.account_form.reward,
+                        reward_desc:this.setting.account_form.reward_desc
+                    }
+                break;
+                default:
+                    data = {
+                        type:type,
+                        uid:this.setting.account_form.uid,
+                        name:this.setting.account_form.name,
+                        email:this.setting.account_form.email,
+                        phone:this.setting.account_form.phone,
+                        editor:parseInt(this.setting.account_form.editor)
+                    }
+                break;
+            }
+            this.$http.post('/api/user/setting/save', data).then(res=>{
+                if(res.body.code && res.body.ok){
+                    this.message({
+                        type:'success',
+                        text:'保存成功'
+                    });
+                }
             }).catch(err=>{
-                console.log(err);
-            })
+                this.message({
+                    type:'error',
+                    text:'保存失败'
+                });
+            });
         },
         message:function(options){
             let _this = this;

@@ -55,6 +55,9 @@ module.exports = new mongoose.Schema({
 	type: Number, // 注册方式，1：用户名，2：手机号，3：邮箱，4：QQ，5：微信，6：github.
 	link: String, // 用户个人连接
 	website:String, // 用户网站
+	reward: Number,
+	reward_desc: String,
 	deleted: Boolean,
-	date: Date
+	date: Date,
+	has_tag: Boolean
 });

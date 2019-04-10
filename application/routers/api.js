@@ -220,7 +220,8 @@ router.post('/signup', (req, res, next) => {
                 read:0,
                 reads:[],
                 deleted: false,
-                date: now
+                date: now,
+                has_tag: false
             }).save().then(user => {
                 if (user) {
                     new Label({
@@ -318,7 +319,12 @@ router.get('/user/get', (req, res, next) => {
         phone: true,
         avatar: true,
         editor: true,
-        introduce: true
+        sex: true,
+        introduce: true,
+        website:true,
+        reward:true,
+        reward_desc:true,
+        has_tag: true
     }).then(user => {
         if (user) {
             output = {
@@ -402,49 +408,72 @@ router.post('/label/add', (req, res, next) => {
     let uid = req.body.uid || req.secure.uid || req.cookies.uid;
     let name = req.body.name;
     let now = new Date();
-    User.findById(uid).then(user => {
-        if (user) {
-            new Label({
-                uid: user._id,
-                name: name,
-                remark: '',
-                logo: '',
-                own: user,
-                articles: [],
-                deleted: false,
-                date: now
-            }).save().then(label => {
-                if (label) {
-                    new Article({
+    Label.findOne({uid:uid,name:name}).then(label=>{
+        if(label){
+            output = {
+                code: 2,
+                msg: 'document is exists',
+                ok: true,
+                data: null
+            };
+            res.json(output);
+            return;
+        }else{
+            User.findById(uid).then(user => {
+                if (user) {
+                    new Label({
                         uid: user._id,
-                        labelId: label._id,
-                        title: sillyDateTime.format(now, 'YYYY-MMM-DD HH:mm:ss'),
-                        content: '',
+                        name: name,
+                        remark: '',
+                        logo: '',
                         own: user,
-                        label: label,
-                        heart: 0,
-                        follow: 0,
-                        collect: 0,
-                        share: 0,
-                        comment: 0,
-                        read: 0,
-                        KeyWords: 0,
-                        type: 1,
-                        permission: 0,
+                        articles: [],
                         deleted: false,
-                        date: now,
-                        updateTime: now
-                    }).save().then(article => {
-                        label.articles.push(article);
-                        label.save();
-                        output = {
-                            code: 1,
-                            msg: 'success',
-                            ok: true,
-                            data: user
-                        };
-                        res.json(output);
-                        return;
+                        date: now
+                    }).save().then(label => {
+                        if (label) {
+                            new Article({
+                                uid: user._id,
+                                labelId: label._id,
+                                title: sillyDateTime.format(now, 'YYYY-MMM-DD HH:mm:ss'),
+                                content: '',
+                                own: user,
+                                label: label,
+                                heart: 0,
+                                follow: 0,
+                                collect: 0,
+                                share: 0,
+                                comment: 0,
+                                read: 0,
+                                KeyWords: 0,
+                                type: 1,
+                                permission: 0,
+                                deleted: false,
+                                date: now,
+                                updateTime: now
+                            }).save().then(article => {
+                                label.articles.push(article);
+                                label.save();
+                                output = {
+                                    code: 1,
+                                    msg: 'success',
+                                    ok: true,
+                                    data: user
+                                };
+                                res.json(output);
+                                return;
+                            }).catch(err => {
+                                console.log(err);
+                                output = {
+                                    code: 0,
+                                    msg: 'error',
+                                    ok: false,
+                                    data: null
+                                };
+                                res.json(output);
+                                return;
+                            });
+                        }
                     }).catch(err => {
                         console.log(err);
                         output = {
@@ -455,7 +484,7 @@ router.post('/label/add', (req, res, next) => {
                         };
                         res.json(output);
                         return;
-                    });
+                    })
                 }
             }).catch(err => {
                 console.log(err);
@@ -469,7 +498,7 @@ router.post('/label/add', (req, res, next) => {
                 return;
             })
         }
-    }).catch(err => {
+    }).catch(err=>{
         console.log(err);
         output = {
             code: 0,
@@ -544,6 +573,33 @@ router.get('/label/lists', (req, res, next) => {
         });
     });
 });
+
+router.get('/label/public', (req, res, next) => {
+    Label.find({},{name:true}).then(labels=>{
+        if(labels){
+            output = {
+                code: 1,
+                msg: 'success',
+                ok: true,
+                data: {
+                    list: labels
+                }
+            };
+            res.json(output);
+            return;
+        }
+    }).catch(err => {
+        console.log(err);
+        output = {
+            code: 0,
+            msg: 'error',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
+    })
+})
 
 router.get('/label/all', (req, res, next) => {
     let uid = req.query.uid || req.secure.uid || req.cookies.uid;
@@ -1273,18 +1329,28 @@ router.post('/user/avatar', (req, res, next) => {
     })
 });
 
-router.post('/user/base/save', (req, res, next) => {
+router.post('/user/setting/save', (req, res, next) => {
     let uid = req.body.uid || res.cookies.uid || res.session.uid;
-    let name = req.body.name;
-    let email = req.body.email;
-    let phone = req.body.phone;
-    let editor = req.body.editor;
+    let type = req.body.type;
     User.findById(uid).then(user => {
         if(user){
-            user.name = name;
-            user.email = email;
-            user.phone = phone;
-            user.editor = editor;
+            switch(type){
+                case 'reward':
+                    user.reward = req.body.reward;
+                    user.reward_desc = req.body.reward_desc;
+                break;
+                case 'profile':
+                    user.sex =  req.body.sex;
+                    user.introduce =  req.body.introduce;
+                    user.website =  req.body.website;
+                break;
+                default:
+                    user.name =  req.body.name;
+                    user.email =  req.body.email;
+                    user.phone =  req.body.phone;
+                    user.editor =  req.body.editor;
+                break;
+            }
             user.save().then(status => {
                 if(status){
                     output = {

@@ -21,7 +21,7 @@ a {
 
 html,
 body {
-    font-family: apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+    font-family: 'Microsoft YaHei','SF Pro Display',Roboto,Noto,apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
     font-size: 14px;
     color: #606266;
     background: #f7f7f8;
@@ -277,10 +277,6 @@ input,textarea{
     padding: 0 10px;
 }
 
-.user-profile{
-    display:none;
-}
-
 .user-info a {
     color: #606266;
 }
@@ -387,9 +383,6 @@ input,textarea{
     margin: 20px 8px;
 }
 
-.message-components{
-    display:none;
-}
 
 .message-components-enter-active {
     animation: message-box-show .5s;

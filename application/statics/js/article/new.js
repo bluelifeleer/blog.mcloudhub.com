@@ -6,6 +6,7 @@ const VUE = new Vue({
         newLabelToggle: false,
         showUserProfile: false,
         articleSaveTip: false,
+        showTagDialog: false,
         search:{
             Keyword:'',
             result:[],
@@ -42,6 +43,8 @@ const VUE = new Vue({
                 html: ''
             }
         },
+        publicLabel:[],
+        publicLabelSelected:new Map(),
         labels: [{
             name: '',
             selected: true
@@ -56,6 +59,15 @@ const VUE = new Vue({
     },
     created() {
         this.init();
+    },
+    watch:{
+        // publicLabel(){
+        //     this.publicLabel.forEach((item,index)=>{
+        //         if(item.selected){
+        //             this.publicLabelSelected.push(item)
+        //         }
+        //     });
+        // }
     },
     methods: {
         init: function() {
@@ -81,6 +93,25 @@ const VUE = new Vue({
             }).catch(err => {
                 console.log(err);
             });
+        },
+        selectTag: function(e, index){
+            this.publicLabel[index].selected = !this.publicLabel[index].selected;
+            this.publicLabel.forEach((item,index)=>{
+                if(item.selected){
+                    this.publicLabelSelected.set(index,item)
+                }else{
+                    if(this.publicLabelSelected.has(index)){
+                        this.publicLabelSelected.delete(index)
+                    }
+                }
+            });
+        },
+        cleanTagBut: function(e){
+            this.showTagDialog = false;
+            this.publicLabelSelected.clear();
+        },
+        saveTagBut: function(e){
+            console.log(this.publicLabelSelected.values())
         },
         showUserProfileToggle: function(e) {
             this.showUserProfile = !this.showUserProfile;
@@ -142,9 +173,25 @@ const VUE = new Vue({
                 uid: this.form.label.uid,
                 name: this.form.label.name
             }).then(res => {
-                // if (res.body.code && res.body.ok) {
-                //     alert('添加成功');
-                // }
+                if (res.body.ok) {
+                    switch(res.body.code){
+                        case 2:
+                        this.message({
+                            enable:true,
+                            type: 'warning',
+                            text:'要添加的标签已存在，请从列表中选择添加！'
+                        });
+                        this.showTagDialog = true;
+                        break;
+                        default:
+                        this.message({
+                            enable:true,
+                            type: 'success',
+                            text:'添加成功'
+                        });
+                        break;
+                    }
+                }
                 this.form.label.name = '';
                 this.getLabels();
             }).catch(err => {
@@ -163,7 +210,12 @@ const VUE = new Vue({
                 title: this.form.article.title,
                 type: this.user.editor
             }).then(res => {
-                console.log(res);
+                // console.log(res);
+                this.message({
+                    enable:true,
+                    type: 'success',
+                    text:'添加文章成功'
+                });
                 this.getLabels();
             }).catch(err => {
                 console.log(err);
@@ -253,7 +305,7 @@ const VUE = new Vue({
                 ];
                 this.editor.create();
                 // 读取/设置html内容
-                console.log(this.form.article['content'])
+                // console.log(this.form.article['content'])
                 this.editor.txt.html(this.form.article['content']);
                 // 读取/设置Text内容
                 // this.editor.txt.text();
@@ -371,6 +423,26 @@ const VUE = new Vue({
         }
     },
     mounted() {
+        if(!this.user.has_tag){
+            this.showTagDialog = true;
+            this.$http.get('/api/label/public').then(res=>{
+                console.log(res)
+                if(res.ok && res.status){
+                    if(res.body.code && res.body.ok){
+                        res.body.data.list.forEach((item,index)=>{
+                            this.publicLabel.push({
+                                name: item.name,
+                                _id:item._id,
+                                selected:false
+                            })
+                        });
+                    }
+                }
+            }).catch(err=>{
+                console.log(err)
+            })
+            // alert(111)
+        }
         // this.init();
     }
 });

@@ -116,7 +116,8 @@ router.get('/github', (req, res, next) => {
                         read:0,
                         reads:[],
                         deleted: false,
-                        date: now
+                        date: now,
+                        has_tag: false
                     }).save().then(users=>{
                         if (users) {
                             new Label({
