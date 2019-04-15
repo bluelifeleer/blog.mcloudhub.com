@@ -253,26 +253,17 @@ mongoose.connect('mongodb://127.0.01:27017/blog', {
         });
     } else {
         // 数据库连接成功后监听80/443端口
-        // if (platform.toLowerCase() == 'darwin' || platform.toLowerCase() == 'win32') {
-            app.listen(80);
-            const server = http2.createServer(ssloptions, app);
-            server.listen(443);
-            const SocketServer = new SocketIO(server);
-            SocketServer.on('connection', (socket, err) => {
-                console.log(socket);
-                console.log(err);
-            });
-            notifier.notify({
-                title: 'blog.mcloudhub.com',
-                message: 'the server started . http server listener port 80 https server listener port 443 .'
-            });
-        // } else {
-        //     app.listen(3002);
-        //     notifier.notify({
-        //         title: 'blog.mcloudhub.com',
-        //         message: 'the server started . http server listener port 3002 .'
-        //     });
-        // }
+        app.listen(80);
+        const server = http2.createServer(ssloptions, app).listen(443);
+        const SocketServer = new SocketIO(server);
+        SocketServer.on('connection', (socket, err) => {
+            console.log(socket);
+            console.log(err);
+        });
+        notifier.notify({
+            title: 'blog.mcloudhub.com',
+            message: 'the server started . http server listener port 80 https server listener port 443 .'
+        });
     }
 });
 

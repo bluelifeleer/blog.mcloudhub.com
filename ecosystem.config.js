@@ -1,7 +1,9 @@
 module.exports = {
   apps : [{
     name: 'blog',
+    cwd:'/Users/bluelifeleer/www/node/blog.mcloudhub.com',
     script: 'index.js',
+    mode: "cluster",
 
     // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/
     args: 'one two',
@@ -9,10 +11,13 @@ module.exports = {
     autorestart: true,
     watch: false,
     max_memory_restart: '1G',
+    merge_logs: true,
     env: {
+      // port: 443,
       NODE_ENV: 'development'
     },
     env_production: {
+      // port: 443,
       NODE_ENV: 'production'
     }
   }],
