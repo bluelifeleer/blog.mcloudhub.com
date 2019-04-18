@@ -59,16 +59,16 @@ router.post('/signin', (req, res, next) => {
         return;
     }
 
-    // if (verifyCode != req.session.verify_code) {
-    //     output = {
-    //         code: 0,
-    //         msg: '验证码错误',
-    //         ok: false,
-    //         data: null
-    //     };
-    //     res.json(output);
-    //     return;
-    // }
+    if (verifyCode != req.session.verify_code) {
+        output = {
+            code: 0,
+            msg: '验证码错误',
+            ok: false,
+            data: null
+        };
+        res.json(output);
+        return;
+    }
 
     User.findOne({
         name: name

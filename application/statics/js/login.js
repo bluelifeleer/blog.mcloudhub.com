@@ -37,7 +37,11 @@ const VUE = new Vue({
 		passwordViewToggle: function(e){
             this.form.showPassword = !this.form.showPassword;
             this.$refs.passwordInputBox.type = this.form.showPassword ? 'text' : 'password';
-        },
+		},
+		refreshVerifyCode:function(e){
+			let MyDate = new Date();
+			this.$refs.verifyCodeImg.src = 'https://blog.mcloudhub.com/captcha/captcha?time='+MyDate.getTime();
+		},
 		checkboxToggle: function(e) {
 			this.form.checkbox.value = !this.form.checkbox.value;
 			this.form.checkbox.icon = this.form.checkbox.value ? '&#xe642;' : '&#xe6c5;';

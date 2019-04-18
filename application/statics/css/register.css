@@ -124,7 +124,7 @@
 }
 
 .verify-code{
-	width:150px !important;
+	width:137px !important;
 	height:40px !important;
 }
 
@@ -145,4 +145,20 @@
 	position: absolute;
 	right:0;
 	top:5px;
+}
+
+.verify-code-refresh{
+	display:block;
+	float:left;
+	width:20px;
+	height:40px;
+}
+
+.verify-code-refresh i{
+	color:#606266;
+	display:block;
+	width:20px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
 }

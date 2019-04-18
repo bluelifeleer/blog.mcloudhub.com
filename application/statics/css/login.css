@@ -212,3 +212,19 @@
 .other-ligin-buts i{
 	font-size: 30px !important;
 }
+
+.verify-code-refresh{
+	display:block;
+	float:left;
+	width:20px;
+	height:40px;
+}
+
+.verify-code-refresh i{
+	color:#606266;
+	display:block;
+	width:20px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+}

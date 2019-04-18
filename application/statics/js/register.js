@@ -34,6 +34,10 @@ const VUE = new Vue({
             this.form.showPassword = !this.form.showPassword;
             this.$refs.passwordInputBox.type = this.form.showPassword ? 'text' : 'password';
         },
+		refreshVerifyCode:function(e){
+            let MyDate = new Date();
+			this.$refs.verifyCodeImg.src = 'https://blog.mcloudhub.com/captcha/captcha?time='+MyDate.getTime();
+		},
         signupFormSubmit: function(e) {
 
             if (!this.form.user.name) {
