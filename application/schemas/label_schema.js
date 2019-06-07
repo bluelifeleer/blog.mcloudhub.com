@@ -16,6 +16,7 @@ module.exports = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Article',
     }],
+    permission: String,// 权限，‘public’:公开，‘private’:私有
     deleted: Boolean,
     date: Date
 });

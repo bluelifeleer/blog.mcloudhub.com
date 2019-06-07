@@ -11,7 +11,6 @@ const VUE = new Vue({
             user: {
                 name: '',
                 password: '',
-                // confirmPassword: '',
                 email: '',
                 verifyCode: ''
             },
@@ -50,20 +49,9 @@ const VUE = new Vue({
                 return false;
             }
 
-            // if (!this.form.user.confirmPassword) {
-            //     alert('确认密码不能为空');
-            //     return false;
-            // }
-
-            // if (!this.form.user.password == this.form.user.confirmPassword) {
-            //     alert('两次输入密码不同');
-            //     return false;
-            // }
-
             this.$http.post('/api/signup', {
                 name: this.form.user.name,
                 password: this.form.user.password,
-                // confirmPassword: this.form.user.confirmPassword,
                 email: this.form.user.email,
                 verifyCode: this.form.user.verifyCode
             }).then(res => {

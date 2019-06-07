@@ -14,7 +14,7 @@
 			<article class="article-list-items" v-for="(article, $index) in articles.list" :key="$index" :data-id="article._id" :class="{'has-img':article.hasImg}">
 				<div class="article-item-box" v-if="article.hasImg">
 					<div class="article-list-item-layout-left">
-						<div class="article-title"><a :href="article.href" class="article-title-link" :title="article.title">${article.nowTitle}</a></div>
+						<div class="article-title"><a :href="article.href" class="article-title-link" :title="article.title" target="_blank">${article.nowTitle}</a></div>
 						<div class="article-contents">${article.content}</div>
 						<div class="article-meta">
 							<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>
@@ -28,7 +28,7 @@
 					<div class="article-list-item-layout-right" v-html="article.icon"></div>
 				</div>
 				<div class="article-item-box" v-else>
-					<div class="article-title"><a :href="article.href" class="article-title-link" :title="article.title">${article.nowTitle}</a></div>
+					<div class="article-title"><a :href="article.href" class="article-title-link" :title="article.title" target="_blank">${article.nowTitle}</a></div>
 					<div class="article-contents">${article.content}</div>
 					<div class="article-meta">
 						<a :href="article.own.href" class="author"><i class="icon iconfont">&#xe623;</i>${article.own.name}</a>
@@ -50,19 +50,19 @@
 				<span class="title">聚合标签</span>
 			</div>
 			<div class="model-item-body">
-				<a href="/" class="label-items">php</a>
-				<a href="/" class="label-items">node</a>
-				<a href="/" class="label-items">python</a>
-				<a href="/" class="label-items">object-c</a>
-				<a href="/" class="label-items">android</a>
-				<a href="/" class="label-items">ios</a>
-				<a href="/" class="label-items">swif</a>
-				<a href="/" class="label-items">javascript</a>
-				<a href="/" class="label-items">html/css</a>
-				<a href="/" class="label-items">java</a>
-				<a href="/" class="label-items">mongoose</a>
-				<a href="/" class="label-items">mongoDB</a>
-				<a href="/" class="label-items">Redis</a>
+				<a href="/" class="label-items" target="_blank">php</a>
+				<a href="/" class="label-items" target="_blank">node</a>
+				<a href="/" class="label-items" target="_blank">python</a>
+				<a href="/" class="label-items" target="_blank">object-c</a>
+				<a href="/" class="label-items" target="_blank">android</a>
+				<a href="/" class="label-items" target="_blank">ios</a>
+				<a href="/" class="label-items" target="_blank">swif</a>
+				<a href="/" class="label-items" target="_blank">javascript</a>
+				<a href="/" class="label-items" target="_blank">html/css</a>
+				<a href="/" class="label-items" target="_blank">java</a>
+				<a href="/" class="label-items" target="_blank">mongoose</a>
+				<a href="/" class="label-items" target="_blank">mongoDB</a>
+				<a href="/" class="label-items" target="_blank">Redis</a>
 			</div>
 		</div>
 		<div class="model-item-box">

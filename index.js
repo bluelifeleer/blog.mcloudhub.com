@@ -67,15 +67,12 @@ swig.setDefaults({
 app.use(expressRequestId);
 // extends设置true表示接收的数据是数组，false表示是字符串
 app.use(bodyParser.urlencoded({
+    limit: '50mb',
     extended: true
 }));
 // 将提交的数据转成json,并且设置请求实体大小
 app.use(bodyParser.json({
     limit: '50mb'
-}));
-app.use(bodyParser.urlencoded({
-    limit: '50mb',
-    extended: true
 }));
 app.use(cookieParser('session_id', {
     maxAge: 1200000,

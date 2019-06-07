@@ -59,7 +59,7 @@ router.post('/signin', (req, res, next) => {
         return;
     }
 
-    if (verifyCode != req.session.verify_code) {
+    if (verifyCode.toLowerCase() != (req.session.verify_code ? req.session.verify_code.toLowerCase():null)) {
         output = {
             code: 0,
             msg: '验证码错误',
@@ -149,23 +149,11 @@ router.get('/signout', (req, res, next) => {
 router.post('/signup', (req, res, next) => {
     let name = req.body.name;
     let password = req.body.password;
-    let confirmPassword = req.body.confirmPassword;
     let email = req.body.email;
     let verifyCode = req.body.verifyCode;
     let now = new Date();
 
-    // if (password != confirmPassword) {
-    //     output = {
-    //         code: 2,
-    //         msg: '再次输入密码不同',
-    //         ok: true,
-    //         data: null
-    //     };
-    //     res.json(output);
-    //     return;
-    // }
-
-    if (verifyCode == req.session.verify_code) {
+    if (verifyCode.toLowerCase() != (req.session.verify_code ? req.session.verify_code.toLowerCase():null)) {
         output = {
             code: 0,
             msg: '验证码错误',
@@ -428,6 +416,7 @@ router.post('/label/add', (req, res, next) => {
                         logo: '',
                         own: user,
                         articles: [],
+                        permission:'public',
                         deleted: false,
                         date: now
                     }).save().then(label => {
