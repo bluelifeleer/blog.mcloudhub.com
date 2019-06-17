@@ -31,7 +31,8 @@ const VUE = new Vue({
             size: 1,
             num: 20,
             list: []
-        }
+        },
+        labels:[]
     },
     created() {
         // this.init();
@@ -45,6 +46,7 @@ const VUE = new Vue({
                 this.getUser();
             }
             this.getArticles();
+            this.getLabels();
         },
         documentClickListener: function(e){
             this.showUserProfile = false;
@@ -60,6 +62,19 @@ const VUE = new Vue({
             }).catch(err => {
                 console.log(err);
             });
+        },
+        getLabels:function(){
+            this.$http.get('/api/label/public').then(res=>{
+                if(res.data.code && res.data.ok){
+                    let lists = res.data.data.list
+                    lists.forEach(list=>{
+                        list.href="/label/articles?id="+list._id;
+                    })
+                    this.labels = lists;
+                }
+            }).catch(err=>{
+                console.log(err)
+            })
         },
         searchFoucsListener: function(e){
             let searchButIcon = this.$refs.searchButIcon;

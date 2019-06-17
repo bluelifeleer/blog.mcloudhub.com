@@ -50,19 +50,7 @@
 				<span class="title">聚合标签</span>
 			</div>
 			<div class="model-item-body">
-				<a href="/" class="label-items" target="_blank">php</a>
-				<a href="/" class="label-items" target="_blank">node</a>
-				<a href="/" class="label-items" target="_blank">python</a>
-				<a href="/" class="label-items" target="_blank">object-c</a>
-				<a href="/" class="label-items" target="_blank">android</a>
-				<a href="/" class="label-items" target="_blank">ios</a>
-				<a href="/" class="label-items" target="_blank">swif</a>
-				<a href="/" class="label-items" target="_blank">javascript</a>
-				<a href="/" class="label-items" target="_blank">html/css</a>
-				<a href="/" class="label-items" target="_blank">java</a>
-				<a href="/" class="label-items" target="_blank">mongoose</a>
-				<a href="/" class="label-items" target="_blank">mongoDB</a>
-				<a href="/" class="label-items" target="_blank">Redis</a>
+				<a :href="label.href" class="label-items" target="_blank" v-if="labels.length" v-for="(label,$index) in labels" :key="$index" :data-id="label._id">${label.name}</a>
 			</div>
 		</div>
 		<div class="model-item-box">

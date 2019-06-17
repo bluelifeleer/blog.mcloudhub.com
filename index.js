@@ -208,6 +208,7 @@ app.use('/article', require(path.join(__dirname, '/application/routers/article')
 app.use('/user', require(path.join(__dirname, '/application/routers/user')));
 app.use('/captcha', require(path.join(__dirname, '/application/routers/captcha')));
 app.use('/other', require(path.join(__dirname, '/application/routers/other')));
+app.use('/label', require(path.join(__dirname,'/application/routers/label')));
 
 // 处理404请求
 app.get('*', (req, res) => {
